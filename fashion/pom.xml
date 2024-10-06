@@ -38,10 +38,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+<<<<<<< HEAD
+=======
+                <dependency>
+                        <groupId>nz.net.ultraq.thymeleaf</groupId>
+                        <artifactId>thymeleaf-layout-dialect</artifactId>
+                </dependency>
+>>>>>>> e1ad11f (Create homepage)
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+<<<<<<< HEAD
+=======
+                <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-devtools</artifactId>
+                </dependency>
+>>>>>>> e1ad11f (Create homepage)
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
