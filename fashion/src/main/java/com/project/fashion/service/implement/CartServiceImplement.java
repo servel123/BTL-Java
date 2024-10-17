@@ -44,8 +44,8 @@ public class CartServiceImplement implements CartService {
     public List<Product> getCartByCustomerId(Long customerId) {
         List<Cart> carts = cartReponsitory.findByCustomer_CustomerId(customerId);
         return carts.stream()
-                .map(Cart::getProduct)
-                .collect(Collectors.toList());
+                .map(Cart::getProduct) //table Product
+                .collect(Collectors.toList()); //list
     }
 
     @Override

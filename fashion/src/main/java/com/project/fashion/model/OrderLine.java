@@ -21,24 +21,13 @@ public class OrderLine extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderLineId;
-
-    @Column(name = "orderDate", nullable = false)
-    // @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime orderDate;
-
-    @Column(name = "totalPrice", nullable = false, precision = 10, scale = 2)
-    private Long totalPrice;
-
-    @ManyToOne
-    @JoinColumn(name = "customerId", nullable = false)
-    private Customer customer;
-
+  
     @ManyToOne
     @JoinColumn(name = "paymentId", nullable = false)
     private Payment payment;
 
     @Override
     public String toString() {
-        return "OrderLine: " + orderLineId + " " + customer + " " + orderDate + " " + totalPrice + " " + payment;
+        return "OrderLine: " + orderLineId +" "  + payment;
     }
 }

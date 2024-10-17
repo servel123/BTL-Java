@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AdminServerApplication",
+            "request": "launch",
+            "mainClass": "com.project.fashion.AdminServerApplication",
+            "projectName": "fashion"
+        },
+        {
+            "type": "java",
             "name": "FashionApplication",
             "request": "launch",
             "mainClass": "com.project.fashion.FashionApplication",

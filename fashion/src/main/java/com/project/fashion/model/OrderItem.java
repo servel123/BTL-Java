@@ -12,7 +12,6 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class OrderItem extends AbstractEntity {
@@ -32,15 +31,14 @@ public class OrderItem extends AbstractEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "price", nullable = false)
-    private Long price;
 
     @Override
     public String toString() {
-        return "OrderItem: " + orderItemId + " " + orderLine + " " + product + " " + quantity + " " + price;
+        return "OrderItem: " + orderItemId + " " + orderLine + " " + product + " " + quantity + " ";
     }
-
-    public void setQuantity() {
+    
+    public OrderItem() {
         this.quantity = 1;
     }
+
 }
