@@ -12,6 +12,7 @@ remaining request:
     product_detail_page (front-end)
     user_page (front-end)
     cart_page (front-end)
+    login/register (front-end)
     filter 
     search
     bought
