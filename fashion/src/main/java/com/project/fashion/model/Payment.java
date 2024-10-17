@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Getter
@@ -25,13 +25,11 @@ public class Payment extends AbstractEntity {
     @JoinColumn(name = "customerId", nullable = false)
     private Customer customer;
 
-
     @Column(name = "paymentMethod", nullable = false, length = 100)
     private String paymentMethod;
 
-
     @Override
     public String toString() {
-        return "Payment: " + paymentId + " " + customer + " "  + " " + paymentMethod + " " ;
+        return "Payment: " + paymentId + " " + customer + " " + " " + paymentMethod + " ";
     }
 }
