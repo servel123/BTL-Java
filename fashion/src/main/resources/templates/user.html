@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+
+</head>
+
+<body>
+    <h1>hello</h1>
+    <table th:object="${info}">
+        <li th:text="*{firstName}"></li>
+        <li th:text="*{lastName}"></li>
+        <li th:text="*{address}"></li>
+        <li th:text="*{phone}"></li>
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+
+</head>
+
+<body>
+    <h1>Cart</h1>
+    <div th:if="${pOU}">
+        <table th:each="item : ${pOU}">
+            <li th:text="${item.description}"></li>
+            <li th:text="${item.price}"></li>
+            <li th:text="${item.image}"></li>
+            <li th:text="${item.category}"></li>
+        </table>
+    </div>
+</body>
+
+</html>

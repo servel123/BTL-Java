@@ -4,19 +4,23 @@
  */
 package com.project.fashion.service;
 
-import com.project.fashion.dto.response.ProductDetailResponse;
 import com.project.fashion.dto.response.ResponseData;
+import com.project.fashion.model.Category;
+import com.project.fashion.model.Product;
+import java.util.*;
 
 /**
  *
  * @author Vu
  */
 public interface ProductService {
-    ResponseData<?> getProductShowHome();
+    List<Product> getProductShowHome(Category category);
+
+    List<List<Product>> getProductShowHome(List<Category> categorys);
 
     ResponseData<?> getProductByCategoryAndByPrice(Long categoryId, Long priceLow, Long priceHight);
 
     ResponseData<?> getProductByCategoryAndByPrice(Long categoryId, Long priceHight);
 
-    ProductDetailResponse getDetailProduct(Long productId);
+    Product getDetailProduct(Long productId);
 }

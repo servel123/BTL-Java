@@ -5,7 +5,7 @@
 package com.project.fashion.service;
 
 import com.project.fashion.dto.request.CreateCustomerDTO;
-import com.project.fashion.dto.request.CusRequestDTO;
+import com.project.fashion.dto.request.CusModifyInfo;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 
 /**
@@ -13,11 +13,11 @@ import com.project.fashion.dto.response.CustomerDetailResponse;
  * @author Vu
  */
 public interface CustomerService {
-    CustomerDetailResponse getInfoCustomer(long customerId);
+    CustomerDetailResponse getInfoCustomer(Long customerId);
 
-    void updateInfoCustomer(CusRequestDTO cusRequestDTO);
+    CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO);
 
-    void deleteCustomer(int customerId);
+    boolean deleteCustomer(Long customerId);
 
     Long addCustomer(CreateCustomerDTO addCustomer);
 

@@ -39,10 +39,4 @@ public class Customer extends AbstractEntity {
     @Column(name = "phoneNumber", length = 10)
     private String phoneNumber;
 
-    @Override
-    public String toString() {
-        return "Customer: " + customerId + " " + lastName + " " + firstName + " " + email + " " + password + " "
-                + address + " " + phoneNumber;
-    }
-
 }

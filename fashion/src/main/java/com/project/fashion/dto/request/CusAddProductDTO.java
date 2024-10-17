@@ -10,12 +10,17 @@ import lombok.Getter;
 public class CusAddProductDTO implements Serializable {
     @Min(1)
     @NotNull
-    private final int productId;
+    private final Long customerId;
+
+    @Min(1)
+    @NotNull
+    private final Long productId;
     @NotNull
     @Min(1)
-    private final int quantity;
+    private final Long quantity;
 
-    public CusAddProductDTO(int productId, int quantity) {
+    public CusAddProductDTO(Long productId, Long quantity, Long customerId) {
+        this.customerId = null;
         this.productId = productId;
         this.quantity = quantity;
     }

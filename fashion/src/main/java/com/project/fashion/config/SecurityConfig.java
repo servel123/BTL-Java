@@ -14,19 +14,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((csrf) -> csrf.disable()) // Nếu không muốn dùng CSRF
+                .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/user/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll() // Cho phép tất cả truy cập vào "/user/**"
-                        .anyRequest().permitAll() // Các request khác yêu cầu xác thực
-                )
-                .httpBasic(Customizer.withDefaults()); // Sử dụng phương thức mới để cấu hình HTTP Basic
+                        .requestMatchers("/home").permitAll()
+                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/js/**").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin((form) -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/home", true))
+                .logout((logout) -> logout.permitAll())
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Bean để mã hóa mật khẩu
+        return new BCryptPasswordEncoder();
     }
 }

@@ -8,17 +8,23 @@
 </head>
 
 <body>
+
     <div layout:fragment="logUI" class="displayUI">
         <div class="log_link">
             <i class="fa-regular fa-user fa-sm"></i>
-            <a href="#">Sign Up</a>
-            <span>/</span>
-            <a href="#">Sign In</a>
+            <a th:if="${username}" th:href="@{/user/{customerId}(customerId=${customerId})}" th:text="${username}"></a>
+            <div th:if="!${username}">
+                <a href="/register">SignUp</a>
+                <span>/</span>
+                <a href="/login">SignIn</a>
+
+            </div>
+
         </div>
         <span class="line"></span>
         <div class="cart_nav">
             <i class='bx bx-cart-alt bx-md'></i>
-            <a href="#">Cart</a>
+            <a th:if="${username}" th:href="@{/user/cart/{customerId}(customerId=${customerId})}">Cart</a>
         </div>
     </div>
     <main layout:fragment="main_content">
@@ -38,37 +44,63 @@
                         <i class="fa-solid fa-arrow-right" id="pop_pant_right"></i>
                     </div>
                 </div>
-                <div class="displayPart pant">
-                    <div class="pant_item">
+                <div class="displayPart pant" th:if="${jeans}">
+                    <div class="pant_item" th:each="item : ${jeans}">
                         <div class="displayImg">
-                            <img
-                                src="https://th.bing.com/th?id=OIP.01-X9ENewmoJl6YOdvf_3wHaLH&w=204&h=306&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2">
+                            <img th:src="${item.image}" alt="Product Image">
                             <div class="play-btn">
-                                <i class="fa-solid fa-cart-shopping"></i>
+                                <a class="fa-solid fa-cart-shopping"
+                                    th:href="@{/product(customerId=${customerId}, productId=${item.productId})}"></a>
                             </div>
                         </div>
-                        <h4>Item n</h4>
-                        <h5>Price</h5>
+                        <h4 th:text="${item.description}"></h4>
+                        <h5 th:text="'Price: ' + ${item.price}"></h5>
                     </div>
                 </div>
+                <div th:if="!${jeans}" th:text="errorMessage"></div>
+
             </div>
             <div class="display_main_content">
-                <div class="direction">
-                    <h2>SHOP FROM <span>TOP CATEGORIES</span></h2>
-                    <div class="btn_move">
-                        <i class="fa-solid fa-arrow-left" id="pop_cate_left"></i>
-                        <i class="fa-solid fa-arrow-right" id="pop_cate_right"></i>
+                <div class="display_main_content">
+                    <div class="direction">
+                        <h2>Hot <span>Jackets</span></h2>
+                        <div class="btn_move">
+                            <i class="fa-solid fa-arrow-left" id="pop_pant_left"></i>
+                            <i class="fa-solid fa-arrow-right" id="pop_pant_right"></i>
+                        </div>
+                    </div>
+                    <div class="displayPart pant" th:if="${jackets}">
+                        <div class="pant_item" th:each="item : ${jackets}">
+                            <div class="displayImg">
+                                <img th:src="${item.image}">
+                                <div class="play-btn">
+                                    <a class="fa-solid fa-cart-shopping"
+                                        th:href="@{/product(customerId=${customerId}, productId=${item.productId})}"></a>
+                                </div>
+                            </div>
+                            <h4 th:text="${item.description}"></h4>
+                            <h5 th:text="'Price: ' + ${item.price }"></h5>
+                        </div>
+
                     </div>
                 </div>
-                <div class="displayPart category">
-                    <div class="category_item">
-                        <img
-                            src="https://2.bp.blogspot.com/-1uF56SIX3Mc/WkjncgYNk4I/AAAAAAACDe8/pseDKY3OdBgWC2MWpq7A57chrbR7yg2oACLcBGAs/s1600/Ma%25C3%25A7%25C3%25A3.jpg" />
-                        <h4>Apple</h4>
+                <div class="display_main_content">
+                    <div class="direction">
+                        <h2>SHOP FROM <span>TOP CATEGORIES</span></h2>
+                        <div class="btn_move">
+                            <i class="fa-solid fa-arrow-left" id="pop_cate_left"></i>
+                            <i class="fa-solid fa-arrow-right" id="pop_cate_right"></i>
+                        </div>
+                    </div>
+                    <div class="displayPart category">
+                        <div class="category_item">
+                            <img
+                                src="https://2.bp.blogspot.com/-1uF56SIX3Mc/WkjncgYNk4I/AAAAAAACDe8/pseDKY3OdBgWC2MWpq7A57chrbR7yg2oACLcBGAs/s1600/Ma%25C3%25A7%25C3%25A3.jpg" />
+                            <h4>Apple</h4>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </main>
     <script layout:fragment="using_script" th:src="@{/js/home.js}"></script>
 </body>

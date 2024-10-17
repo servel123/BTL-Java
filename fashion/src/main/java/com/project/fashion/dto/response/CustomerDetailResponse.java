@@ -4,21 +4,21 @@ import lombok.*;
 
 import java.io.Serializable;
 
-import jakarta.validation.constraints.NotNull;
-
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 @Builder
 public class CustomerDetailResponse implements Serializable {
-    @NotNull
-    private long customerId;
     private String firstName;
     private String lastName;
+    private String address;
     private String phone;
-    private String email;
-    private String username;
-    private String password;
+
+    public CustomerDetailResponse(String firstName, String lastName, String address, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phone = phone;
+    }
 
 }

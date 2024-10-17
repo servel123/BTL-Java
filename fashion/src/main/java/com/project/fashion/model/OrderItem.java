@@ -29,14 +29,18 @@ public class OrderItem extends AbstractEntity {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "price", nullable = false)
     private Long price;
 
     @Override
     public String toString() {
         return "OrderItem: " + orderItemId + " " + orderLine + " " + product + " " + quantity + " " + price;
+    }
+
+    public void setQuantity() {
+        this.quantity = 1;
     }
 }

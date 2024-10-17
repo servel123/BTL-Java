@@ -4,14 +4,17 @@
  */
 package com.project.fashion.repository;
 
+import com.project.fashion.model.Category;
 import com.project.fashion.model.Product;
-import java.util.Optional;
+import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Vu
  */
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<Product> findByCategory_CategoryId(Long categoryId);
+    List<Product> findTop5ByCategory(Category category);
 }

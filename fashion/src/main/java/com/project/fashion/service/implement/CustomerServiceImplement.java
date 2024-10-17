@@ -5,7 +5,7 @@
 package com.project.fashion.service.implement;
 
 import com.project.fashion.dto.request.CreateCustomerDTO;
-import com.project.fashion.dto.request.CusRequestDTO;
+import com.project.fashion.dto.request.CusModifyInfo;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 import com.project.fashion.exception.AttributeAlreadyExistsException;
 import com.project.fashion.exception.ResourceNotFoundException;
@@ -17,9 +17,12 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -28,17 +31,35 @@ import org.springframework.util.StringUtils;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CustomerServiceImplement implements CustomerService {
+public class CustomerServiceImplement implements CustomerService, UserDetailsService {
 
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
-    private PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
 
-    private Customer getCustomerById(Long customerId) {
+    protected Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("CustomerId doesn't exits"));
     }
 
+    // customerId
+    public Customer getCustomerId(String username) {
+        return customerRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Username doesn't exits"));
+    }
+
+    // login
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Customer user = customerRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        return User.withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles()
+                .build();
+    }
+
+    // register
     @Override
     public Long addCustomer(CreateCustomerDTO addCustomer) {
         log.info("create customer");
@@ -59,51 +80,51 @@ public class CustomerServiceImplement implements CustomerService {
 
     }
 
+    // update
     @Override
-    public CustomerDetailResponse getInfoCustomer(long customerId) {
-        Customer customer = getCustomerById(customerId);
-        return new CustomerDetailResponse(
-                customer.getCustomerId(),
-                customer.getFirstName(),
-                customer.getLastName(),
-                customer.getPhoneNumber(),
-                customer.getEmail(),
-                customer.getUsername(),
-                customer.getPassword());
-    }
-
-    @Override
-    public void updateInfoCustomer(CusRequestDTO cusRequestDTO) {
-        Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
-        if (StringUtils.hasLength(cusRequestDTO.getFirstName())) {
+    public CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO) {
+        try {
+            Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
             customer.setFirstName(cusRequestDTO.getFirstName());
-        }
-        if (StringUtils.hasLength(cusRequestDTO.getLastName())) {
             customer.setLastName(cusRequestDTO.getLastName());
-        }
-        if (StringUtils.hasLength(cusRequestDTO.getAddress())) {
             customer.setAddress(cusRequestDTO.getAddress());
-        }
-        if (StringUtils.hasLength(cusRequestDTO.getPhoneNumber())) {
-            if (customerRepository.findByPhoneNumber(cusRequestDTO.getPhoneNumber()).isPresent()) {
-                throw new AttributeAlreadyExistsException("PhoneNumber already exists");
-            }
             customer.setPhoneNumber(cusRequestDTO.getPhoneNumber());
+            customerRepository.save(customer);
+            return new CustomerDetailResponse(
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getAddress(),
+                    customer.getPhoneNumber());
+        } catch (Exception e) {
+            throw e;
         }
-        if (StringUtils.hasLength(cusRequestDTO.getEmail())) {
-            if (customerRepository.findByEmail(cusRequestDTO.getPhoneNumber()).isPresent()) {
-                throw new AttributeAlreadyExistsException("Email already exists");
-            }
-            customer.setEmail(cusRequestDTO.getEmail());
-        }
-        customer.setUsername(cusRequestDTO.getUsername());
-        customer.setPassword(cusRequestDTO.getPassword());
-        log.info("Update Successfully");
+
     }
 
+    // delete customer
     @Override
-    public void deleteCustomer(int customerId) {
+    public boolean deleteCustomer(Long customerId) {
+        try {
+            customerRepository.deleteById(customerId);
+            return true;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
+    // get information customer
+    @Override
+    public CustomerDetailResponse getInfoCustomer(Long customerId) {
+        try {
+            Customer customer = getCustomerById(customerId);
+            return new CustomerDetailResponse(
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getAddress(),
+                    customer.getPhoneNumber());
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("User doesn't already exists");
+        }
     }
 
 }
