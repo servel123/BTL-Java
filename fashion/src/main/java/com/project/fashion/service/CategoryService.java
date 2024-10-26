@@ -6,7 +6,7 @@ package com.project.fashion.service;
 
 import java.util.List;
 
-import com.project.fashion.dto.request.InfoCategoryDTO;
+import com.project.fashion.dto.request.AddCategoryDTO;
 import com.project.fashion.model.Category;
 
 /**
@@ -14,14 +14,20 @@ import com.project.fashion.model.Category;
  * @author Vu
  */
 public interface CategoryService {
+    // Add
+    Category addCategory(AddCategoryDTO category);
+
+    // GET
     Category getCategory(Long categoryId);
+
+    List<Category> getCategories();
 
     List<Category> getCategory(Long[] categoryId);
 
-    InfoCategoryDTO addCategory(InfoCategoryDTO infoCategoryDTO);
+    // UPDATE
+    Category updateCategory(AddCategoryDTO categoryDTO);
 
-    InfoCategoryDTO updateCategory(InfoCategoryDTO infoCategoryDTO);
-
+    // DELETE
     void deleteCategory(Long categoryId);
 
 }

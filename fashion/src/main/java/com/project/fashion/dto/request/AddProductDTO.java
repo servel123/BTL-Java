@@ -4,10 +4,19 @@
  */
 package com.project.fashion.dto.request;
 
+import com.project.fashion.model.Category;
+import lombok.*;
+
 /**
  *
  * @author Vu
  */
-public class InfoCategoryDTO {
-    
+@Getter
+@Setter
+public class AddProductDTO {
+    private String desciption, image, sku;
+    private Category category;
+    private int stock;
+    private Long price;
+
 }

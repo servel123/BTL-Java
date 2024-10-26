@@ -4,7 +4,7 @@
  */
 package com.project.fashion.service.implement;
 
-import com.project.fashion.dto.request.InfoCategoryDTO;
+import com.project.fashion.dto.request.AddCategoryDTO;
 import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Category;
 import com.project.fashion.repository.CategoryReponsitory;
@@ -33,6 +33,11 @@ public class CategoryServiceImplement implements CategoryService {
 
     }
 
+    public List<Category> getAllCategories() {
+        List<Category> cate = categoryReponsitory.findAll();
+        return cate;
+    }
+
     @Override
     public List<Category> getCategory(Long[] categoryId) {
         List<Category> categorys = new ArrayList<>();
@@ -45,20 +50,31 @@ public class CategoryServiceImplement implements CategoryService {
     }
 
     @Override
-    public InfoCategoryDTO addCategory(InfoCategoryDTO infoCategoryDTO) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from
-                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Category> getCategories() {
+        return categoryReponsitory.findTop2ByOrderByCategoryIdAsc();
     }
 
     @Override
-    public InfoCategoryDTO updateCategory(InfoCategoryDTO infoCategoryDTO) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from
-                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Category addCategory(AddCategoryDTO category) {
+        Category cate = Category.builder()
+                .name(category.getName())
+                .build();
+        categoryReponsitory.save(cate);
+        return cate;
     }
 
+    // update
+    @Override
+    public Category updateCategory(AddCategoryDTO category) {
+        Category cate = categoryReponsitory.findById(category.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not category"));
+        cate.setName(category.getName());
+        return cate;
+    }
+
+    // delete
     @Override
     public void deleteCategory(Long categoryId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from
-                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        categoryReponsitory.deleteById(categoryId);
     }
 }

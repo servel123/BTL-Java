@@ -4,7 +4,7 @@
  */
 package com.project.fashion.service;
 
-import com.project.fashion.dto.response.ResponseData;
+import com.project.fashion.dto.request.AddProductDTO;
 import com.project.fashion.model.Category;
 import com.project.fashion.model.Product;
 import java.util.*;
@@ -14,13 +14,24 @@ import java.util.*;
  * @author Vu
  */
 public interface ProductService {
+    // Add product
+    Product addProduct(AddProductDTO product);
+
+    // GET
     List<Product> getProductShowHome(Category category);
 
-    List<List<Product>> getProductShowHome(List<Category> categorys);
+    List<List<Product>> getProductShowHome(List<Category> category);
 
-    ResponseData<?> getProductByCategoryAndByPrice(Long categoryId, Long priceLow, Long priceHight);
-
-    ResponseData<?> getProductByCategoryAndByPrice(Long categoryId, Long priceHight);
+    List<Product> getProductByCategoryAndByPrice(Long categoryId, Long priceLow, Long priceHight);
 
     Product getDetailProduct(Long productId);
+
+    List<Product> getAllProductByCategory(Category category);
+
+    // delete
+    void deleteProduct(Long productId);
+
+    // update
+    Product updateProduct(Long productId, AddProductDTO pdt);
+
 }

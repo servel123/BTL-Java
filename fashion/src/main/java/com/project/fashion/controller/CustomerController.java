@@ -1,6 +1,9 @@
 package com.project.fashion.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,68 +12,87 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
-// import com.project.fashion.dto.request.CusAddProductDTO;
 import com.project.fashion.dto.request.CusModifyInfo;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 import com.project.fashion.dto.response.ResponseData;
-//import com.project.fashion.exception.ResourceNotFoundException;
+import com.project.fashion.exception.ResourceNotFoundException;
+import com.project.fashion.model.OrderLine;
 import com.project.fashion.service.implement.CustomerServiceImplement;
+import com.project.fashion.service.implement.OrderLineServiceImplement;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-@Slf4j
 public class CustomerController {
 
     @Autowired
     private CustomerServiceImplement customerServiceImplement;
+    @Autowired
+    private OrderLineServiceImplement orderLineServiceImplement;
+
+    private CustomerDetailResponse authen() {
+        Authentication au = SecurityContextHolder.getContext().getAuthentication();
+        Object userDetail = au.getPrincipal();
+
+        if (userDetail instanceof UserDetails) {
+            String username = ((UserDetails) userDetail).getUsername();
+            CustomerDetailResponse cus = customerServiceImplement.getInfoCustomer(username);
+            return cus;
+        } else {
+            throw new ResourceNotFoundException("Error");
+        }
+
+    }
 
     // get information of customer
-    @GetMapping("/{customerId}")
-    public String infoCustomer(@Min(1) @PathVariable Long customerId, Model model) {
+    @GetMapping
+    public String infoCustomer(Model model) {
         try {
-            CustomerDetailResponse data = customerServiceImplement.getInfoCustomer(customerId);
-            log.info("this is Object:" + data);
+            CustomerDetailResponse data = authen();
             model.addAttribute("info", data);
-            return "user";
         } catch (Exception e) {
             model.addAttribute("errorGetInfo", e.getMessage());
             return "redirect:/error";
         }
+        try {
+            CustomerDetailResponse cus = authen();
+            List<OrderLine> orderLines = orderLineServiceImplement.getOrderLinesOfCustomer(cus.getCustomerId());
+            model.addAttribute("bills", orderLines);
+        } catch (Exception e) {
+            model.addAttribute("errorBill", e.getMessage());
+        }
+        return "user";
     }
 
     // update information of customer
-    @PatchMapping("/{customerId}")
+    @PatchMapping
     public ResponseData<CustomerDetailResponse> updateCustomer(
-            @Valid @ModelAttribute("customer") CusModifyInfo cusRequestDTO, @PathVariable Long customerId) {
+            @Valid @ModelAttribute("customer") CusModifyInfo cusRequestDTO) {
         try {
-            cusRequestDTO.setCustomerId(customerId);
+            CustomerDetailResponse cus = authen();
+            cusRequestDTO.setCustomerId(cus.getCustomerId());
             CustomerDetailResponse data = customerServiceImplement.updateCustomer(cusRequestDTO);
-            log.info("this is Object:" + data);
             return new ResponseData<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), data);
         } catch (Exception e) {
             return new ResponseData<>(HttpStatus.NOT_FOUND.value(), e.getMessage());
         }
     }
 
-    @DeleteMapping("/{customerId}")
+    // delete
+    @DeleteMapping
     public String deleteCustomer(@PathVariable Long customerId, Model model) {
-        // return new ResponseData<>(HttpStatus.NO_CONTENT.value(),
-        // HttpStatus.NO_CONTENT.getReasonPhrase());
         try {
-            customerServiceImplement.deleteCustomer(customerId);
+            CustomerDetailResponse cus = authen();
+            customerServiceImplement.deleteCustomer(cus.getCustomerId());
             return "redirect:/login";
         } catch (Exception e) {
             model.addAttribute("errorDelete", e.getMessage());
             return "redirect:/home";
         }
     }
-
 }

@@ -1,14 +1,13 @@
 package com.project.fashion.service.implement;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Cart;
-import com.project.fashion.model.Product;
+
 import com.project.fashion.repository.CartReponsitory;
 import com.project.fashion.service.CartService;
 
@@ -41,11 +40,18 @@ public class CartServiceImplement implements CartService {
 
     // get list product by customerId in cart
     @Override
-    public List<Product> getCartByCustomerId(Long customerId) {
+    public List<Cart> getCartByCustomerId(Long customerId) {
         List<Cart> carts = cartReponsitory.findByCustomer_CustomerId(customerId);
-        return carts.stream()
-                .map(Cart::getProduct) //table Product
-                .collect(Collectors.toList()); //list
+        return carts;
+    }
+
+    @Override
+    public List<Cart> getCartByListId(List<Long> ids) {
+        List<Cart> carts = new ArrayList<>();
+        for (Long id : ids) {
+            carts.add(getCartById(id));
+        }
+        return carts;
     }
 
     @Override

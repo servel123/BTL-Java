@@ -1,5 +1,6 @@
 package com.project.fashion.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,8 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.OneToMany;
 import lombok.*;
+
+import java.util.*;
 
 @Getter
 @Setter
@@ -27,6 +30,9 @@ public class Payment extends AbstractEntity {
 
     @Column(name = "paymentMethod", nullable = false, length = 100)
     private String paymentMethod;
+
+    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
+    private List<OrderLine> orderLines;
 
     @Override
     public String toString() {

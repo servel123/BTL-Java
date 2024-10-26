@@ -18,15 +18,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/home").permitAll()
                         .requestMatchers("/register").permitAll()
-                        .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
                         .defaultSuccessUrl("/home", true))
-                .logout((logout) -> logout.permitAll())
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();

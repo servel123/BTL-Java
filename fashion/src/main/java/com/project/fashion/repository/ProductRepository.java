@@ -17,4 +17,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findTop5ByCategory(Category category);
+
+    List<Product> findAllByCategory(Category category);
+
+    List<Product> findByPriceBetweenAndCategory_CategoryId(Long category, Long low, Long High);
 }

@@ -16,6 +16,8 @@ import com.project.fashion.model.Customer;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,25 +39,29 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
     @Autowired
     private final CustomerRepository customerRepository;
 
-    protected Customer getCustomerById(Long customerId) {
+    public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("CustomerId doesn't exits"));
     }
 
-    // customerId
-    public Customer getCustomerId(String username) {
+    public Customer getCustomerByUsername(String username) {
         return customerRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Username doesn't exits"));
+                .orElseThrow(() -> new ResourceNotFoundException("CustomerId doesn't exits"));
+    }
+
+    public List<Customer> getAllCustomer() {
+        return customerRepository.findAll();
     }
 
     // login
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer user = customerRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return User.withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles()
+                .roles(user.getRole())
                 .build();
     }
 
@@ -85,18 +91,27 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
     public CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO) {
         try {
             Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
+
+            if (customer == null) {
+                throw new ResourceNotFoundException("Customer not found with ID: " + cusRequestDTO.getCustomerId());
+            }
+
             customer.setFirstName(cusRequestDTO.getFirstName());
             customer.setLastName(cusRequestDTO.getLastName());
             customer.setAddress(cusRequestDTO.getAddress());
             customer.setPhoneNumber(cusRequestDTO.getPhoneNumber());
+
             customerRepository.save(customer);
+
             return new CustomerDetailResponse(
                     customer.getFirstName(),
                     customer.getLastName(),
                     customer.getAddress(),
                     customer.getPhoneNumber());
-        } catch (Exception e) {
+        } catch (ResourceNotFoundException e) {
             throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating customer");
         }
 
     }
@@ -114,10 +129,13 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
 
     // get information customer
     @Override
-    public CustomerDetailResponse getInfoCustomer(Long customerId) {
+    public CustomerDetailResponse getInfoCustomer(String username) {
         try {
-            Customer customer = getCustomerById(customerId);
+            Customer customer = getCustomerByUsername(username);
             return new CustomerDetailResponse(
+                    customer.getCustomerId(),
+                    customer.getEmail(),
+                    customer.getUsername(),
                     customer.getFirstName(),
                     customer.getLastName(),
                     customer.getAddress(),
@@ -127,4 +145,42 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
         }
     }
 
+    @Override
+    public Customer updateRoleCustomer(Long customerId, String role) {
+        try {
+            Customer customer = getCustomerById(customerId);
+
+            if (customer == null) {
+                throw new ResourceNotFoundException("Customer not found with id: " + customerId);
+            }
+            role = role.toUpperCase();
+            customer.setRole(role);
+            customerRepository.save(customer);
+
+            return customer;
+        } catch (ResourceNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating customer");
+        }
+
+    }
+
+    @Override
+    public Customer hasEmail(String email) {
+        return customerRepository.findByEmail(email)
+                .orElseThrow(null);
+    }
+
+    @Override
+    public Customer hasUserName(String username) {
+        return customerRepository.findByEmail(username)
+                .orElseThrow(null);
+    }
+
+    @Override
+    public Customer hasPhoneNumber(String phoneNumber) {
+        return customerRepository.findByEmail(phoneNumber)
+                .orElseThrow(null);
+    }
 }

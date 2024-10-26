@@ -1,5 +1,6 @@
 package com.project.fashion.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.*;
+import java.util.*;
 
 @Getter
 @Setter
@@ -38,6 +41,12 @@ public class Product extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     @Override
     public String toString() {

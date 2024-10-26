@@ -1,10 +1,12 @@
 package com.project.fashion.service.implement;
 
+import com.project.fashion.dto.request.AddProductDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.project.fashion.dto.response.ResponseData;
+import com.project.fashion.exception.ErrorDataException;
 import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Category;
 import com.project.fashion.model.Product;
@@ -24,6 +26,10 @@ public class ProductServiceImplement implements ProductService {
     protected Product getProductById(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product Not Exists"));
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     // get list product by list category
@@ -51,21 +57,85 @@ public class ProductServiceImplement implements ProductService {
         return products;
     }
 
+    // get product by price
     @Override
-    public ResponseData<?> getProductByCategoryAndByPrice(Long categoryId, Long priceLow, Long priceHight) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductByCategoryAndByPrice'");
+    public List<Product> getProductByCategoryAndByPrice(Long categoryId, Long priceLow, Long priceHight) {
+        List<Product> products = productRepository.findByPriceBetweenAndCategory_CategoryId(categoryId, priceLow,
+                priceHight);
+        if (products.size() == 0) {
+            String message = "Not product have price between " + priceLow + " and " + priceHight;
+            throw new ResourceNotFoundException(message);
+        }
+        return products;
+
     }
 
-    @Override
-    public ResponseData<?> getProductByCategoryAndByPrice(Long categoryId, Long priceHight) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductByCategoryAndByPrice'");
-    }
-
+    // detail product
     @Override
     public Product getDetailProduct(Long productId) {
         return getProductById(productId);
     }
 
+    // get all product by category
+    @Override
+    public List<Product> getAllProductByCategory(Category category) {
+        List<Product> products = productRepository.findAllByCategory(category);
+        if (products.size() > 0)
+            return products;
+        else {
+            String message = "Not product by " + category.getName();
+            throw new ResourceNotFoundException(message);
+        }
+    }
+
+    // add product
+    @Override
+    public Product addProduct(AddProductDTO product) {
+        Product pdt = Product.builder()
+                .category(product.getCategory())
+                .description(product.getDesciption())
+                .image(product.getImage())
+                .sku(product.getSku())
+                .stock(product.getStock())
+                .build();
+        productRepository.save(pdt);
+        return pdt;
+    }
+
+    // delete
+    @Override
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
+    }
+
+    // update
+    @Override
+    public Product updateProduct(Long productId, AddProductDTO product) {
+        Product pdt = getProductById(productId);
+        if (pdt == null) {
+            throw new ResourceNotFoundException("Customer not found with ID: " + productId);
+        }
+        try {
+            if (product.getCategory() != null) {
+                pdt.setCategory(product.getCategory());
+            }
+            if (product.getImage() != null) {
+                pdt.setImage(product.getImage());
+            }
+            if (product.getPrice() != null) {
+                pdt.setPrice(product.getPrice());
+            }
+            if (product.getStock() >= 0) {
+                pdt.setStock(product.getStock());
+            } else {
+                throw new ErrorDataException("Data not valid");
+            }
+            productRepository.save(pdt);
+            return pdt;
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+    }
 }

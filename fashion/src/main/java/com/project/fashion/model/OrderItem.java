@@ -31,12 +31,11 @@ public class OrderItem extends AbstractEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
-
     @Override
     public String toString() {
         return "OrderItem: " + orderItemId + " " + orderLine + " " + product + " " + quantity + " ";
     }
-    
+
     public OrderItem() {
         this.quantity = 1;
     }

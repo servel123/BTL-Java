@@ -4,23 +4,23 @@ import java.io.Serializable;
 
 import com.project.fashion.util.PhoneNumber;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @RequiredArgsConstructor // auto create constructor full parameter
 @Getter
+@Setter
 public class CusModifyInfo implements Serializable {
 
     private Long customerId;
 
-    private final String firstName;
+    private String firstName;
 
-    private final String lastName;
+    private String lastName;
 
-    private final String address;
+    private String address;
 
     @PhoneNumber
-    private final String phoneNumber;
+    private String phoneNumber;
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;

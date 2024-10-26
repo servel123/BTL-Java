@@ -4,16 +4,30 @@
  */
 package com.project.fashion.service;
 
-import com.project.fashion.model.OrderItem;
+import java.util.*;
+
+import com.project.fashion.dto.request.AddOrderLineDTO;
 import com.project.fashion.model.OrderLine;
-import com.project.fashion.model.Payment;
-import java.util.List;
 
 /**
  *
  * @author Vu
  */
 public interface OrderLineService {
-    List<OrderItem> getOrderItemByOrderLine(Long orderLineId);
-    OrderLine addOrderLine(Payment paymentId);
+    // create
+    OrderLine addOrderLine(AddOrderLineDTO payment);
+
+    // read
+
+    OrderLine getOrderLineOfCustomer(Long orderLineId);
+
+    List<OrderLine> getOrderLinesOfCustomer(Long customerId);
+
+    List<OrderLine> getOrderLinesOfEveryOne();
+
+    // update
+    OrderLine updateOrderLineOfCustomer(AddOrderLineDTO payment);
+
+    // delete
+    void deleteOrderLineOfCustomer(Long orderLineId);
 }

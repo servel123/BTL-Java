@@ -5,11 +5,8 @@
 package com.project.fashion.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.project.fashion.dto.request.CreateCustomerDTO;
 
 /**
  *
@@ -19,8 +16,7 @@ import com.project.fashion.dto.request.CreateCustomerDTO;
 @RequestMapping("/login")
 public class LoginController {
     @GetMapping
-    public String renderFormLogin(Model model) {
-        model.addAttribute("customer", new CreateCustomerDTO());
+    public String renderFormLogin() {
         return "login";
     }
 }

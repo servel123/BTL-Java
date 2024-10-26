@@ -1,6 +1,9 @@
 package com.project.fashion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.project.fashion.dto.response.CustomerDetailResponse;
+import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Cart;
 import com.project.fashion.model.Product;
 import com.project.fashion.service.implement.CartServiceImplement;
+import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
 @Controller
@@ -23,11 +29,27 @@ public class ProductController {
     @Autowired
     private CartServiceImplement cartServiceImplement;
 
+    @Autowired
+    CustomerServiceImplement customerServiceImplement;
+
+    private CustomerDetailResponse authen() {
+        Authentication au = SecurityContextHolder.getContext().getAuthentication();
+        Object userDetail = au.getPrincipal();
+
+        if (userDetail instanceof UserDetails) {
+            String username = ((UserDetails) userDetail).getUsername();
+            CustomerDetailResponse cus = customerServiceImplement.getInfoCustomer(username);
+            return cus;
+        } else {
+            throw new ResourceNotFoundException("Error");
+        }
+
+    }
+
     // detail product
     @GetMapping
-    public String detailProduct(@RequestParam("customerId") Long customerId,
-            @RequestParam("productId") Long productId,
-            Model model) {
+    public String detailProduct(@RequestParam("productId") Long productId,
+                                Model model) {
         try {
             Product product = productServiceImplement.getDetailProduct(productId);
             model.addAttribute("product", product);
@@ -39,12 +61,13 @@ public class ProductController {
 
     // add product to cart
     @PostMapping
-    public String addProduct(@RequestParam("customerId") Long customerId,
+    public String addProduct(
             @RequestParam("productId") Long productId,
             @RequestParam("productId") Integer quantity,
             Model model) {
         try {
-            Cart cart = cartServiceImplement.addProductToCart(customerId, productId, quantity);
+            CustomerDetailResponse cus = authen();
+            Cart cart = cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
             model.addAttribute("message", "Add Product Successfully");
             model.addAttribute("product", cart);
         } catch (Exception e) {

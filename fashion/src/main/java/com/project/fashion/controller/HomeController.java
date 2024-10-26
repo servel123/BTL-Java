@@ -2,7 +2,6 @@ package com.project.fashion.controller;
 
 // import com.project.fashion.config.EnvConfig;
 import com.project.fashion.model.Category;
-import com.project.fashion.model.Product;
 import com.project.fashion.service.implement.CategoryServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 
 import com.project.fashion.service.implement.CustomerServiceImplement;
-import com.project.fashion.service.implement.ProductServiceImplement;
 import java.util.List;
 
 //import com.project.fashion.model.Product;
@@ -27,15 +25,8 @@ public class HomeController {
     private CustomerServiceImplement customerServiceImplement;
 
     @Autowired
-    private ProductServiceImplement productServiceImplement;
-
-    @Autowired
     private CategoryServiceImplement categoryServiceImplement;
 
-    // @Autowired
-    // private EnvConfig envConfig;
-
-    @SuppressWarnings("null")
     @GetMapping
     public String home(Model model) {
         try {
@@ -43,45 +34,24 @@ public class HomeController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication != null && authentication.isAuthenticated() ? authentication.getName()
                     : null;
-            if (username.equals("anonymousUser")) {
+            if (username != null && username.equals("anonymousUser")) {
                 username = null;
             } else {
-                Long customerId = customerServiceImplement.getCustomerId(username).getCustomerId();
+                Long customerId = customerServiceImplement.getCustomerByUsername(username).getCustomerId();
                 model.addAttribute("customerId", customerId);
                 model.addAttribute("username", username);
 
             }
 
         } catch (Exception e) {
-
+            return "redirect:/login";
         }
         try {
-            Category categoryJean = categoryServiceImplement.getCategory(Long.valueOf("1"));
-            Category categoryJacket = categoryServiceImplement.getCategory(Long.valueOf("3"));
-            List<Product> productsJean = productServiceImplement.getProductShowHome(categoryJean);
-            List<Product> productsJacket = productServiceImplement.getProductShowHome(categoryJacket);
-            model.addAttribute("jeans", productsJean);
-            model.addAttribute("jackets", productsJacket);
-            // String listCategoryId = envConfig.getListCategory();
-            // String[] categoryString = listCategoryId.split(",");
-            // Integer cate = Integer.parseInt(envConfig.getShowQuantity());
-            // Long[] categoryIds = new Long[cate];
-            // int i = 0;
-            // for (String word : categoryString) {
-            // categoryIds[i] = Long.parseLong(word);
-            // i++;
-            // }
-            // List<Category> categories =
-            // categoryServiceImplement.getCategory(categoryIds);
-            // List<List<Product>> products =
-            // productServiceImplement.getProductShowHome(categories);
-            // model.addAttribute("objPrd", products);
-
+            List<Category> categories = categoryServiceImplement.getCategories();
+            model.addAttribute("categories", categories);
         } catch (Exception e) {
-
             model.addAttribute("errorMessage", "Không thể tải sản phẩm. Vui lòng thử lại sau.");
         }
-
         return "home";
     }
 }

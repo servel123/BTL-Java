@@ -7,13 +7,15 @@ package com.project.fashion.service;
 import com.project.fashion.dto.request.CreateCustomerDTO;
 import com.project.fashion.dto.request.CusModifyInfo;
 import com.project.fashion.dto.response.CustomerDetailResponse;
+import com.project.fashion.model.Customer;
 
 /**
  *
  * @author Vu
  */
 public interface CustomerService {
-    CustomerDetailResponse getInfoCustomer(Long customerId);
+
+    CustomerDetailResponse getInfoCustomer(String username);
 
     CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO);
 
@@ -21,4 +23,11 @@ public interface CustomerService {
 
     Long addCustomer(CreateCustomerDTO addCustomer);
 
+    Customer updateRoleCustomer(Long customerId, String role);
+
+    Customer hasEmail(String email);
+
+    Customer hasUserName(String username);
+
+    Customer hasPhoneNumber(String phoneNumber);
 }
