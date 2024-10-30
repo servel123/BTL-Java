@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Your cart</title>
+    <link rel="stylesheet" th:href="@{/css/cart.css}"/>
+</head>
+
+<body>
+    <main layout:fragment="main_content">
+        <div id="cart-header">
+            <div class="content">
+              <h1>Your cart</h1>
+            </div>
+        </div>
+        <div class="content" th:if="${pOU}">
+            <section class="your-cart" th:each="item : ${pOU}"> 
+                <article class="product">
+                    <div class="product-header">
+                        <a class="remove">
+                          <img th:src="@{${item.getProduct().image}}" alt="Product Item">
+                          <span><h3>Remove product</h3></span>
+                        </a>
+                    </div>
+                    <div class="product-content">
+                        <h1 th:text="${item.getProduct().name}"></h1>
+                        <p th:text="${item.getProduct().description}"></p>
+                    </div>
+                    <div class="product-footer">
+                        <span class="qt-minus">-</span>
+                        <span class="qt" th:text="${item.quantity}"></span>
+                        <span class="qt-plus">+</span>
+                        <h2 class="total-price" th:text="${item.getProduct().price * item.quantity}"></h2>
+                        <h2 class="price" th:text="${item.getProduct().price}"></h2>
+                    </div>
+                </article>
+            </section>
+        </div>
+        <div id="cart-footer">
+            <div class="content clearfix">
+                <h1 class="total">Total: <span></span></h1>
+                <a class="btn">Checkout</a>
+            </div>
+        </div>
+    </main>
+    <script layout:fragment="using_script" th:src="@{/js/cart.js}"></script>
+</body>
+
+</html>

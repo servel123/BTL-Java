@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Product Detail</title>
+    <link rel="stylesheet" th:href="@{/css/product.css}"/>
+</head>
+
+<body>
+    <main layout:fragment="main_content">
+        <div class="content">
+            <div th:if="${successMessage}" class="note-text" style="background-color: #C8E6C9;">
+                <h1 th:text="${successMessage}" style="color: green;"></h1>
+            </div>
+            <div th:if="${errorMessage}" class="note-text" style="background-color: #FF7276;">
+                <h1 th:text="${errorMessage}" style="color: red;"></h1>
+            </div>
+            <div class="display-detail">
+                <div class="card-details">
+                    <img th:src="@{${product.image}}" alt="Product Image">
+                    <div class="product-info">
+                        <div class="details">
+                            <h1 th:text="${product.name}"></h1>
+                            <p class="description" th:text="${product.description}"></p>
+                            <div th:if="${product.stock > 0}" style="color:green;">In stock: <span th:text="${product.stock}"></span></div>
+                            <div th:if="${product.stock == 0}" style="color:red;">Out of stock</div>
+                            <div class="price-and-quantity">
+                                <h4 th:text="${product.price}" id="product_price"></h4>
+                                <form th:action="@{/product}" method ="post" class="product-quantity">
+                                    <input type="hidden" th:value="${product.productId}" name="productId">
+                                    <div class="choosing-field">
+                                        <label for="quantity">Quantity:</label>
+                                        <input type="number" id="quantity" min="1" th:value="1" name="quantity">
+                                    </div>
+                                    <div class="next-action">
+                                        <button type="submit" name="action" value="showBill"><i class="fa fa-shopping-bag"></i>Buy Now</span>
+                                        <button type="submit" name="action" value="addToCart"><i class="fa fa-shopping-cart"></i>Add TO Cart</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                
+            <div class="display_main_content">
+                <div class="direction">
+                    <h2>Related <span>Products</span></h2>
+                    <div class="btn_move">
+                        <i class="fa-solid fa-arrow-left" id="pop_relatedP_left"></i>
+                        <i class="fa-solid fa-arrow-right" id="pop_relatedP_right"></i>
+                    </div>
+                </div>
+                <div class="displayPart" th:if="${relatedProducts}">
+                    <a class="item" th:each="relatedProduct : ${relatedProducts}" th:href="@{/product(productId=${relatedProduct.productId})}" th:if="${relatedProduct.productId != product.productId}">
+                        <div class="displayImg">
+                            <img th:src="@{${relatedProduct.image}}" alt="Product Image">
+                        </div>
+                        <h4 th:text="${relatedProduct.name}"></h4>
+                        <h5 th:text="${relatedProduct.price}" class="related_product_price"></h5>
+                        <div class="play-btn">
+                            <!--Cần sửa sau khi thêm chức năng-->
+                            <span>Add to cart</span>
+                        </div>
+                    </a>
+                </div>
+                <div th:if="!${relatedProducts}" th:text="errorMessage"></div>
+            </div>
+        </div>
+    </main>
+    <script layout:fragment="using_script" th:src="@{/js/product.js}"></script>
+</body>
+</html>

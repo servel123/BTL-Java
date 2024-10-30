@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+a {
+    text-decoration: none;
+    color: #fff;
+}
+body {
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,142,204,1) 0%, rgba(0,212,255,1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+body::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+}
+.form {
+    width: 500px;
+    max-height: 100vh;
+}
+
+.form .register-form {
+    background-color: #fff;
+    box-shadow: 5px 20px 50px #C3F7F9;
+    border-radius: 10px;
+    padding-bottom: 35px;
+}
+.form .register-form .head-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.form .register-form .head-form label {
+    font-size: 2.3em;
+    margin: 35px 0 35px 0;
+    font-weight: bold;
+    color: #008ECC;
+}
+.form .register-form .head-form h5 {
+    color: red;
+}
+.form .register-form form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.form .register-form form input{
+	width: 60%;
+	height: 40px;
+	background: #e0dede;
+	margin: 20px auto;
+	padding: 12px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+.form .register-form form button{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+        background-color: #008ECC;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 30px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+}
+.form .register-form form button:hover {
+    box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);
+}
+.form .register-form .have_account {
+    text-align: center;
+    margin: 10px 0;
+}
+.form .register-form .have_account p a{
+    color: #008ECC;
+    margin-left: 5px;
+}
+.form .register-form .have_account p a:hover {
+    text-decoration: underline;
+}

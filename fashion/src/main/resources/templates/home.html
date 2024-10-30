@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+</head>
+
+<body>
+    <main layout:fragment="main_content">
+        <div class="content">
+            <div class="hero_part">
+                <img src="" id="hero_img">
+                <div class="hero_arrows">
+                    <button id="hero_prev"><i class="fa-solid fa-angle-left fa-2xl"></i></button>
+                    <button id="hero_next"><i class="fa-solid fa-angle-right fa-2xl"></i></button>
+                </div>
+            </div>
+            <div class="display_main_content" th:each="category : ${categories}">
+                <div class="direction" >
+                    <h2>Hot <span th:text="${category.getName()}"></span></h2>
+                    <div class="btn_move">
+                        <i class="fa-solid fa-arrow-left" id="pop_pant_left"></i>
+                        <i class="fa-solid fa-arrow-right" id="pop_pant_right"></i>
+                    </div>
+                </div>
+                <div class="displayPart">
+                    <a class="item" th:each="product : ${category.getProducts()}" th:href="@{/product(productId=${product.productId})}">
+                        <div class="displayImg">
+                            <img th:src="@{${product.image}}" alt="Product Image">
+                        </div>
+                        <h4 th:text="${product.name}"></h4>
+                        <h5 th:text="${product.price}" class="price_of_product"></h5>
+                        <div class="play-btn">
+                            <!--Cần sửa sau khi thêm chức năng-->
+                            <span>Add to cart</span>
+                        </div>
+                    </a>
+                </div>
+                <div th:if="!${category}" th:text="errorMessage"></div>
+            </div>
+        </div>
+    </main>
+    <script layout:fragment="using_script" th:src="@{/js/home.js}"></script>
+</body>
+
+</html>
