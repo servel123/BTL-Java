@@ -47,7 +47,7 @@ public class CartController {
         List<Cart> carts = cartServiceImplement.getCartByListId(bill.getCarts());
         Long total = Long.valueOf(0);
         for (Cart cart : carts) {
-            total += cart.getQuantity() * cart.getProduct().getPrice();
+            total += cart.getTotalPrice();
         }
         return total;
     }

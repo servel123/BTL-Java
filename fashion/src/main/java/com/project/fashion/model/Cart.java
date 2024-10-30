@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.*;
 
@@ -35,5 +36,12 @@ public class Cart extends AbstractEntity {
     @Override
     public String toString() {
         return "Cart: " + cartId + " " + product + " " + quantity;
+    }
+
+    @Transient
+    private Long totalPrice;
+
+    public void setTotalPrice() {
+        this.totalPrice = product.getPrice() * quantity;
     }
 }

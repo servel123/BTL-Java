@@ -33,6 +33,7 @@ public class CartServiceImplement implements CartService {
         Cart cart = cartReponsitory.findByProduct_ProductIdAndCustomer_CustomerId(productId, customerId);
         if (cart != null) {
             cart.setQuantity(quantity);
+            cart.setTotalPrice();
             cartReponsitory.save(cart);
             return cart;
         } else {
@@ -41,6 +42,7 @@ public class CartServiceImplement implements CartService {
                     .product(productServiceImplement.getProductById(productId))
                     .quantity(quantity)
                     .build();
+            newcart.setTotalPrice();
             cartReponsitory.save(newcart);
             return newcart;
         }
