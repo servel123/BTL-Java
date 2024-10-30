@@ -19,7 +19,7 @@ public class ProductDetailResponse implements Serializable {
     @Min(0)
     @NotNull
     private Long price;
-    private String sku;
+    private String name;
     @NotNull
     private int stock;
     @NotBlank

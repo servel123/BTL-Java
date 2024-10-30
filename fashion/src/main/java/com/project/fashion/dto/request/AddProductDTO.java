@@ -14,7 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 public class AddProductDTO {
-    private String desciption, image, sku;
+    private String desciption, image, name;
     private Category category;
     private int stock;
     private Long price;

@@ -1,9 +1,6 @@
 package com.project.fashion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +16,6 @@ import java.util.*;
 
 import com.project.fashion.dto.request.AddOrderLineDTO;
 import com.project.fashion.dto.request.ListCartCreateBillDTO;
-import com.project.fashion.dto.response.CustomerDetailResponse;
-import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Cart;
 import com.project.fashion.model.Customer;
 import com.project.fashion.model.OrderItem;
@@ -45,19 +40,8 @@ public class CartController {
     @Autowired
     private OrderItemServiceImplement orderItemServiceImplement;
 
-    private CustomerDetailResponse authen() {
-        Authentication au = SecurityContextHolder.getContext().getAuthentication();
-        Object userDetail = au.getPrincipal();
-
-        if (userDetail instanceof UserDetails) {
-            String username = ((UserDetails) userDetail).getUsername();
-            CustomerDetailResponse cus = customerServiceImplement.getInfoCustomer(username);
-            return cus;
-        } else {
-            throw new ResourceNotFoundException("Error");
-        }
-
-    }
+    @Autowired
+    private Authen authen;
 
     private Long calculateTotal(ListCartCreateBillDTO bill) {
         List<Cart> carts = cartServiceImplement.getCartByListId(bill.getCarts());
@@ -71,7 +55,7 @@ public class CartController {
     @GetMapping
     public String renderShowCart(Model model) {
         try {
-            List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen().getCustomerId());
+            List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
@@ -89,7 +73,7 @@ public class CartController {
             return "redirect:/user/cart";
         }
         try {
-            Customer customer = customerServiceImplement.getCustomerByUsername(authen().getUsername());
+            Customer customer = customerServiceImplement.getCustomerByUsername(authen.authen().getUsername());
             // show info customer like phone, address, fullname,... and options payment list
             // to customer choose
             model.addAttribute("customer", customer);
@@ -117,6 +101,7 @@ public class CartController {
         }
         try {
             List<Cart> carts = cartServiceImplement.getCartByListId(bills.getCarts());
+            payment.setStatus("NOT_YET_PAID");
             OrderLine orderLine = orderLineServiceImplement.addOrderLine(payment);
             List<OrderItem> orderItems = orderItemServiceImplement.addOrderItemByOrderLine(orderLine.getOrderLineId(),
                     carts);

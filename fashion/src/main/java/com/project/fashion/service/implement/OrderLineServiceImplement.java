@@ -40,6 +40,7 @@ public class OrderLineServiceImplement implements OrderLineService {
         Payment pay = paymentServiceImplement.getPaymentById(payment.getPaymentId());
         OrderLine orderLine = OrderLine.builder()
                 .payment(pay)
+                .status(payment.getStatus())
                 .build();
         orderLineReponsitory.save(orderLine);
         return orderLine;

@@ -30,12 +30,20 @@ public class CartServiceImplement implements CartService {
     // add product to cart
     @Override
     public Cart addProductToCart(Long customerId, Long productId, Integer quantity) {
-        Cart cart = Cart.builder()
-                .customer(customerServiceImplement.getCustomerById(customerId))
-                .product(productServiceImplement.getProductById(productId))
-                .quantity(quantity)
-                .build();
-        return cart;
+        Cart cart = cartReponsitory.findByProduct_ProductIdAndCustomer_CustomerId(productId, customerId);
+        if (cart != null) {
+            cart.setQuantity(quantity);
+            cartReponsitory.save(cart);
+            return cart;
+        } else {
+            Cart newcart = Cart.builder()
+                    .customer(customerServiceImplement.getCustomerById(customerId))
+                    .product(productServiceImplement.getProductById(productId))
+                    .quantity(quantity)
+                    .build();
+            cartReponsitory.save(newcart);
+            return newcart;
+        }
     }
 
     // get list product by customerId in cart
@@ -61,7 +69,10 @@ public class CartServiceImplement implements CartService {
 
     @Override
     public Cart updateProductQuantity(Long cartId, Integer quantity) {
-        return getCartById(cartId);
+        Cart cart = getCartById(cartId);
+        cart.setQuantity(quantity);
+        cartReponsitory.save(cart);
+        return cart;
     }
 
 }

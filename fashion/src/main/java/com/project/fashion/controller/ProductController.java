@@ -1,9 +1,6 @@
 package com.project.fashion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.fashion.dto.response.CustomerDetailResponse;
-import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Cart;
 import com.project.fashion.model.Product;
 import com.project.fashion.service.implement.CartServiceImplement;
@@ -32,24 +28,13 @@ public class ProductController {
     @Autowired
     CustomerServiceImplement customerServiceImplement;
 
-    private CustomerDetailResponse authen() {
-        Authentication au = SecurityContextHolder.getContext().getAuthentication();
-        Object userDetail = au.getPrincipal();
-
-        if (userDetail instanceof UserDetails) {
-            String username = ((UserDetails) userDetail).getUsername();
-            CustomerDetailResponse cus = customerServiceImplement.getInfoCustomer(username);
-            return cus;
-        } else {
-            throw new ResourceNotFoundException("Error");
-        }
-
-    }
+    @Autowired
+    private Authen authen;
 
     // detail product
     @GetMapping
     public String detailProduct(@RequestParam("productId") Long productId,
-                                Model model) {
+            Model model) {
         try {
             Product product = productServiceImplement.getDetailProduct(productId);
             model.addAttribute("product", product);
@@ -63,10 +48,10 @@ public class ProductController {
     @PostMapping
     public String addProduct(
             @RequestParam("productId") Long productId,
-            @RequestParam("productId") Integer quantity,
+            @RequestParam("quantity") Integer quantity,
             Model model) {
         try {
-            CustomerDetailResponse cus = authen();
+            CustomerDetailResponse cus = authen.authen();
             Cart cart = cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
             model.addAttribute("message", "Add Product Successfully");
             model.addAttribute("product", cart);

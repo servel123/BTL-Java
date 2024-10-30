@@ -95,7 +95,7 @@ public class ProductServiceImplement implements ProductService {
                 .category(product.getCategory())
                 .description(product.getDesciption())
                 .image(product.getImage())
-                .sku(product.getSku())
+                .name(product.getName())
                 .stock(product.getStock())
                 .build();
         productRepository.save(pdt);

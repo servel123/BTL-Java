@@ -29,7 +29,9 @@ public class DashboardService {
         List<OrderItem> items = orderItemServiceImplement.getAllOrderItem();
         Long money = Long.valueOf(0);
         for (OrderItem item : items) {
-            money += item.getQuantity() * item.getProduct().getPrice();
+            if (item.getOrderLine().getStatus() != "NOT_YET_PAID") {
+                money += item.getQuantity() * item.getProduct().getPrice();
+            }
         }
         return money;
     }
@@ -66,7 +68,11 @@ public class DashboardService {
             ob[0] = category.getName();
             Long totalProduct = Long.valueOf(0);
             for (Product product : category.getProducts()) {
-                totalProduct += product.getOrderItems().size();
+                for (OrderItem item : product.getOrderItems()) {
+                    if (item.getOrderLine().getStatus() == "PAID") {
+                        totalProduct += 1;
+                    }
+                }
             }
             ob[1] = totalProduct;
             categoryCount.add(ob);
@@ -83,7 +89,9 @@ public class DashboardService {
             Long totalMonth = Long.valueOf(0);
             for (OrderLine orderLine : getOrderLineByMonth(year, i)) {
                 for (OrderItem orderItem : orderLine.getOrderItems()) {
-                    totalMonth += orderItem.getQuantity() * orderItem.getProduct().getPrice();
+                    if (orderItem.getOrderLine().getStatus() == "PAID") {
+                        totalMonth += orderItem.getQuantity() * orderItem.getProduct().getPrice();
+                    }
                 }
             }
             ob[1] = totalMonth;

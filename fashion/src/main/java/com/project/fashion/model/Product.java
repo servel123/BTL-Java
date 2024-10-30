@@ -23,8 +23,8 @@ public class Product extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-    @Column(name = "sku", nullable = false, length = 100)
-    private String sku;
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
 
     @Column(name = "image", nullable = false, length = 256)
     private String image;

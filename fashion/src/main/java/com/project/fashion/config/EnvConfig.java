@@ -21,7 +21,5 @@
 // public String getShowQuantity() {
 // return dotenv.get("SHOW_QUANTITY");
 // }
-// // public String getListCategory(){
-// // return dotenv.get("LIST_CATEGORY");
-// // }
+
 // }

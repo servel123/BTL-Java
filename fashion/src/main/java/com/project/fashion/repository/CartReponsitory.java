@@ -14,4 +14,6 @@ import java.util.*;
  */
 public interface CartReponsitory extends JpaRepository<Cart, Long> {
     List<Cart> findByCustomer_CustomerId(Long customerId);
+
+    Cart findByProduct_ProductIdAndCustomer_CustomerId(Long productId, Long customerId);
 }
