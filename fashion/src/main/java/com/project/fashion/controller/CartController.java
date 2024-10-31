@@ -24,8 +24,10 @@ import com.project.fashion.service.implement.CartServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.OrderItemServiceImplement;
 import com.project.fashion.service.implement.OrderLineServiceImplement;
+import jakarta.servlet.http.HttpSession;
 
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/user/cart")
@@ -118,14 +120,16 @@ public class CartController {
     // delete product
     @DeleteMapping
     public String deleteProduct(@RequestParam("cartId") Long cartId,
-            Model model) {
+            RedirectAttributes redirectAttributes, HttpSession session) {
         try {
             cartServiceImplement.removeProductFromCart(cartId);
-            model.addAttribute("message", "Delete Successfully");
+            int cartAfterDel = (int) session.getAttribute("countProductsInCart");
+            session.setAttribute("countProductsInCart", cartAfterDel - 1);
+            redirectAttributes.addFlashAttribute("successMessage", "Delete Successfully");
         } catch (Exception e) {
-            model.addAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Error while trying to remove product");
         }
-        return "cart";
+        return "redirect:/user/cart";
     }
 
     // partial update
