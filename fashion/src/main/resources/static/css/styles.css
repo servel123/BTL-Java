@@ -133,7 +133,8 @@ body::-webkit-scrollbar{
 }
 .navigate .content .fixed-nav .displayUI .authUI .user-cart .quantity-of-cart{
     position: absolute;
-    background-color: #F4C430;
+    background-color: var(--primary-color);
+    color: #fff;
     padding: 3px;
     border-radius: 3px;
     right: -5px;
@@ -141,20 +142,42 @@ body::-webkit-scrollbar{
     font-size: 13px;
 }
 .navigate .content .fixed-nav .displayUI .authUI .welcome_user{
-    text-align: center;
+    position: relative;
+    margin-left: 30px;
+}
+.navigate .content .fixed-nav .displayUI .authUI .welcome_user p{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 6px;
     border: 1px solid #000;
     padding: 13px;
+    text-align: center;
+    border-radius: 6px;
     width: 160px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-left: 20px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
-.navigate .content .fixed-nav .displayUI .authUI .welcome_user:hover{
+.navigate .content .fixed-nav .displayUI .authUI .welcome_user p:hover{
     transform: scale(1.1);
+}
+.navigate .content .fixed-nav .displayUI .authUI .welcome_user .profile-menu{
+    position: absolute;
+    display: none;
+    width: 160px;
+    z-index: 999;
+    margin-top: 3px;
+}
+.navigate .content .fixed-nav .displayUI .authUI .welcome_user .profile-menu li a{
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: #000;
+    background-color: var(--secondary-color);
+}
+.navigate .content .fixed-nav .displayUI .authUI .welcome_user .profile-menu li a:hover{
+    background-color: var(--primary-color);
+    color: #fff; 
 }
 .navigate .filter_options {
     margin: 25px 0 50px;
@@ -188,7 +211,6 @@ body::-webkit-scrollbar{
 }
 #filter_nav > li > ul.dropdown_menu {
     position: absolute;
-    list-style: none;
     display: none;
     width: 150px;
     z-index: 999;
