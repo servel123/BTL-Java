@@ -25,7 +25,7 @@
     <header class="navigate">
         <div class="content">
             <nav class="fixed-nav">
-                <a href="#" class="logo">
+                <a th:href="@{/}" class="logo">
                     <img src="https://cdn.pixabay.com/photo/2022/09/27/19/46/ai-generated-7483596_960_720.jpg"
                         alt="logo" />
                     <span>Fashion</span>
@@ -34,7 +34,34 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Type here to search">
                 </div>
-                <div layout:fragment="logUI"></div>
+                <div class="displayUI">
+                    <div th:if="${!#authorization.expression('isAnonymous()')}" class="authUI">
+                        <div class="user-cart">
+                            <a th:href="@{/user/cart}"><i class='bx bx-cart-alt bx-md'></i></a>
+                            <div th:if="${session.countProductsInCart > 0}" class="quantity-of-cart">
+                                <div th:text="${session.countProductsInCart}"></div>
+                            </div>
+                        </div>
+                        <div class="welcome_user">
+                            <a th:href="@{/user}">
+                                Hi, <span style="font-weight: bold;" th:text="${#authentication.name}"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div th:if="${#authorization.expression('isAnonymous()')}" class="unauthUI">
+                        <div class="left">
+                            <i class="fa-regular fa-user fa-sm"></i>
+                            <a th:href="@{/register}">SignUp</a>
+                            <span>/</span>
+                            <a th:href="@{/login}">SignIn</a>
+                        </div>
+                        <span class="line_split"></span>
+                        <div class="cart_nav">
+                            <i class='bx bx-cart-alt bx-md'></i>
+                            <a th:href="@{/login}">Cart</a>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </div>
         <!--Filter-->
@@ -127,8 +154,8 @@
                     <p class="description">If you want to buy with a large amount or become our distributor, contact us.
                     </p>
                     <div class="icon">
-                        <img th:src="@{/images/facebook.svg}" alt="Icon" />
-                        <img th:src="@{/images/instagram.svg}" alt="Icon" />
+                        <img th:src="@{/images/Footer_Images/facebook.svg}" alt="Icon" />
+                        <img th:src="@{/images/Footer_Images/instagram.svg}" alt="Icon" />
                     </div>
                 </div>
                 <div class="more_info">

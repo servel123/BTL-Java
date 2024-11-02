@@ -8,25 +8,6 @@
 </head>
 
 <body>
-
-    <div layout:fragment="logUI" class="displayUI">
-        <div class="log_link">
-            <i class="fa-regular fa-user fa-sm"></i>
-            <a th:if="${user}" th:href="@{/user}" th:text="${user.getUsername()}"></a>
-            <div th:if="!${user}">
-                <a href="/register">SignUp</a>
-                <span>/</span>
-                <a href="/login">SignIn</a>
-
-            </div>
-
-        </div>
-        <span class="line"></span>
-        <div class="cart_nav">
-            <i class='bx bx-cart-alt bx-md'></i>
-            <a th:href="@{/user/cart}">Cart</a>
-        </div>
-    </div>
     <main layout:fragment="main_content">
         <div class="content">
             <div class="hero_part">
@@ -36,30 +17,30 @@
                     <button id="hero_next"><i class="fa-solid fa-angle-right fa-2xl"></i></button>
                 </div>
             </div>
-            <div class="display_main_content" th:if="${categories}" th:each="category : ${categories}">
+            <div class="display_main_content" th:each="category : ${categories}">
                 <div class="direction">
-                    <h2>Hot <span th:text="${category.getName()}">Pants</span></h2>
+                    <h2>Hot <span th:text="${category.getName()}"></span></h2>
                     <div class="btn_move">
                         <i class="fa-solid fa-arrow-left" id="pop_pant_left"></i>
                         <i class="fa-solid fa-arrow-right" id="pop_pant_right"></i>
                     </div>
                 </div>
-                <div class="displayPart pant">
-                    <div class="pant_item" th:each="item : ${category.getProducts()}">
+                <div class="displayPart">
+                    <a class="item" th:each="product : ${category.getProducts()}"
+                        th:href="@{/product(productId=${product.productId})}">
                         <div class="displayImg">
-                            <img th:src="${item.image}" alt="Product Image">
-                            <div class="play-btn">
-                                <a class="fa-solid fa-cart-shopping"
-                                    th:href="@{/product(productId=${item.productId})}"></a>
-                            </div>
+                            <img th:src="@{${product.image}}" alt="Product Image">
                         </div>
-                        <h4 th:text="${item.description}"></h4>
-                        <h5 th:text="'Price: ' + ${item.price}"></h5>
-                    </div>
+                        <h4 th:text="${product.name}"></h4>
+                        <h5 th:text="${product.price}" class="price_of_product"></h5>
+                        <div class="play-btn">
+                            <!--Cần sửa sau khi thêm chức năng-->
+                            <span>Add to cart</span>
+                        </div>
+                    </a>
                 </div>
-
+                <div th:if="!${category}" th:text="errorMessage"></div>
             </div>
-
         </div>
     </main>
     <script layout:fragment="using_script" th:src="@{/js/home.js}"></script>

@@ -34,5 +34,4 @@ public class CustomerDetailResponse implements Serializable {
         this.address = address;
         this.phone = phone;
     }
-
 }

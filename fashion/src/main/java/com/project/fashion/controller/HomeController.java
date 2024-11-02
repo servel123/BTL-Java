@@ -2,7 +2,9 @@ package com.project.fashion.controller;
 
 import com.project.fashion.dto.response.CustomerDetailResponse;
 import com.project.fashion.model.Category;
+import com.project.fashion.service.implement.CartServiceImplement;
 import com.project.fashion.service.implement.CategoryServiceImplement;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,19 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.*;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
 public class HomeController {
-
     @Autowired
     private CategoryServiceImplement categoryServiceImplement;
+
+    @Autowired
+    private CartServiceImplement cartServiceImplement;
 
     @Autowired
     private Authen authen;
 
     @GetMapping
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
         try {
             CustomerDetailResponse user = authen.authen();
+            Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(user.getCustomerId());
+            session.setAttribute("countProductsInCart", countOfProducts);
             model.addAttribute("user", user);
         } catch (Exception e) {
             model.addAttribute("user", null);
@@ -34,6 +40,7 @@ public class HomeController {
         try {
             List<Category> categories = categoryServiceImplement.getCategories();
             model.addAttribute("categories", categories);
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Không thể tải sản phẩm. Vui lòng thử lại sau.");
         }

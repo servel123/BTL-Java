@@ -77,4 +77,15 @@ public class CartServiceImplement implements CartService {
         return cart;
     }
 
+    @Override
+    public Integer getCountProductsInCustomerCart(Long customerId) {
+        Integer countProduct = cartReponsitory.countByCustomer_CustomerId(customerId);
+        return countProduct;
+    }
+
+    @Override
+    public void deleteCartByCustomerId(Long customerId) {
+        cartReponsitory.deleteByCustomer_CustomerId(customerId);
+    }
+
 }

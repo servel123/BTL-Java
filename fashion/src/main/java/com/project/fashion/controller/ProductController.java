@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.fashion.dto.response.CustomerDetailResponse;
-import com.project.fashion.model.Cart;
+
 import com.project.fashion.model.Product;
 import com.project.fashion.service.implement.CartServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/product")
@@ -49,12 +51,16 @@ public class ProductController {
     public String addProduct(
             @RequestParam("productId") Long productId,
             @RequestParam("quantity") Integer quantity,
+            HttpSession session,
             Model model) {
         try {
             CustomerDetailResponse cus = authen.authen();
-            Cart cart = cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
-            model.addAttribute("message", "Add Product Successfully");
-            model.addAttribute("product", cart);
+            cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
+            Product product = productServiceImplement.getDetailProduct(productId);
+            model.addAttribute("successMessage", "Add Product Successfully");
+            model.addAttribute("product", product);
+            Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(cus.getCustomerId());
+            session.setAttribute("countProductsInCart", countOfProducts);
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }

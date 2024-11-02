@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/home")
 public class RedirectToHome {
     @GetMapping
     public String redirectToHome() {
-        return "redirect:/home";
+        return "redirect:/";
     }
 }

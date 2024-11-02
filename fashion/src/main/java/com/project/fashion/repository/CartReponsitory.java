@@ -16,4 +16,8 @@ public interface CartReponsitory extends JpaRepository<Cart, Long> {
     List<Cart> findByCustomer_CustomerId(Long customerId);
 
     Cart findByProduct_ProductIdAndCustomer_CustomerId(Long productId, Long customerId);
+
+    Integer countByCustomer_CustomerId(Long customerId);
+
+    void deleteByCustomer_CustomerId(Long customerId);
 }
