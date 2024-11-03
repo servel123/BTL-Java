@@ -7,6 +7,8 @@ package com.project.fashion.controller;
 import com.project.fashion.config.PaymentConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -14,8 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 
 import com.google.gson.Gson;
@@ -31,10 +35,12 @@ import com.project.fashion.dto.response.PaymentResDTO;
 public class PaymentController {
 
     @GetMapping
-    public String createPayment(HttpServletRequest req, HttpServletResponse resp)
+    public String createPayment(HttpServletRequest req, HttpServletResponse resp,
+            @RequestParam("amount") long price)
             throws UnsupportedEncodingException, IOException {
 
-        long amount = Integer.parseInt(req.getParameter("amount")) * 100;
+        long amount = price * 100;
+
         String bankCode = req.getParameter("bankCode");
         String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
         String vnp_IpAddr = PaymentConfig.getIpAddress(req);
@@ -111,6 +117,18 @@ public class PaymentController {
         paymentResDTO.setUrl(paymentUrl);
 
         return "redirect:" + paymentUrl;
+    }
+
+    @GetMapping("/result")
+    public String resultPayment(@RequestParam("vnp_Amount") Long amount,
+            @RequestParam("vnp_ResponseCode") String code,
+            @RequestParam("vnp_TxnRef") String trancode,
+            HttpSession session,
+            Model model) {
+        // chờ xử lý sét trạng thái đã thanh toán cho đơn hàng khi mã code nhận về là 00
+        model.addAttribute("trancode", trancode);
+        model.addAttribute("amount", amount);
+        return "result";
     }
 
 }

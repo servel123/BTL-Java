@@ -46,10 +46,10 @@
                 </article>
             </section>
         </div>
-        <div id="cart-footer">
+        <div id="cart-footer" th:if="${price}">
             <div class="content clearfix">
                 <h1 class="total">Total: <span></span></h1>
-                <a class="btn" href="/user/cart/bill">Checkout</a>
+                <a class="btn" th:href="@{/payment(amount=${price})}">Checkout</a>
             </div>
         </div>
     </main>

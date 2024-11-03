@@ -52,7 +52,7 @@ public class CartController {
     private Long calculateTotal(List<Cart> bill) {
         Long total = Long.valueOf(0);
         for (Cart cart : bill) {
-            total += cart.getTotalPrice();
+            total += cart.getProduct().getPrice() * cart.getQuantity();
         }
         return total;
     }
@@ -62,6 +62,8 @@ public class CartController {
         try {
             List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
+            Long price = calculateTotal(productOfUser);
+            model.addAttribute("price", price);
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
             model.addAttribute("message", "Not Product");

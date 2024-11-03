@@ -17,6 +17,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -157,43 +158,35 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
     // update
     @Override
     public CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO) {
-        try {
-            Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
 
-            if (customer == null) {
-                throw new ResourceNotFoundException("Customer not found with ID: " + cusRequestDTO.getCustomerId());
-            }
+        Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
 
-            // Kiểm tra email và số điện thoại
-            Customer existingEmailCustomer = hasEmail(cusRequestDTO.getEmail());
-            ;
-            Customer existingPhoneCustomer = hasPhoneNumber(cusRequestDTO.getPhoneNumber());
-
-            if (existingEmailCustomer != null
-                    && existingEmailCustomer != customer) {
-                throw new AttributeAlreadyExistsException("Email already exists");
-            } else if (existingPhoneCustomer != null
-                    && existingPhoneCustomer != customer) {
-                throw new AttributeAlreadyExistsException("Phone number already exists");
-            } else {
-                customer.setFirstName(cusRequestDTO.getFirstName());
-                customer.setLastName(cusRequestDTO.getLastName());
-                customer.setAddress(cusRequestDTO.getAddress());
-                customer.setEmail(cusRequestDTO.getEmail());
-                customer.setPhoneNumber(cusRequestDTO.getPhoneNumber());
-            }
-
-            customerRepository.save(customer);
-
-            return new CustomerDetailResponse(
-                    customer.getFirstName(),
-                    customer.getLastName(),
-                    customer.getAddress(),
-                    customer.getPhoneNumber());
-
-        } catch (Exception e) {
-            throw new RuntimeException("Update failed");
+        if (customer == null) {
+            throw new ResourceNotFoundException("Customer not found with ID: " + cusRequestDTO.getCustomerId());
         }
+        Optional<Customer> emailCustomer = customerRepository.findByEmail(cusRequestDTO.getEmail());
+        if (emailCustomer.isPresent() && !emailCustomer.get().equals(customer)) {
+            throw new AttributeAlreadyExistsException("Email already exists");
+        }
+
+        Optional<Customer> phoneCustomer = customerRepository.findByPhoneNumber(cusRequestDTO.getPhoneNumber());
+        if (phoneCustomer.isPresent() && !phoneCustomer.get().equals(customer)) {
+            throw new AttributeAlreadyExistsException("Phone number already exists");
+        }
+
+        customer.setFirstName(cusRequestDTO.getFirstName());
+        customer.setLastName(cusRequestDTO.getLastName());
+        customer.setAddress(cusRequestDTO.getAddress());
+        customer.setEmail(cusRequestDTO.getEmail());
+        customer.setPhoneNumber(cusRequestDTO.getPhoneNumber());
+
+        customerRepository.save(customer);
+
+        return new CustomerDetailResponse(
+                customer.getFirstName(),
+                customer.getLastName(),
+                customer.getAddress(),
+                customer.getPhoneNumber());
 
     }
 }

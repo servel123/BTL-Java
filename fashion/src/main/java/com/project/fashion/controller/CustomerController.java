@@ -62,7 +62,7 @@ public class CustomerController {
         try {
             CustomerDetailResponse cus = authen.authen();
             cusRequestDTO.setCustomerId(cus.getCustomerId());
-            // customerServiceImplement.updateCustomer(cusRequestDTO);
+            customerServiceImplement.updateCustomer(cusRequestDTO);
             redirectAttributes.addAttribute("message", "Update Successfully");
         } catch (Exception e) {
             redirectAttributes.addAttribute("message", e.getMessage());
