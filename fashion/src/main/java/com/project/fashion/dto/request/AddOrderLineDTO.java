@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 public class AddOrderLineDTO {
     private Long orderLineId;
-    @NotBlank
+    @NotBlank(message = "not blank")
     private Long paymentId;
     @Pattern(regexp = "^(PAID|NOT_YET_PAID)$")
     private String status;

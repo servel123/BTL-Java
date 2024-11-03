@@ -21,8 +21,6 @@ import org.springframework.http.HttpStatus;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.project.fashion.dto.response.PaymentResDTO;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -36,10 +34,8 @@ public class PaymentController {
     public String createPayment(HttpServletRequest req, HttpServletResponse resp)
             throws UnsupportedEncodingException, IOException {
 
-        // long amount = Integer.parseInt(req.getParameter("amount"))*100;
-        long amount = 100000 * 100;
+        long amount = Integer.parseInt(req.getParameter("amount")) * 100;
         String bankCode = req.getParameter("bankCode");
-
         String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
         String vnp_IpAddr = PaymentConfig.getIpAddress(req);
 
@@ -115,20 +111,6 @@ public class PaymentController {
         paymentResDTO.setUrl(paymentUrl);
 
         return "redirect:" + paymentUrl;
-    }
-
-    @GetMapping("/result")
-    public String resultPayment(
-            @RequestParam("vnp_Amount") String amount,
-            @RequestParam("vnp_ResponseCode") String responseCode,
-            Model model) {
-        model.addAttribute("money", amount);
-        if (responseCode.equals("00")) {
-            model.addAttribute("messageSuccess", "Payment Successfully!");
-        } else {
-            model.addAttribute("messageError", "Payment Failed!");
-        }
-        return "vpn_return";
     }
 
 }

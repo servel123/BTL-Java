@@ -6,8 +6,13 @@
 
 $(document).ready(function(){
     $('#filter_nav > li').hover(function() {
-            $('.dropdown_menu', this).slideDown();
-        }, function() {
-            $('.dropdown_menu', this).slideUp();
+        $('.dropdown_menu', this).slideDown();
+    }, function() {
+        $('.dropdown_menu', this).slideUp();
+    });
+    $('.welcome_user' ).hover(function(){
+        $('.profile-menu').slideDown();
+    }, function(){
+        $('.profile-menu').slideUp();
     });
 });

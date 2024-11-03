@@ -86,36 +86,6 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
 
     }
 
-    // update
-    @Override
-    public CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO) {
-        try {
-            Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
-
-            if (customer == null) {
-                throw new ResourceNotFoundException("Customer not found with ID: " + cusRequestDTO.getCustomerId());
-            }
-
-            customer.setFirstName(cusRequestDTO.getFirstName());
-            customer.setLastName(cusRequestDTO.getLastName());
-            customer.setAddress(cusRequestDTO.getAddress());
-            customer.setPhoneNumber(cusRequestDTO.getPhoneNumber());
-
-            customerRepository.save(customer);
-
-            return new CustomerDetailResponse(
-                    customer.getFirstName(),
-                    customer.getLastName(),
-                    customer.getAddress(),
-                    customer.getPhoneNumber());
-        } catch (ResourceNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating customer");
-        }
-
-    }
-
     // delete customer
     @Override
     public boolean deleteCustomer(Long customerId) {
@@ -174,13 +144,56 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
 
     @Override
     public Customer hasUserName(String username) {
-        return customerRepository.findByEmail(username)
+        return customerRepository.findByUsername(username)
                 .orElseThrow(null);
     }
 
     @Override
     public Customer hasPhoneNumber(String phoneNumber) {
-        return customerRepository.findByEmail(phoneNumber)
+        return customerRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(null);
+    }
+
+    // update
+    @Override
+    public CustomerDetailResponse updateCustomer(CusModifyInfo cusRequestDTO) {
+        try {
+            Customer customer = getCustomerById(cusRequestDTO.getCustomerId());
+
+            if (customer == null) {
+                throw new ResourceNotFoundException("Customer not found with ID: " + cusRequestDTO.getCustomerId());
+            }
+
+            // Kiểm tra email và số điện thoại
+            Customer existingEmailCustomer = hasEmail(cusRequestDTO.getEmail());
+            ;
+            Customer existingPhoneCustomer = hasPhoneNumber(cusRequestDTO.getPhoneNumber());
+
+            if (existingEmailCustomer != null
+                    && existingEmailCustomer != customer) {
+                throw new AttributeAlreadyExistsException("Email already exists");
+            } else if (existingPhoneCustomer != null
+                    && existingPhoneCustomer != customer) {
+                throw new AttributeAlreadyExistsException("Phone number already exists");
+            } else {
+                customer.setFirstName(cusRequestDTO.getFirstName());
+                customer.setLastName(cusRequestDTO.getLastName());
+                customer.setAddress(cusRequestDTO.getAddress());
+                customer.setEmail(cusRequestDTO.getEmail());
+                customer.setPhoneNumber(cusRequestDTO.getPhoneNumber());
+            }
+
+            customerRepository.save(customer);
+
+            return new CustomerDetailResponse(
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getAddress(),
+                    customer.getPhoneNumber());
+
+        } catch (Exception e) {
+            throw new RuntimeException("Update failed");
+        }
+
     }
 }
