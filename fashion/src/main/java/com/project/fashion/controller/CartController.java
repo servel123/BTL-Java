@@ -63,6 +63,7 @@ public class CartController {
             List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
             Long price = calculateTotal(productOfUser);
+            if(productOfUser.isEmpty())model.addAttribute("message", "No products");
             model.addAttribute("price", price);
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
@@ -148,8 +149,9 @@ public class CartController {
             Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(user.getCustomerId());
             session.setAttribute("countProductsInCart", countOfProducts);
             cartServiceImplement.removeProductFromCart(cartId);
-            int cartAfterDel = (int) session.getAttribute("countProductsInCart");
-            session.setAttribute("countProductsInCart", cartAfterDel - 1);
+            int cartAfterDel = (int) session.getAttribute("countProductsInCart") - 1;
+            session.setAttribute("countProductsInCart", cartAfterDel);
+            if(cartAfterDel == 0)redirectAttributes.addFlashAttribute("messInfo", "No products");
             redirectAttributes.addFlashAttribute("successMessage", "Delete Successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error while trying to remove product");

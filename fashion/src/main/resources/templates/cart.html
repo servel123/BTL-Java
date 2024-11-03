@@ -15,11 +15,11 @@
             </div>
         </div>
         <div class="content" th:if="${pOU}">
-            <div th:if="${successMessage}" class="note-text" style="background-color: #C8E6C9;">
-                <h1 th:text="${successMessage}" style="color: green;"></h1>
+            <div th:if="${successMessage}" class="alert alert-success note-text" role="alert">
+                <h1 th:text="${successMessage}"></h1>
             </div>
-            <div th:if="${errorMessage}" class="note-text" style="background-color: #FF7276;">
-                <h1 th:text="${errorMessage}" style="color: red;"></h1>
+            <div th:if="${errorMessage}" class="alert alert-danger note-text" role="alert">
+                <h1 th:text="${errorMessage}"></h1>
             </div>
             <section class="your-cart" th:each="item : ${pOU}">
                 <article class="product">
@@ -45,6 +45,12 @@
                     </div>
                 </article>
             </section>
+            <div th:if="${messInfo}" class="no-product-note">
+                <div th:text="${messInfo}"></div>
+            </div>
+            <div th:if="${message}" class="no-product-note">
+                <div th:text="${message}"></div>
+            </div>
         </div>
         <div id="cart-footer" th:if="${price}">
             <div class="content clearfix">

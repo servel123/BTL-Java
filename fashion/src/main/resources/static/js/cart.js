@@ -33,9 +33,6 @@ $(document).ready(function(){
         window.setTimeout(function(){
             el.parent().parent().slideUp('fast', function(){
                 el.parent().parent().remove();
-                if($(".product").length === 0){
-                    $(".your-cart").html("<h1>No products</h1>");
-                }
                 changeTotal();
             });
         }, 200);

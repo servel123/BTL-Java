@@ -10,11 +10,11 @@
 <body>
     <main layout:fragment="main_content">
         <div class="content">
-            <div th:if="${successMessage}" class="note-text" style="background-color: #C8E6C9;">
-                <h1 th:text="${successMessage}" style="color: green;"></h1>
+            <div th:if="${successMessage}" class="alert alert-success note-text" role="alert">
+                <h1 th:text="${successMessage}"></h1>
             </div>
-            <div th:if="${errorMessage}" class="note-text" style="background-color: #FF7276;">
-                <h1 th:text="${errorMessage}" style="color: red;"></h1>
+            <div th:if="${errorMessage}" class="alert alert-danger note-text" role="alert">
+                <h1 th:text="${errorMessage}"></h1>
             </div>
             <div class="display-detail">
                 <div class="card-details">

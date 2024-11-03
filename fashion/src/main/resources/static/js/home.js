@@ -1,32 +1,37 @@
-$(document).ready(function () {
-    let imageSources = [
-        "https://th.bing.com/th/id/OIP.B5G9g_Dg_xhJXo_SlewYRwHaE8?rs=1&pid=ImgDetMain",
-        "https://th.bing.com/th/id/OIP.iPttK98DzGabuztT-ALZsAHaE6?rs=1&pid=ImgDetMain",
-        "https://th.bing.com/th/id/OIP.OPW4Bdh9Gzyomt-g8IbSEAHaE8?rs=1&pid=ImgDetMain",
-        "https://th.bing.com/th/id/R.adaab26fbf2a21e7f77fbd974af188c1?rik=lCpZk8Qxt%2fPr5A&pid=ImgRaw&r=0"
-    ];
-    let currentIndex = 0;
-    let autoChangeEna = true;
-    let autoChangeEnaInterval, enableAutoChangeTimeOut;
-    let img = $('#hero_img');
-    function enableAutoChange() {
-        autoChangeEna = true;
-        clearTimeout(enableAutoChangeTimeOut);
-        autoChangeEnaInterval = setInterval(function () {
-            if (currentIndex === imageSources.length) {
+let imageSources = [
+    "https://th.bing.com/th/id/OIP.B5G9g_Dg_xhJXo_SlewYRwHaE8?rs=1&pid=ImgDetMain",
+    "https://th.bing.com/th/id/OIP.iPttK98DzGabuztT-ALZsAHaE6?rs=1&pid=ImgDetMain",
+    "https://th.bing.com/th/id/OIP.OPW4Bdh9Gzyomt-g8IbSEAHaE8?rs=1&pid=ImgDetMain",
+    "https://th.bing.com/th/id/R.adaab26fbf2a21e7f77fbd974af188c1?rik=lCpZk8Qxt%2fPr5A&pid=ImgRaw&r=0"
+];
+let currentIndex = 0;
+let autoChangeEna = true;
+let autoChangeTime, enableAutoChangeTimeOut;
+let img = $('#hero_img');
+function autoChangeLoop(){
+    img.fadeOut(1500, function() {
+        img.attr('src', imageSources[currentIndex]);
+        img.fadeIn(1500, function() {
+            currentIndex++;
+            if(currentIndex === imageSources.length){
                 currentIndex = 0;
             }
-            img.attr('src', imageSources[currentIndex]);
-            currentIndex++;
-        }, 2500);
-
-    }
-    function disableAutoChange() {
-        autoChangeEna = false;
-        clearInterval(autoChangeEnaInterval);
-        img.attr('src', imageSources[currentIndex]);
-        enableAutoChangeTimeOut = setTimeout(enableAutoChange, 10000);
-    }
+            autoChangeTime = setTimeout(autoChangeLoop, 500);
+        });
+    });
+}
+function enableAutoChange() {
+    autoChangeEna = true;
+    clearTimeout(enableAutoChangeTimeOut);
+    autoChangeLoop();
+}
+function disableAutoChange() {
+    autoChangeEna = false;
+    clearTimeout(autoChangeTime);
+    img.attr('src', imageSources[currentIndex]);
+    enableAutoChangeTimeOut = setTimeout(enableAutoChange, 10000);
+}
+$(document).ready(function () {
     img.attr('src', imageSources[currentIndex]);
     currentIndex++;
     if (autoChangeEna) enableAutoChange();
