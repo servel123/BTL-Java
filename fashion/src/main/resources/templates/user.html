@@ -11,12 +11,9 @@
 <body>
     <main layout:fragment="main_content">
         <div class="content">
-            <div th:if="${successMessage}" class="alert alert-success note-text" role="alert">
-                <h1 th:text="${successMessage}"></h1>
-            </div>
-            <div th:if="${errorMessage}" class="alert alert-danger note-text" role="alert">
-                <h1 th:text="${errorMessage}"></h1>
-            </div>
+            <script th:if="${message}">
+                alert('[[${message}]]');
+            </script>
             <div class="form-display">
                 <h1>Edit Profile</h1>
                 <form th:action="@{/user}" th:method="patch">
@@ -47,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="text" name="phoneNumber"
+                        <input type="tel" name="phoneNumber" pattern="^0[1-9][0-9]{8}$"
                             th:value="${info.getPhone() != null ? info.getPhone(): ''}">
                     </div>
                     <button type="submit">Save</button>

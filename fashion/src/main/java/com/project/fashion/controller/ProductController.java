@@ -57,7 +57,7 @@ public class ProductController {
             CustomerDetailResponse cus = authen.authen();
             cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
             Product product = productServiceImplement.getDetailProduct(productId);
-            model.addAttribute("successMessage", "Add Product Successfully");
+            model.addAttribute("message", "Add Product Successfully");
             model.addAttribute("product", product);
             Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(cus.getCustomerId());
             session.setAttribute("countProductsInCart", countOfProducts);

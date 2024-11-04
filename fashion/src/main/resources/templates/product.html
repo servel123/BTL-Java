@@ -10,12 +10,9 @@
 <body>
     <main layout:fragment="main_content">
         <div class="content">
-            <div th:if="${successMessage}" class="alert alert-success note-text" role="alert">
-                <h1 th:text="${successMessage}"></h1>
-            </div>
-            <div th:if="${errorMessage}" class="alert alert-danger note-text" role="alert">
-                <h1 th:text="${errorMessage}"></h1>
-            </div>
+            <script th:if="${message}">
+                alert('[[${message}]]');
+            </script>
             <div class="display-detail">
                 <div class="card-details">
                     <img th:src="@{${product.image}}" alt="Product Image">

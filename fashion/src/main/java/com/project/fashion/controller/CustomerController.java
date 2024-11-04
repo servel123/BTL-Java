@@ -63,9 +63,9 @@ public class CustomerController {
             CustomerDetailResponse cus = authen.authen();
             cusRequestDTO.setCustomerId(cus.getCustomerId());
             customerServiceImplement.updateCustomer(cusRequestDTO);
-            redirectAttributes.addFlashAttribute("successMessage", "Update Successfully");
+            redirectAttributes.addFlashAttribute("message", "Update Successfully");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/user";
     }

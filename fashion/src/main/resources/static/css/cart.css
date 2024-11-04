@@ -22,19 +22,6 @@ main > .content {
     flex-direction: column;
     margin-bottom: 80px;
 }
-main .content .note-text{
-    margin-bottom: 20px;
-    width: 70%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-}
-main .content .note-text h1{
-    font-weight: 500;
-    font-size: 20px;
-}
 main .content .your-cart {
   width: 100%;
   display: flex;
