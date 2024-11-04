@@ -16,6 +16,7 @@ import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -39,7 +40,9 @@ public class ProductController {
             Model model) {
         try {
             Product product = productServiceImplement.getDetailProduct(productId);
+            List <Product> relatedProducts = productServiceImplement.getAllProductByCategory(product.getCategory());
             model.addAttribute("product", product);
+            model.addAttribute("relatedProducts", relatedProducts);
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }

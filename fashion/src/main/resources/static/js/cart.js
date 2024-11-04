@@ -58,9 +58,6 @@ $(document).ready(function(){
             changeVal(el);
         }, 150);
     });
-    setTimeout(function(){
-        $(".note-text").fadeOut(); 
-    }, 5000);
 });
 
 

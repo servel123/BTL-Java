@@ -12,16 +12,13 @@ $(document).ready(function(){
        let val = parseFloat($(this).html());
        $(this).html(changeCurrency(val));
     });
-    let pop_pant_left = $('#pop_relatedP_left');
-    let pop_pant_right = $('#pop_relatedP_right');
+    let pop_left = $('#pop_relatedP_left');
+    let pop_right = $('#pop_relatedP_right');
     let displayPant = $('.displayPart.relatedP').first();
-    pop_pant_left.on('click', function(){
+    pop_left.on('click', function(){
         displayPant.scrollLeft(displayPant.scrollLeft() - 500);
     });
-    pop_pant_right.on('click', function(){
+    pop_right.on('click', function(){
         displayPant.scrollLeft(displayPant.scrollLeft() + 500);
     });
-    setTimeout(function(){
-        $(".note-text").fadeOut(); 
-    }, 5000);
 });

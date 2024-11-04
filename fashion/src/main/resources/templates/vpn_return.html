@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
-
+    <title>Redirect</title>
+    <link rel="stylesheet" th:href="@{/css/vpn_return.css}">
 </head>
-
 <body>
-    <a th:href="@{/home}">hello</a>
+    <div class="container">
+        <div class="success-icon icon"><i class="fa-solid fa-check"></i></div>
+        <div class="status-notice">Thanh toán thành công</div>
+        <div class="payment-code">Mã số thanh toán của bạn là <span>PAY5256788</span></div>
+        <div class="payment-detail-redirect">Bạn có thể xem chi tiết trong <a th:href="@{/user}">Trang cá nhân</a></div>
+        <a th:href="@{/}" class="btn">Tiếp tục mua hàng</a>
+    </div>
+    <div class="container">
+        <div class="error-icon icon"><i class="fa-solid fa-x"></i></div>
+        <div class="status-notice error">Thanh toán thất bại</div>
+        <div class="error-info">Đã có lỗi xảy ra</div>
+        <a th:href="@{/user/cart}" class="btn">Quay lại giỏ hàng</a>
+    </div>
 </body>
-
 </html>

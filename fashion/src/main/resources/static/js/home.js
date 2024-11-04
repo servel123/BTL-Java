@@ -16,7 +16,7 @@ function autoChangeLoop(){
             if(currentIndex === imageSources.length){
                 currentIndex = 0;
             }
-            autoChangeTime = setTimeout(autoChangeLoop, 500);
+            autoChangeTime = setTimeout(autoChangeLoop, 2500);
         });
     });
 }
@@ -51,24 +51,14 @@ $(document).ready(function () {
         let getPrice = parseFloat($(this).html());
         $(this).html(getPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
     });
-    //  Pop_bar
-    let pop_pant_left = $('#pop_left');
-    let pop_pant_right = $('#pop_pant_right');
-    let displayPant = $('.displayPart.pant').first();
-    pop_pant_left.on('click', function () {
-        displayPant.scrollLeft(displayPant.scrollLeft() - 500);
+    //  Pop_part
+    $('.pop_left').on('click', function () {
+        const displayPart = $(this).closest('.display_main_content').find('.displayPart');
+        displayPart.scrollLeft(displayPart.scrollLeft() - 500);
     });
-    pop_pant_right.on('click', function () {
-        displayPant.scrollLeft(displayPant.scrollLeft() + 500);
-    });
-    let pop_cate_left = $('#pop_cate_left');
-    let pop_cate_right = $('#pop_cate_right');
-    let displayCategory = $('.displayPart.category').first();
-    pop_cate_left.on('click', function () {
-        displayCategory.scrollLeft(displayCategory.scrollLeft() - 500);
-    });
-    pop_cate_right.on('click', function () {
-        displayCategory.scrollLeft(displayCategory.scrollLeft() + 500);
+    $('.pop_right').on('click', function () {
+        const displayPart = $(this).closest('.display_main_content').find('.displayPart');
+        displayPart.scrollLeft(displayPart.scrollLeft() + 500);
     });
 });
 
