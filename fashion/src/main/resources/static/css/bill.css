@@ -45,7 +45,7 @@ body{
 
 .container .invoice .invoice-footer{
     display: grid;
-    grid-template-columns: 6fr 4fr;
+    grid-template-columns: 7fr 2.5fr;
 }
 .container .invoice .invoice-footer .customer-info{
     border: none;
