@@ -62,7 +62,9 @@ public class CartController {
         try {
             List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
+            Long price = calculateTotal(productOfUser);
             if(productOfUser.isEmpty())model.addAttribute("messInfo", "No products");
+            model.addAttribute("price", price);
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
             model.addAttribute("message", "Not Product");
