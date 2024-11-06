@@ -20,14 +20,14 @@
             </div>
             <div class="display_main_content" th:each="category : ${categories}">
                 <div class="direction">
-                    <h2>Hot <span th:text="${category.getName()}"></span></h2>
+                    <h2>Hot <span th:text="${category.name}"></span></h2>
                     <div class="btn_move">
                         <i class="fa-solid fa-arrow-left pop_left"></i>
                         <i class="fa-solid fa-arrow-right pop_right"></i>
                     </div>
                 </div>
                 <div class="displayPart">
-                    <a class="item" th:each="product : ${category.getProducts()}"
+                    <a class="item" th:each="product : ${category.products}"
                         th:href="@{/product(productId=${product.productId})}">
                         <div class="displayImg">
                             <img th:src="@{${product.image}}" alt="Product Image">

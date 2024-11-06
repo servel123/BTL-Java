@@ -51,6 +51,10 @@
                                 <li><a th:href="@{/logout}">Log Out</a></li>
                             </ul>
                         </div>
+                        <div sec:authorize="hasRole('ADMIN')" class="admin-part">
+                            <i class="fa-solid fa-user-tie fa-lg"></i>
+                            <a th:href="@{/admin/dashboard}">Admin</a>
+                        </div>
                     </div>
                     <div th:if="${#authorization.expression('isAnonymous()')}" class="unauthUI">
                         <div class="left">

@@ -103,7 +103,7 @@ main .content .your-cart .product .product-header .remove form button {
 main .content .your-cart .product .product-content {
   height: 81%;
   padding: 0 20px;
-  width: 79.2%;
+  width: 81.4%;
 }
 main .content .your-cart .product .product-content h1 {
   font-weight: 500;
@@ -132,7 +132,7 @@ main .content .your-cart .product .product-content h1 {
 main .content .your-cart .product .product-footer {
   height: 19%;
   float: left;
-  width: 79.2%;
+  width: 81.4%;
 }
 
 main .content .your-cart .product .product-footer .price {

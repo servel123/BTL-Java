@@ -22,23 +22,27 @@
                 <article class="product">
                     <div class="product-header">
                         <a class="remove">
-                            <img th:src="@{${item.getProduct().image}}" alt="Product Item">
+                            <img th:src="@{${item.product.image}}" alt="Product Item">
                             <form th:action="@{/user/cart}" th:method="delete">
-                                <input type="hidden" th:value="${item.getCartId()}" name="cartId">
+                                <input type="hidden" th:value="${item.cartId}" name="cartId">
                                 <button type="submit">Remove</button>
                             </form>
                         </a>
                     </div>
                     <div class="product-content">
-                        <h1 th:text="${item.getProduct().name}"></h1>
-                        <p th:text="${item.getProduct().description}"></p>
+                        <h1 th:text="${item.product.name}"></h1>
+                        <p th:text="${item.product.description}"></p>
                     </div>
                     <div class="product-footer">
                         <span class="qt-minus">-</span>
                         <span class="qt" th:text="${item.quantity}"></span>
                         <span class="qt-plus">+</span>
-                        <h2 class="total-price" th:text="${item.getProduct().price * item.quantity}"></h2>
-                        <h2 class="price" th:text="${item.getProduct().price}"></h2>
+                        <form th:method="patch">
+                            <input type="hidden" th:value="${item.cartId}" name="cartId">
+                            <input type="hidden" th:value="${item.quantity}" name="quantity">
+                        </form>
+                        <h2 class="total-price" th:text="${item.product.price * item.quantity}"></h2>
+                        <h2 class="price" th:text="${item.product.price}"></h2>
                     </div>
                 </article>
             </section>
@@ -48,8 +52,7 @@
         </div>
         <div id="cart-footer" th:if="${price}">
             <div class="content clearfix">
-                <h1 class="total">Total: <span></span></h1>
-                <a class="btn" th:href="@{/payment(amount=${price})}">Checkout</a>
+                <a class="btn" th:href="@{/user/cart/bill}">Checkout</a>
             </div>
         </div>
     </main>

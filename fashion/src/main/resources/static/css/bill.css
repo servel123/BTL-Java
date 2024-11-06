@@ -1,0 +1,78 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+}
+.container{
+    width: 70%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.container .invoice{
+    
+    width: 100%;
+    padding: 30px;
+}
+.container .invoice .invoice-header{
+    text-align: center;
+    font-size: 18px;
+}
+.container .invoice .invoice-info div{
+    margin: 10px 0;
+}
+.container .invoice .table-container{
+    width: 100%;
+    margin-top: 20px;
+}
+.container .invoice .table-container table{
+    width: 100%;
+    border-collapse: collapse;
+}
+.container .invoice .table-container table th,
+.container .invoice .table-container table td{
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: left;
+}
+.container .invoice .table-container table th{
+    background-color: #f4f4f9;
+}
+
+.container .invoice .invoice-footer{
+    display: grid;
+    grid-template-columns: 6fr 4fr;
+}
+.container .invoice .invoice-footer .customer-info{
+    border: none;
+}
+.container .invoice .payment-choice{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.container .invoice .payment-choice .method{
+    display: flex;
+    gap: 20px;
+}
+.container .invoice .payment-choice .method a{
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}
+.container .invoice .payment-choice .method a:first-child{
+    background-color: #EAA222;
+}
+.container .invoice .payment-choice .method a:nth-child(2){
+    background: #008ECC;
+}
+.container .invoice .payment-choice .method a:first-child:hover,
+.container .invoice .payment-choice .method a:nth-child(2):hover{
+    box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);
+}
+

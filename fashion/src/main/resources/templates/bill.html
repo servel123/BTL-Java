@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hóa đơn khách hàng</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/bill.css}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="invoice">
+                <div class="invoice-header">
+                    <h1>Thông tin hóa đơn</h1>
+                </div>
+                <div class="invoice-info">
+                    <div><strong>Mã hóa đơn:</strong> <span></span></div>
+                    <div><strong>Ngày:</strong> <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="payProduct : ${payProducts}">
+                                <td th:text="${payProduct.product.name}"></td>
+                                <td th:text="${payProduct.quantity}"></td>
+                                <td th:text="${payProduct.product.price}" class="price"></td>
+                                <td th:text="${payProduct.product.price * payProduct.quantity}" class="total-price"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="invoice-footer">
+                    <div class="customer-info">
+                        <h3>Thông tin khách hàng</h3>
+                        <p>Họ tên: <span th:text="${customer.firstName + ' ' + customer.lastName}"></span></p>
+                        <p>Địa chỉ: <span th:text="${customer.address}"></span></p>
+                        <p>Số điện thoại: <span th:text="${customer.phoneNumber}"></span></p>
+                    </div>
+                    <p><strong>Tổng cộng:</strong> <span th:text="${total}" id="overall"></span></p>
+                </div>
+                <div class="payment-choice">
+                    <p>Vui lòng lựa chọn phương thức thanh toán:</p>
+                    <div class="method">
+                        <a th:href="@{/}">Thanh toán bằng tiền mặt</a>
+                        <a th:href="@{/payment(amount=${total})}">Thanh toán qua ngân hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/bill.js}"></script>
+    </body>
+</html>

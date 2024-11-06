@@ -62,9 +62,7 @@ public class CartController {
         try {
             List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
-            Long price = calculateTotal(productOfUser);
             if(productOfUser.isEmpty())model.addAttribute("messInfo", "No products");
-            model.addAttribute("price", price);
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
             model.addAttribute("message", "Not Product");
@@ -80,10 +78,10 @@ public class CartController {
             // show info customer like phone, address, fullname,... and options payment list
             // to customer choose and list cart by customer.getCarts()
             model.addAttribute("customer", customer);
-
+            List<Cart> payProducts = cartServiceImplement.getCartByCustomerId(customer.getCustomerId());
             // total money
-            Long total = calculateTotal(cartServiceImplement.getCartByCustomerId(customer.getCustomerId()));
-
+            Long total = calculateTotal(payProducts);
+            model.addAttribute("payProducts", payProducts);
             model.addAttribute("total", total);
             return "bill";
         } catch (Exception e) {

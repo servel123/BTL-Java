@@ -12,19 +12,6 @@ main .content {
     justify-content: center;
     flex-direction: column;
 }
-main .content .note-text{
-    margin-bottom: 20px;
-    width: 55%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-}
-main .content .note-text h1{
-    font-weight: 500;
-    font-size: 20px;
-}
 main .content .form-display{
     width: 55%;
     margin-bottom: 80px;
