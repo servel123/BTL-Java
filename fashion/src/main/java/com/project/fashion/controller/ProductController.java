@@ -40,7 +40,7 @@ public class ProductController {
             Model model) {
         try {
             Product product = productServiceImplement.getDetailProduct(productId);
-            List <Product> relatedProducts = productServiceImplement.getAllProductByCategory(product.getCategory());
+            List<Product> relatedProducts = productServiceImplement.getAllProductByCategory(product.getCategory());
             model.addAttribute("product", product);
             model.addAttribute("relatedProducts", relatedProducts);
         } catch (Exception e) {
@@ -60,8 +60,10 @@ public class ProductController {
             CustomerDetailResponse cus = authen.authen();
             cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
             Product product = productServiceImplement.getDetailProduct(productId);
+            List<Product> relatedProducts = productServiceImplement.getAllProductByCategory(product.getCategory());
             model.addAttribute("message", "Add Product Successfully");
             model.addAttribute("product", product);
+            model.addAttribute("relatedProducts", relatedProducts);
             Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(cus.getCustomerId());
             session.setAttribute("countProductsInCart", countOfProducts);
         } catch (Exception e) {

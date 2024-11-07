@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.project.fashion.exception.ErrorDataException;
 import com.project.fashion.exception.ResourceNotFoundException;
+import com.project.fashion.model.Cart;
 import com.project.fashion.model.Category;
+import com.project.fashion.model.Customer;
 import com.project.fashion.model.Product;
 import com.project.fashion.repository.ProductRepository;
 import com.project.fashion.service.ProductService;
+
 import java.util.*;
 
 import lombok.AllArgsConstructor;
@@ -137,5 +140,36 @@ public class ProductServiceImplement implements ProductService {
             throw e;
         }
 
+    }
+
+    @Override
+    public void updateStockProduct(Long productId, Integer stock) {
+        Product product = getDetailProduct(productId);
+        Integer quantity = product.getStock() - stock;
+        if (quantity >= 0) {
+            product.setStock(quantity);
+            productRepository.save(product);
+        } else {
+            throw new ErrorDataException("Số lượng hàng còn lại không đáp ứng số lượng quý khách yêu cầu !!!");
+        }
+
+    }
+
+    @Override
+    public void subtractionStock(Customer cus) {
+        List<Cart> carts = cus.getCarts();
+        for (Cart cart : carts) {
+            updateStockProduct(cart.getProduct().getProductId(), cart.getQuantity());
+        }
+
+    }
+
+    @Override
+    public List<Product> findByKeyWord(String keyword) {
+        List<Product> products = productRepository.findByDescriptionContaining(keyword);
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("Không có sản phẩm nào!");
+        }
+        return products;
     }
 }

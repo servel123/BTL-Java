@@ -6,6 +6,7 @@ package com.project.fashion.service;
 
 import com.project.fashion.dto.request.AddProductDTO;
 import com.project.fashion.model.Category;
+import com.project.fashion.model.Customer;
 import com.project.fashion.model.Product;
 import java.util.*;
 
@@ -34,4 +35,11 @@ public interface ProductService {
     // update
     Product updateProduct(Long productId, AddProductDTO pdt);
 
+    // update stock
+    void updateStockProduct(Long productId, Integer stock);
+
+    // subtraction stock
+    void subtractionStock(Customer cus);
+
+    List<Product> findByKeyWord(String keyword);
 }

@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.fashion.dto.request.AddCategoryDTO;
 import com.project.fashion.dto.request.AddProductDTO;
@@ -127,6 +129,17 @@ public class AdminTableController {
             model.addAttribute("errCategory", "error get category");
         }
         return "fixCategory";
+    }
+
+    @PostMapping("/category/new")
+    public String adminAddCategor(@ModelAttribute("newCategory") AddCategoryDTO category, RedirectAttributes redirect) {
+        try {
+            categoryServiceImplement.addCategory(category);
+            redirect.addAttribute("Add category successfully!");
+        } catch (Exception e) {
+            redirect.addAttribute("Add category failed!");
+        }
+        return "redirect:/admin/category";
     }
 
     @PatchMapping("/category/{categoryId}")

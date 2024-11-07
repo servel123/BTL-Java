@@ -26,6 +26,7 @@ import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.OrderItemServiceImplement;
 import com.project.fashion.service.implement.OrderLineServiceImplement;
 import com.project.fashion.service.implement.PaymentServiceImplement;
+import com.project.fashion.service.implement.ProductServiceImplement;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -45,6 +46,8 @@ public class CartController {
     private OrderItemServiceImplement orderItemServiceImplement;
     @Autowired
     private PaymentServiceImplement paymentServiceImplement;
+    @Autowired
+    private ProductServiceImplement productServiceImplement;
 
     @Autowired
     private Authen authen;
@@ -63,7 +66,8 @@ public class CartController {
             List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
             Long price = calculateTotal(productOfUser);
-            if(productOfUser.isEmpty())model.addAttribute("messInfo", "No products");
+            if (productOfUser.isEmpty())
+                model.addAttribute("messInfo", "No products");
             model.addAttribute("price", price);
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
@@ -97,6 +101,7 @@ public class CartController {
         // thông tin user
         Customer customer = customerServiceImplement.getCustomerById(authen.authen().getCustomerId());
         AddPaymentDTO addPaymentDTO = new AddPaymentDTO();
+
         try {
             // kiểm tra người dùng đã có method thanh toán đó chưa nếu chư có sẽ ném ra
             // exception
@@ -111,6 +116,7 @@ public class CartController {
             paymentServiceImplement.addPayment(addPaymentDTO);
         }
         try {
+
             // yêu cầu hóa đơn tạo hóa đơn
             AddOrderLineDTO addOrderLineDTO = new AddOrderLineDTO();
             addOrderLineDTO.setPaymentId(addOrderLineDTO.getPaymentId());
@@ -124,6 +130,7 @@ public class CartController {
             orderItemServiceImplement.addOrderItemByOrderLine(orderLine.getOrderLineId(), customer.getCarts());
 
             // xóa những sản phẩm đã mua khỏi giỏ hàng
+            productServiceImplement.subtractionStock(customer);
             cartServiceImplement.deleteCartByCustomerId(customer.getCustomerId());
             model.addAttribute("messageCreateBillSuccess", "Order Successfully");
 

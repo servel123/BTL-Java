@@ -58,6 +58,7 @@ public class CategoryServiceImplement implements CategoryService {
     public Category addCategory(AddCategoryDTO category) {
         Category cate = Category.builder()
                 .name(category.getName())
+                .fashion(category.getFashion())
                 .build();
         categoryReponsitory.save(cate);
         return cate;

@@ -24,6 +24,9 @@ public class Category extends AbstractEntity {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    @Column(name = "fashion", nullable = false)
+    private String fashion;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 

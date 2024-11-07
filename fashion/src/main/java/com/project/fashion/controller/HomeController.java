@@ -50,7 +50,7 @@ public class HomeController {
             model.addAttribute("categories", categories);
 
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Không thể tải sản phẩm. Vui lòng thử lại sau.");
+            model.addAttribute("errorMessage", e.getMessage());
         }
 
         return "home";
@@ -62,12 +62,12 @@ public class HomeController {
             Category category = categoryServiceImplement.getCategory(categoryId);
             model.addAttribute("categories", category);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Không thể tải sản phẩm. Vui lòng thử lại sau.");
+            model.addAttribute("errorMessage", e.getMessage());
         }
         return "home";
     }
 
-    @GetMapping("/{categoryId}/filter")
+    @GetMapping("/filter/{categoryId}")
     public String homeCategoryByPrice(Model model, @PathVariable Long categoryId, @RequestParam("low") Long low,
             @RequestParam("hight") Long hight) {
         try {
@@ -78,7 +78,22 @@ public class HomeController {
 
             model.addAttribute("categories", filter);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Không thể tải sản phẩm. Vui lòng thử lại sau.");
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "home";
+    }
+
+    @GetMapping("/search")
+    public String homeSearch(Model model, @RequestParam("key") String keyword) {
+        try {
+
+            List<Product> products = productServiceImplement.findByKeyWord(keyword);
+
+            FilterResponse filter = new FilterResponse("Kết qur tìm kiếm", products);
+
+            model.addAttribute("categories", filter);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
         }
         return "home";
     }
