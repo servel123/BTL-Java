@@ -128,7 +128,7 @@ public class PaymentController {
         // chờ xử lý sét trạng thái đã thanh toán cho đơn hàng khi mã code nhận về là 00
         model.addAttribute("trancode", trancode);
         model.addAttribute("amount", amount);
-        return "result";
+        return "vpn_return";
     }
 
 }

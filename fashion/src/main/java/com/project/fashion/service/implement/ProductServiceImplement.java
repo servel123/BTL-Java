@@ -59,10 +59,10 @@ public class ProductServiceImplement implements ProductService {
 
     // get product by price
     @Override
-    public List<Product> getProductByCategoryAndByPrice(Long categoryId, Long priceLow, Long priceHight) {
-        List<Product> products = productRepository.findByPriceBetweenAndCategory_CategoryId(categoryId, priceLow,
-                priceHight);
-        if (products.size() == 0) {
+    public List<Product> getProductByCategoryAndByPrice(Long priceLow, Long priceHight, Long categoryId) {
+        List<Product> products = productRepository.findByPriceBetweenAndCategory_CategoryId(priceLow,
+                priceHight, categoryId);
+        if (products.isEmpty()) {
             String message = "Not product have price between " + priceLow + " and " + priceHight;
             throw new ResourceNotFoundException(message);
         }
