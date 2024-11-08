@@ -23,6 +23,7 @@ public class AdminDashboardController {
         } catch (Exception e) {
             model.addAttribute("errRevenue", "Error revenue");
         }
+
         try {
             // số lượng đơn hàng từng tháng trong năm
             List<Object[]> billByMonth = dashboardService.getOrderLineCountByMonth(0);
@@ -30,6 +31,7 @@ public class AdminDashboardController {
         } catch (Exception e) {
             model.addAttribute("errBillByMonth", "Error Bill By Month");
         }
+
         try {
             // tông số sản phẩm theo từng danh mục
             List<Object[]> totalProductByCategory = dashboardService.getAmountByCategory();
@@ -37,12 +39,14 @@ public class AdminDashboardController {
         } catch (Exception e) {
             model.addAttribute("errTotalProduct", "Error Total Product");
         }
+
         try {
             List<Object[]> totalProductSoldByCategory = dashboardService.getCategorySold();
             model.addAttribute("totalProductSoldByCategory", totalProductSoldByCategory);
         } catch (Exception e) {
             model.addAttribute("errTotalProductSold", "Error Total Product Sold");
         }
+
         try {
             // doanh thu mỗi tháng của năm
             List<Object[]> revenueByMonth = dashboardService.getRevenueByMonth(0);
@@ -50,6 +54,11 @@ public class AdminDashboardController {
         } catch (Exception e) {
             model.addAttribute("errRevenueByMonth", "Error Revenue By Month");
         }
+<<<<<<< HEAD
         return "adminLayout/dashboard";
+=======
+
+        return "dashboard";
+>>>>>>> 10c4dd452b85b14890783b4fc2641f5358f101f4
     }
 }
