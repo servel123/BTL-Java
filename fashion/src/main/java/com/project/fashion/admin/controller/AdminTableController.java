@@ -19,7 +19,7 @@ import com.project.fashion.dto.request.AddProductDTO;
 import com.project.fashion.model.*;
 import com.project.fashion.service.implement.CategoryServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
-import com.project.fashion.service.implement.PaymentServiceImplement;
+//import com.project.fashion.service.implement.PaymentServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
 import jakarta.validation.Valid;
@@ -31,7 +31,7 @@ public class AdminTableController {
     private CustomerServiceImplement customerServiceImplement;
     private ProductServiceImplement productServiceImplement;
     private CategoryServiceImplement categoryServiceImplement;
-    private PaymentServiceImplement paymentServiceImplement;
+    // private PaymentServiceImplement paymentServiceImplement;
 
     // CUSTOMER
     @GetMapping("/customer")
@@ -164,25 +164,26 @@ public class AdminTableController {
     }
 
     // PAYMENT
-    @GetMapping("/payment")
-    public String adminTablePayment(Model model) {
-        try {
-            List<Payment> payments = paymentServiceImplement.getAllPayment();
-            model.addAttribute("payments", payments);
-        } catch (Exception e) {
-            model.addAttribute("errPayment", "error get payments");
-        }
-        return "tablePayment";
-    }
+    // @GetMapping("/payment")
+    // public String adminTablePayment(Model model) {
+    // try {
+    // List<Payment> payments = paymentServiceImplement.getAllPayment();
+    // model.addAttribute("payments", payments);
+    // } catch (Exception e) {
+    // model.addAttribute("errPayment", "error get payments");
+    // }
+    // return "tablePayment";
+    // }
 
-    @DeleteMapping("/payment/{paymentId}")
-    public String adminDeletePayment(@Valid @PathVariable Long paymentId, Model model) {
-        try {
-            paymentServiceImplement.deletePayment(paymentId);
-        } catch (Exception e) {
-            model.addAttribute("errPayment", "error get payment");
-        }
-        return "tablePayment";
-    }
+    // @DeleteMapping("/payment/{paymentId}")
+    // public String adminDeletePayment(@Valid @PathVariable Long paymentId, Model
+    // model) {
+    // try {
+    // paymentServiceImplement.deletePayment(paymentId);
+    // } catch (Exception e) {
+    // model.addAttribute("errPayment", "error get payment");
+    // }
+    // return "tablePayment";
+    // }
 
 }

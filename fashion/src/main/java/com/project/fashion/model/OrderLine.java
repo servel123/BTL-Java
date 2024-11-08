@@ -28,6 +28,9 @@ public class OrderLine extends AbstractEntity {
     @JoinColumn(name = "paymentId", nullable = false)
     private Payment payment;
 
+    @Column(name = "tranCode")
+    private String tranCode;
+
     @Column(name = "status")
     private String status;
 
