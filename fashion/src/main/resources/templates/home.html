@@ -4,7 +4,7 @@
       layout:decorate="~{base}">
 
 <head>
-    <title>Home</title>
+    <title>Trang chủ</title>
     <link rel="stylesheet" th:href="@{/css/home.css}" />
 </head>
 
@@ -20,7 +20,7 @@
             </div>
             <div class="display_main_content" th:each="category : ${categories}">
                 <div class="direction">
-                    <h2>Hot <span th:text="${category.name}"></span></h2>
+                    <h2>Các sản phẩm <span th:text="${category.name}"></span> nổi bật</h2>
                     <div class="btn_move">
                         <i class="fa-solid fa-arrow-left pop_left"></i>
                         <i class="fa-solid fa-arrow-right pop_right"></i>
@@ -36,7 +36,7 @@
                         <h5 th:text="${product.price}" class="price_of_product"></h5>
                         <div class="play-btn">
                             <!--Cần sửa sau khi thêm chức năng-->
-                            <span>Add to cart</span>
+                            <span>Thêm vào giỏ hàng</span>
                         </div>
                     </a>
                 </div>

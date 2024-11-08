@@ -63,7 +63,7 @@ public class CustomerController {
             CustomerDetailResponse cus = authen.authen();
             cusRequestDTO.setCustomerId(cus.getCustomerId());
             customerServiceImplement.updateCustomer(cusRequestDTO);
-            redirectAttributes.addFlashAttribute("message", "Update Successfully");
+            redirectAttributes.addFlashAttribute("message", "Cập nhật thành công");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }

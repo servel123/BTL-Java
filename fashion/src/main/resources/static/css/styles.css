@@ -62,7 +62,7 @@ body::-webkit-scrollbar {
 
 .navigate .content .fixed-nav {
     display: grid;
-    grid-template-columns: 2fr 5.5fr 2.5fr;
+    grid-template-columns: 1.5fr 5fr 2.5fr;
     padding: 25px 0 0;
     width: 100%;
 }
@@ -142,7 +142,7 @@ body::-webkit-scrollbar {
     height: 70%;
     width: 2px;
     background-color: #000;
-    margin: 0 10%;
+    margin: 0 5%;
 }
 
 .navigate .content .fixed-nav .displayUI .unauthUI .cart_nav {

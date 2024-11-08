@@ -61,7 +61,7 @@ public class ProductController {
             cartServiceImplement.addProductToCart(cus.getCustomerId(), productId, quantity);
             Product product = productServiceImplement.getDetailProduct(productId);
             List<Product> relatedProducts = productServiceImplement.getAllProductByCategory(product.getCategory());
-            model.addAttribute("message", "Add Product Successfully");
+            model.addAttribute("message", "Thêm sản phẩm thành công");
             model.addAttribute("product", product);
             model.addAttribute("relatedProducts", relatedProducts);
             Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(cus.getCustomerId());

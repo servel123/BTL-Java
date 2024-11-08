@@ -19,6 +19,7 @@ import com.project.fashion.dto.request.CreateCustomerDTO;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -40,15 +41,15 @@ public class RegisterController {
     @PostMapping
     public String register(@Valid @ModelAttribute("customer") CreateCustomerDTO createCustomerDTO,
             BindingResult result,
-            Model model) {
+            Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("error", createCustomerDTO.getEmail());
             return "register";
         }
         try {
             customerServiceImplement.addCustomer(createCustomerDTO);
-            model.addAttribute("messageSuccess", "Successfully");
-            return "login";
+            redirectAttributes.addFlashAttribute("messageSuccess", "Đăng ký thành công");
+            return "redirect:/login";
         } catch (Exception e) {
             model.addAttribute("error", e);
             return "register";
