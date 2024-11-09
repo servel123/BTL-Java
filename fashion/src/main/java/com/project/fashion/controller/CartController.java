@@ -2,11 +2,12 @@ package com.project.fashion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,11 +17,13 @@ import com.project.fashion.dto.request.AddOrderLineDTO;
 import com.project.fashion.dto.request.AddPaymentDTO;
 import com.project.fashion.dto.request.ListCartCreateBillDTO;
 import com.project.fashion.dto.response.CustomerDetailResponse;
+
 import com.project.fashion.model.Cart;
 import com.project.fashion.model.Customer;
 
 import com.project.fashion.model.OrderLine;
 import com.project.fashion.model.Payment;
+
 import com.project.fashion.service.implement.CartServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.OrderItemServiceImplement;
@@ -29,9 +32,11 @@ import com.project.fashion.service.implement.PaymentServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Slf4j
 @Controller
 @RequestMapping("/user/cart")
 public class CartController {
@@ -61,7 +66,7 @@ public class CartController {
     }
 
     @GetMapping
-    public String renderShowCart(Model model) {
+    public String renderShowCart(Model model, HttpSession session) {
         try {
             List<Cart> productOfUser = cartServiceImplement.getCartByCustomerId(authen.authen().getCustomerId());
             model.addAttribute("pOU", productOfUser);
@@ -69,6 +74,7 @@ public class CartController {
             if (productOfUser.isEmpty())
                 model.addAttribute("messInfo", "No products");
             model.addAttribute("price", price);
+            log.info("\n\n\n" + session.getAttribute("username") + "\n\n\n");
             model.addAttribute("createBill", new ListCartCreateBillDTO());
         } catch (Exception e) {
             model.addAttribute("message", "Not Product");
@@ -96,55 +102,51 @@ public class CartController {
         }
     }
 
-    @PostMapping("/bill")
-    public String createBill(Model model, @RequestParam("paymentMethod") String method) {
-        // thông tin user
-        Customer customer = customerServiceImplement.getCustomerById(authen.authen().getCustomerId());
-        AddPaymentDTO addPaymentDTO = new AddPaymentDTO();
+    @GetMapping("/bill/off")
+    @Transactional
+    public String createBill(RedirectAttributes redirectAttributes, HttpSession session) {
 
+        Customer customer = customerServiceImplement.getCustomerById(authen.authen().getCustomerId());
+        Payment payment = new Payment();
         try {
-            // kiểm tra người dùng đã có method thanh toán đó chưa nếu chư có sẽ ném ra
-            // exception
-            Payment pay = paymentServiceImplement.getPaymentByMethodOfCustomer(customer.getCustomerId(), method);
-            addPaymentDTO.setCustomerId(pay.getCustomer().getCustomerId());
-            addPaymentDTO.setMethod(pay.getPaymentMethod());
-            addPaymentDTO.setPaymentId(pay.getPaymentId());
+            payment = paymentServiceImplement.getPaymentByMethodOfCustomer(customer.getCustomerId(), "OFFLINE");
+            log.error("\n da co loi", payment);
         } catch (Exception e) {
-            // chưa có thì ta sét method đó để lưu
-            addPaymentDTO.setCustomerId(customer.getCustomerId());
-            addPaymentDTO.setMethod(method);
-            paymentServiceImplement.addPayment(addPaymentDTO);
+            AddPaymentDTO pay = new AddPaymentDTO();
+            pay.setCustomerId(customer.getCustomerId());
+            pay.setMethod("OFFLINE");
+            payment = paymentServiceImplement.addPayment(pay);
+            log.error("\n chua co ", payment);
         }
         try {
+            // yêu cầu bill
+            AddOrderLineDTO bill = new AddOrderLineDTO();
+            bill.setPaymentId(payment.getPaymentId());
+            bill.setStatus("NOT_YET_PAID");
+            bill.setTranCode("");
+            // lưu bill vào csdl
+            log.info("\n0");
 
-            // yêu cầu hóa đơn tạo hóa đơn
-            AddOrderLineDTO addOrderLineDTO = new AddOrderLineDTO();
-            addOrderLineDTO.setPaymentId(addOrderLineDTO.getPaymentId());
-            // trạng thái chưa thanh toán
-            addOrderLineDTO.setStatus("NOT_YET_PAID");
-
-            // tạo hóa đơn
-            OrderLine orderLine = orderLineServiceImplement.addOrderLine(addOrderLineDTO);
-
-            // lưu danh sách mặt hàng của hóa đơn
-            orderItemServiceImplement.addOrderItemByOrderLine(orderLine.getOrderLineId(), customer.getCarts());
-
-            // xóa những sản phẩm đã mua khỏi giỏ hàng
+            OrderLine order = orderLineServiceImplement.addOrderLine(bill);
+            log.info("\n1");
+            List<Cart> carts = customer.getCarts();
+            // lưu sản phầm vào orderitem
+            orderItemServiceImplement.addOrderItemByOrderLine(order.getOrderLineId(), carts);
+            log.info("\n2");
+            // cập nhập số lượng còn
             productServiceImplement.subtractionStock(customer);
-            cartServiceImplement.deleteCartByCustomerId(customer.getCustomerId());
-            model.addAttribute("messageCreateBillSuccess", "Order Successfully");
-
-            // trả về trang home với trạng thái thanh toán
-            if (method == "ONLINE") {
-                Long total = calculateTotal(cartServiceImplement.getCartByCustomerId(customer.getCustomerId()));
-                return "redirect:/payment?amount=" + total;
-            } else {
-                return "redirect:/user/home";
-            }
+            // // loại bỏ các sản phẩm đã mua
+            // log.info("\n3");
+            // cartServiceImplement.deleteCartByCustomerId(customer.getCustomerId());
+            // Integer countOfProducts =
+            // cartServiceImplement.getCountProductsInCustomerCart(customer.getCustomerId());
+            // session.setAttribute("countProductsInCart", countOfProducts);
         } catch (Exception e) {
-            model.addAttribute("messageErrorCreateBill", e.getMessage());
+            log.info("\n ERROR: " + e.getMessage());
             return "redirect:/user/cart";
         }
+
+        return "redirect:/user";
     }
 
     // delete product
@@ -176,6 +178,6 @@ public class CartController {
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
-        return "cart";
+        return "redirect:/user/cart";
     }
 }

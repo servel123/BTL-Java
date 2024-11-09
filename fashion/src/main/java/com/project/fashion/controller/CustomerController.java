@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project.fashion.dto.request.CusModifyInfo;
 import com.project.fashion.dto.response.CustomerDetailResponse;
-
 import com.project.fashion.model.OrderLine;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.OrderLineServiceImplement;
@@ -47,6 +46,7 @@ public class CustomerController {
             CustomerDetailResponse cus = authen.authen();
             List<OrderLine> orderLines = orderLineServiceImplement.getOrderLinesOfCustomer(cus.getCustomerId());
             model.addAttribute("bills", orderLines);
+
             model.addAttribute("cusModify", new CusModifyInfo());
         } catch (Exception e) {
             model.addAttribute("errorBill", e.getMessage());

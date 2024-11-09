@@ -25,7 +25,9 @@ public class OrderLineServiceImplement implements OrderLineService {
 
     @Autowired
     private OrderLineReponsitory orderLineReponsitory;
+    @Autowired
     private PaymentServiceImplement paymentServiceImplement;
+    @Autowired
     private CustomerServiceImplement customerServiceImplement;
 
     protected OrderLine getOrderLineById(Long orderLineId) {
@@ -41,6 +43,7 @@ public class OrderLineServiceImplement implements OrderLineService {
         OrderLine orderLine = OrderLine.builder()
                 .payment(pay)
                 .status(payment.getStatus())
+                .tranCode((payment.getTranCode()))
                 .build();
         orderLineReponsitory.save(orderLine);
         return orderLine;

@@ -26,13 +26,13 @@ public class OrderItemServiceImplement implements OrderItemService {
 
     @Autowired
     private OrderItemReponsitory orderItemReponsitory;
-
-    private OrderLineServiceImplement orderLineServiceImplement;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private OrderLineReponsitory orderLineRepository;
 
+    @Autowired
+    private OrderLineServiceImplement orderLineServiceImplement;
     // create
 
     @Override

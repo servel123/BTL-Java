@@ -38,7 +38,7 @@ public class CustomerServiceImplement implements CustomerService, UserDetailsSer
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
-    private final CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     public Customer getCustomerById(Long customerId) {
         return customerRepository.findById(customerId)

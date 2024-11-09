@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.fashion.dto.request.AddPaymentDTO;
 import com.project.fashion.exception.ResourceNotFoundException;
+import com.project.fashion.model.Customer;
 import com.project.fashion.model.Payment;
 import com.project.fashion.repository.PaymentReponsitory;
 import com.project.fashion.service.PaymentService;
@@ -19,11 +20,13 @@ import com.project.fashion.service.PaymentService;
  *
  * @author Vu
  */
+
 @Service
 public class PaymentServiceImplement implements PaymentService {
 
     @Autowired
     private PaymentReponsitory paymentReponsitory;
+    @Autowired
     private CustomerServiceImplement customerServiceImplement;
 
     protected Payment getPaymentById(Long paymentId) {
@@ -33,8 +36,11 @@ public class PaymentServiceImplement implements PaymentService {
 
     @Override
     public Payment addPayment(AddPaymentDTO payment) {
+
+        Customer cus = customerServiceImplement.getCustomerById(payment.getCustomerId());
+
         Payment pay = Payment.builder()
-                .customer(customerServiceImplement.getCustomerById(payment.getCustomerId()))
+                .customer(cus)
                 .paymentMethod(payment.getMethod())
                 .build();
         paymentReponsitory.save(pay);

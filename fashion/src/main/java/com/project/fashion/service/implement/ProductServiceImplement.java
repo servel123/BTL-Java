@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 public class ProductServiceImplement implements ProductService {
 
     @Autowired
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     protected Product getProductById(Long productId) {
         return productRepository.findById(productId)
