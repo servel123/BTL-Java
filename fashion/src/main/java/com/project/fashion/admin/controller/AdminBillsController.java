@@ -20,7 +20,7 @@ public class AdminBillsController {
         try {
             List<OrderLine> bills = billingService.getAllOrderLine();
             model.addAttribute("bills", bills);
-            return "bills";
+            return "adminLayout/adminBills";
         } catch (Exception e) {
             model.addAttribute("message", "get bills failed");
             return "redirect:/admin/dashboard";

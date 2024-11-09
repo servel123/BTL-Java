@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout/adminBase}">
+    <head>
+        <title>Quản lý đơn hàng</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+    </head>
+    <body>
+        <main layout:fragment="main-content">
+            <table class="general-table">
+                <thead>
+                    <tr>
+                        <th>Mã hóa đơn</th>
+                        <th>Ngày tạo</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái thanh toán</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>INV001</td>
+                        <td>2023-05-01</td>
+                        <td>$500.00</td>
+                        <td>Đã thanh toán</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

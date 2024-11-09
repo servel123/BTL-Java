@@ -1,8 +1,3 @@
-.main-container{
-    grid-area: main;
-    overflow-y: auto;
-    padding: 20px;
-}
 .main-cards{
     display: grid;
     grid-template-columns: 0.4fr 1fr;
