@@ -14,8 +14,11 @@ public interface OrderLineReponsitory extends JpaRepository<OrderLine, Long> {
             "WHERE YEAR(o.createdAt) = :year " +
             "GROUP BY MONTH(o.createdAt) " +
             "ORDER BY month")
-    List<Object[]> countOrderLineByMonth(@Param("year") int year);
+    List<Object[]> countOrderLineByMonth(int year);
 
     @Query("SELECT o FROM OrderLine o WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month")
     List<OrderLine> findOrderLineByMonth(@Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT o FROM OrderLine o WHERE YEAR(o.createdAt) = :year")
+    List<OrderLine> findOrderLinesByYear(@Param("year") int year);
 }

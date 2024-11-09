@@ -100,6 +100,7 @@ public class ProductServiceImplement implements ProductService {
                 .image(product.getImage())
                 .name(product.getName())
                 .stock(product.getStock())
+                .originalprice(product.getOriginalprice())
                 .build();
         productRepository.save(pdt);
         return pdt;
@@ -127,6 +128,9 @@ public class ProductServiceImplement implements ProductService {
             }
             if (product.getPrice() != null) {
                 pdt.setPrice(product.getPrice());
+            }
+            if (product.getOriginalprice() != null) {
+                pdt.setPrice(product.getOriginalprice());
             }
             if (product.getStock() >= 0) {
                 pdt.setStock(product.getStock());

@@ -35,6 +35,8 @@ public class Product extends AbstractEntity {
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private Long price;
 
+    @Column(name = "originalprice", nullable = false)
+    private Long originalprice;
     @Column(name = "stock", nullable = false)
     private Integer stock;
 

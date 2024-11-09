@@ -18,5 +18,6 @@ public class AddProductDTO {
     private Category category;
     private int stock;
     private Long price;
+    private Long originalprice;
 
 }

@@ -2,6 +2,7 @@ package com.project.fashion.admin.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,8 +29,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/table")
 public class AdminTableController {
 
+    @Autowired
     private CustomerServiceImplement customerServiceImplement;
+    @Autowired
     private ProductServiceImplement productServiceImplement;
+    @Autowired
     private CategoryServiceImplement categoryServiceImplement;
     // private PaymentServiceImplement paymentServiceImplement;
 

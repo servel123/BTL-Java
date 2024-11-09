@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Controller
 @RequestMapping("/")
@@ -53,7 +55,8 @@ public class HomeController {
         try {
             List<Category> categories = categoryServiceImplement.getCategories();
             model.addAttribute("categories", categories);
-
+            int currentYear = LocalDate.now().getYear();
+            session.setAttribute("year", currentYear);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
