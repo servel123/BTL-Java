@@ -72,7 +72,7 @@ public class CartController {
             model.addAttribute("pOU", productOfUser);
             Long price = calculateTotal(productOfUser);
             if (productOfUser.isEmpty())
-                model.addAttribute("messInfo", "No products");
+                model.addAttribute("messInfo", "Không có sản phẩm");
             model.addAttribute("price", price);
             log.info("\n\n\n" + session.getAttribute("username") + "\n\n\n");
             model.addAttribute("createBill", new ListCartCreateBillDTO());
@@ -160,9 +160,9 @@ public class CartController {
             cartServiceImplement.removeProductFromCart(cartId);
             int cartAfterDel = (int) session.getAttribute("countProductsInCart") - 1;
             session.setAttribute("countProductsInCart", cartAfterDel);
-            redirectAttributes.addFlashAttribute("message", "Delete Successfully");
+            redirectAttributes.addFlashAttribute("message", "Xóa thành công");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Error while trying to remove product");
+            redirectAttributes.addFlashAttribute("message", "Đã xảy ra lỗi trong khi đang thực hiện");
         }
         return "redirect:/user/cart";
     }

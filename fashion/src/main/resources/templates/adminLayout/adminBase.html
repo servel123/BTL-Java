@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" th:href="@{/css/adminStyle/adminBase.css}"/>
+        
+    </head>
+    <body>
+        <div class="grid-container sidebar-active">
+            <header class="header">
+                <i class="fa-solid fa-bars ic" onclick="openSidebar()"></i>
+                <div class="admin-setting">
+                    <i class="fa-regular fa-circle-user"></i>
+                    <span>Admin</span>
+                </div>
+            </header>
+            <aside id="sidebar" class="sidebar-display">
+                <div class="sidebar-title">
+                    <div class="sidebar-brand">
+                        <img src="https://cdn.pixabay.com/photo/2022/09/27/19/46/ai-generated-7483596_960_720.jpg" alt="logo" />
+                        <span>Fashion</span>
+                    </div>
+                    <i class="fa-solid fa-xmark ic" onclick="closeSidebar()"></i>
+                </div>
+                <ul class="sidebar-list">
+                    <li class="sidebar-list-item">
+                        <i class="fa-solid fa-table"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>Sản phẩm</span>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <i class="fa-solid fa-layer-group"></i> 
+                        <span>Danh mục</span>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <i class="fa-solid fa-user"></i> 
+                        <span>Người dùng</span>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <i class="fa-solid fa-file-invoice"></i> 
+                        <span>Đơn hàng</span>
+                    </li>
+                </ul>
+            </aside>
+            <main layout:fragment="main-content"></main>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            function openSidebar(){
+                $("#sidebar").addClass("sidebar-display");
+                $(".grid-container").addClass("sidebar-active");
+            }
+            function closeSidebar(){
+                $("#sidebar").removeClass("sidebar-display");
+                $(".grid-container").removeClass("sidebar-active");
+            }
+        </script>
+        <script layout:fragment="alter-lib"></script>
+        <script layout:fragment="scripting"></script>
+    </body>
+</html>

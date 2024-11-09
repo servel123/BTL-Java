@@ -55,6 +55,6 @@ public class AdminDashboardController {
             model.addAttribute("errRevenueByMonth", "Error Revenue By Month");
         }
 
-        return "dashboard";
+        return "adminLayout/dashboard";
     }
 }

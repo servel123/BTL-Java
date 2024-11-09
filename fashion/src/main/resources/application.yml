@@ -14,7 +14,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/fashion
     username: root
-    password:
+    password: 
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
