@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Redirect</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" 
-          crossorigin="anonymous" 
-          referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/vpn_return.css}">
 </head>
+
 <body>
-    <div class="container" th:if="${trancode == '00'}">
+    <div class="container" th:if="${code == '00'}">
         <div class="success-icon icon"><i class="fa-solid fa-check"></i></div>
-        <div class="status-notice">Thanh toán thành công</div>
-        <div class="payment-code">Mã số thanh toán của bạn là <span>PAY5256788</span></div>
-        <div class="payment-detail-redirect">Bạn có thể xem trạng thái đơn hàng trong <a th:href="@{/user}">Trang cá nhân</a></div>
+        <div class="status-notice">Thanh toán thành công <span th:text="${amount}"></span>VND</div>
+        <div class="payment-code">Mã số thanh toán của bạn là <span th:text="${trancode}"></span></div>
+        <div class="payment-detail-redirect">Bạn có thể xem trạng thái đơn hàng trong <a th:href="@{/user}">Trang cá
+                nhân</a></div>
         <a th:href="@{/}" class="btn">Tiếp tục mua hàng</a>
     </div>
-    <div class="container" th:unless="${trancode == '00'}">
+    <div class="container" th:if="${code != '00'}">
         <div class="error-icon icon"><i class="fa-solid fa-x"></i></div>
         <div class="status-notice error">Thanh toán thất bại</div>
         <div class="error-info">Đã có lỗi xảy ra</div>
         <a th:href="@{/user/cart}" class="btn">Quay lại giỏ hàng</a>
     </div>
 </body>
+
 </html>

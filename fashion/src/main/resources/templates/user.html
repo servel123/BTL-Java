@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
 
 <head>
     <title>Thông tin cá nhân</title>
@@ -25,8 +24,7 @@
                         </div>
                         <div class="name-group">
                             <label>Họ</label>
-                            <input type="text" name="lastName"
-                                th:value="${info.lastName != null ? info.lastName: ''}">
+                            <input type="text" name="lastName" th:value="${info.lastName != null ? info.lastName: ''}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -39,8 +37,7 @@
                     </div>
                     <div class="form-group">
                         <label>Địa chỉ</label>
-                        <input type="text" name="address"
-                            th:value="${info.address != null ? info.address: ''}">
+                        <input type="text" name="address" th:value="${info.address != null ? info.address: ''}">
                     </div>
                     <div class="form-group">
                         <label>Số điện thoại</label>
@@ -56,30 +53,36 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Ngày</th>
                                 <th>Mã giao dịch</th>
-                                <th>Tổng cộng</th>
-                                <th>Trạng thái</th>
+                                <th>Ngày</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái thanh toán</th>
                             </tr>
                         </thead>
                         <tbody th:if="!${bills}">
                             <tr>
-                                <td colspan="4" class='empty-transact'>Chưa có giao dịch nào được thực hiện</td>
+                                <td colspan="5" class='empty-transact'>Chưa có giao dịch nào được thực hiện</td>
                             </tr>
                         </tbody>
                         <tbody>
                             <tr th:each="bill : ${bills}">
+                                <td th:text="${bill.tranCode}"></td>
                                 <td th:text="${bill.createdAt}"></td>
-                                <td th:text="${bill.payment.paymentId}"></td>
-                                <td></td>
-                                <td th:text="${bill.status}"></td>
-                            </tr>                        
+                                <td th:text="${bill.payment.paymentMethod}"></td>
+                                <td th:text="${bill.totalMoney()}" class="total"></td>
+                                <td>
+                                    <span th:if="${bill.status == 'NOT_YET_PAID'}">Chưa thanh toán</span>
+                                    <span th:if="${bill.status == 'PAID'}">Đã thanh toán</span>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
+    <script layout:fragment="using_script" th:src="@{/js/product.js}"></script>
 </body>
 
 </html>

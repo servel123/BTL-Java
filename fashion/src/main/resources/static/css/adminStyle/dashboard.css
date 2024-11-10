@@ -1,6 +1,5 @@
 .main-cards{
-    display: grid;
-    grid-template-columns: 0.4fr 1fr;
+    display: flex;
     gap: 20px;
     margin: 35px 0;
  }
@@ -16,6 +15,9 @@
 .main-cards .card:first-child{
     background-color: #008ECC;
 }
+.main-cards .card:last-child{
+    background-color: #ff6d00;
+}
 .main-cards .card .card-inner{
     display: flex;
     align-items: center;
@@ -23,9 +25,15 @@
 }
 .main-cards .card .card-inner i{
     font-size: 45px;
-    padding: 10px;
-    background-color: #0172A4;
     border-radius: 50%;
+}
+.main-cards .card:first-child .card-inner i{
+    padding: 10px 20px;
+    background-color: #0172A4;
+}
+.main-cards .card:last-child .card-inner i{
+    padding: 10px;
+    background-color: #D15900;
 }
 .main-container .charts{
     display: grid;

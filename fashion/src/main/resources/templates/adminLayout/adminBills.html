@@ -6,28 +6,44 @@
         <title>Quản lý đơn hàng</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+        <link rel="stylesheet" th:href="@{/css/adminStyle/tableStyle.css}">
     </head>
     <body>
         <main layout:fragment="main-content">
+            <div class="main-title">
+                <h2>Các đơn hàng</h2>
+            </div>
             <table class="general-table">
                 <thead>
                     <tr>
-                        <th>Mã hóa đơn</th>
-                        <th>Ngày tạo</th>
+                        <th>ID</th>
+                        <th>Mã giao dịch</th>
+                        <th>Ngày</th>
+                        <th>Phương thức thanh toán</th>
                         <th>Tổng tiền</th>
                         <th>Trạng thái thanh toán</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody th:if="!${bills}">
                     <tr>
-                        <td>INV001</td>
-                        <td>2023-05-01</td>
-                        <td>$500.00</td>
-                        <td>Đã thanh toán</td>
+                        <td colspan="5" class='empty-transact'>Không có đơn hàng nào</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr th:each="bill : ${bills}">
+                        <td th:text="${bill.orderLineId}"></td>
+                        <td th:text="${bill.tranCode}"></td>
+                        <td th:text="${bill.createdAt}"></td>
+                        <td th:text="${bill.payment.paymentMethod}"></td>
+                        <td th:text="${bill.totalMoney()}" class="total"></td>
+                        <td>
+                            <span th:if="${bill.status == 'NOT_YET_PAID'}" class="badge badge-danger">Chưa thanh toán</span>
+                            <span th:if="${bill.status == 'PAID'}" class="badge badge-success">Đã thanh toán</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </main>
+        <script layout:fragment="scripting" th:src="@{/js/adminJS/tableJS.js}"></script>
     </body>
 </html>

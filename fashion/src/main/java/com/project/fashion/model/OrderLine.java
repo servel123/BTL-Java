@@ -41,4 +41,12 @@ public class OrderLine extends AbstractEntity {
     public String toString() {
         return "OrderLine: " + orderLineId + " " + payment;
     }
+
+    public Long totalMoney() {
+        Long total = Long.valueOf(0);
+        for (OrderItem item : orderItems) {
+            total += item.getQuantity() * item.getProduct().getPrice();
+        }
+        return total;
+    }
 }

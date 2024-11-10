@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout/adminBase}">
+    <head>
+        <title>Quản lý danh mục</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/css/adminStyle/tableStyle.css}">
+    </head>
+    <body>
+        <main layout:fragment="main-content">
+            <script th:if="${message}">
+                alert('[[${message}]]');
+            </script>
+            <div class="main-title add">
+                <h2>Danh sách các danh mục</h2>
+                <button class="btn btn-add"><i class="fa-solid fa-plus"></i>Thêm danh mục</button>
+            </div>
+            <table class="general-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Phân loại</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày cập nhật gần nhất</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="category : ${categories}">
+                        <td th:text="${category.categoryId}"></td>
+                        <td th:text="${category.name}"></td>
+                        <td th:text="${category.fashion}"></td>
+                        <td th:text="${category.createdAt}"></td>
+                        <td th:text="${category.updatedAt}"></td>
+                        <td>
+                            <button class="btn btn-edit">Sửa</button>
+                            <button class="btn btn-delete">Xóa</button>
+                            <div class="modal editModal">
+                                <div class="modal-content">
+                                    <form th:action="@{/admin/category/{categoryId}(categoryId=${category.categoryId})}" th:method="patch">
+                                        <h3>Sửa đổi thông tin của danh mục</h3>
+                                        <div class="form-group">
+                                            <label for="name">Tên danh mục:</label>
+                                            <input type="text" name="name" th:value="${category.name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fashion">Phân loại:</label>
+                                            <input type="text" name="fashion" th:value="${category.fashion}">
+                                        </div>
+                                        <div class="button-group">
+                                            <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+                                            <button type="button" class="btn btn-cancel edit">Hủy</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal confirmModal">
+                                <div class="modal-content">
+                                    <form th:action="@{/admin/category/{categoryId}(categoryId=${category.categoryId})}" th:method="delete">
+                                        <label>Bạn có chắc chắn muốn xóa danh mục này?</label>
+                                        <div class="button-group">
+                                            <button type="submit" class="btn btn-save">Xác nhận</button>
+                                            <button type="button" class="btn btn-cancel confirm">Hủy</button>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+        <script layout:fragment="scripting" th:src="@{/js/adminJS/tableJS.js}"></script>
+    </body>
+</html>

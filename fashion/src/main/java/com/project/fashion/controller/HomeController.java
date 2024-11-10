@@ -9,6 +9,8 @@ import com.project.fashion.service.implement.CategoryServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
+import java.time.LocalDate;
+
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class HomeController {
@@ -40,6 +45,8 @@ public class HomeController {
             CustomerDetailResponse user = authen.authen();
             Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(user.getCustomerId());
             session.setAttribute("countProductsInCart", countOfProducts);
+            session.setAttribute("username", user.getUsername());
+            log.info("\n\n\n" + session.getAttribute("username") + "\n\n\n");
             model.addAttribute("user", user);
         } catch (Exception e) {
             model.addAttribute("user", null);
@@ -48,7 +55,8 @@ public class HomeController {
         try {
             List<Category> categories = categoryServiceImplement.getCategories();
             model.addAttribute("categories", categories);
-
+            int currentYear = LocalDate.now().getYear();
+            session.setAttribute("year", currentYear);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }

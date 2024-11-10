@@ -19,5 +19,5 @@ public interface CartReponsitory extends JpaRepository<Cart, Long> {
 
     Integer countByCustomer_CustomerId(Long customerId);
 
-    void deleteByCustomer_CustomerId(Long customerId);
+    void deleteAllByCustomer_CustomerId(Long customerId);
 }

@@ -8,6 +8,7 @@ import com.project.fashion.config.PaymentConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -16,23 +17,50 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.project.fashion.dto.request.AddOrderLineDTO;
+import com.project.fashion.dto.request.AddPaymentDTO;
 import com.project.fashion.dto.response.PaymentResDTO;
+
+import com.project.fashion.model.Cart;
+import com.project.fashion.model.Customer;
+import com.project.fashion.model.OrderLine;
+import com.project.fashion.model.Payment;
+
+import com.project.fashion.service.implement.CustomerServiceImplement;
+import com.project.fashion.service.implement.OrderItemServiceImplement;
+import com.project.fashion.service.implement.OrderLineServiceImplement;
+import com.project.fashion.service.implement.PaymentServiceImplement;
+import com.project.fashion.service.implement.ProductServiceImplement;
 
 /**
  *
  * @author Vu
  */
+@Slf4j
 @Controller
 @RequestMapping("/payment")
 public class PaymentController {
+
+    @Autowired
+    private CustomerServiceImplement customerServiceImplement;
+    @Autowired
+    private PaymentServiceImplement paymentServiceImplement;
+    @Autowired
+    private OrderLineServiceImplement orderLineServiceImplement;
+    @Autowired
+    private OrderItemServiceImplement orderItemServiceImplement;
+    @Autowired
+    private ProductServiceImplement productServiceImplement;
 
     @GetMapping
     public String createPayment(HttpServletRequest req, HttpServletResponse resp,
@@ -120,14 +148,52 @@ public class PaymentController {
     }
 
     @GetMapping("/result")
+    @Transactional
     public String resultPayment(@RequestParam("vnp_Amount") Long amount,
             @RequestParam("vnp_ResponseCode") String code,
             @RequestParam("vnp_TxnRef") String trancode,
             HttpSession session,
             Model model) {
-        // chờ xử lý sét trạng thái đã thanh toán cho đơn hàng khi mã code nhận về là 00
+        Customer customer = customerServiceImplement.getCustomerByUsername(session.getAttribute("username").toString());
+        log.info("\n\n\n ohhhh: " + session.getAttribute("username") + "\n\n\n");
+        Payment payment = new Payment();
+        try {
+
+            payment = paymentServiceImplement.getPaymentByMethodOfCustomer(customer.getCustomerId(),
+                    "ONLINE");
+        } catch (Exception e) {
+            AddPaymentDTO pay = new AddPaymentDTO();
+            pay.setCustomerId(customer.getCustomerId());
+            pay.setMethod("ONLINE");
+            payment = paymentServiceImplement.addPayment(pay);
+        }
+        if (code.equals("00")) {
+            try {
+                // yêu cầu bill
+                AddOrderLineDTO bill = new AddOrderLineDTO();
+                bill.setPaymentId(payment.getPaymentId());
+                bill.setStatus("PAID");
+                bill.setTranCode(trancode);
+                // lưu bill vào csdl
+                OrderLine order = orderLineServiceImplement.addOrderLine(bill);
+
+                List<Cart> carts = customer.getCarts();
+                // lưu sản phầm vào orderitem
+                orderItemServiceImplement.addOrderItemByOrderLine(order.getOrderLineId(),
+                        carts);
+                // cập nhập số lượng còn
+                productServiceImplement.subtractionStock(customer);
+                // loại bỏ các sản phẩm đã mua
+                // cartServiceImplement.deleteCartByCustomerId(customer.getCustomerId());
+
+            } catch (Exception e) {
+
+            }
+        }
         model.addAttribute("trancode", trancode);
+        model.addAttribute("code", code);
         model.addAttribute("amount", amount);
+
         return "vpn_return";
     }
 

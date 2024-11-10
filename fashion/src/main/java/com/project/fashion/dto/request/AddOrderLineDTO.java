@@ -11,4 +11,5 @@ public class AddOrderLineDTO {
     private Long paymentId;
     @Pattern(regexp = "^(PAID|NOT_YET_PAID)$")
     private String status;
+    private String tranCode;
 }

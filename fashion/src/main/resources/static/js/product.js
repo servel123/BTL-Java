@@ -1,7 +1,3 @@
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/javascript.js to edit this template
- */
 function changeCurrency(number){
     return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
 }
@@ -20,5 +16,9 @@ $(document).ready(function(){
     });
     pop_right.on('click', function(){
         displayPant.scrollLeft(displayPant.scrollLeft() + 500);
+    });
+    $('.total').each(function(){
+        let tmp = parseFloat($(this).html());
+        $(this).html(changeCurrency(tmp));
     });
 });

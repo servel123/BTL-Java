@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{adminLayout/adminBase}">
+    <head>
+        <title>Quản lý người dùng</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/css/adminStyle/tableStyle.css}">
+    </head>
+    <body>
+        <main layout:fragment="main-content">
+            <script th:if="${message}">
+                alert('[[${message}]]');
+            </script>
+            <div class="main-title">
+                <h2>Danh sách người dùng</h2>
+            </div>
+            <table class="general-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Họ</th>
+                        <th>Tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th>Ngày tạo tài khoản</th>
+                        <th>Ngày cập nhật gần nhất</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.customerId}"></td>
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.firstName}"></td>
+                        <td th:text="${user.address}"></td>
+                        <td th:text="${user.phoneNumber}"></td>
+                        <td th:text="${user.role}"></td>
+                        <td th:text="${user.createdAt}"></td>
+                        <td th:text="${user.updatedAt}"></td>
+                        <td>
+                            <button class="btn btn-edit">Sửa vai trò</button>
+                            <button class="btn btn-delete">Xóa</button>
+                            <div class="modal editModal">
+                                <div class="modal-content">
+                                    <form th:action="@{/admin/customer/{customerId}(customerId=${user.customerId})}" th:method="patch">
+                                        <input type="hidden" name="customerId" th:value="${user.customerId}">
+                                        <div class="form-group">
+                                            <label for="role">Sửa đổi vai trò của người dùng <span th:text="${user.username}" style="font-weight: bold;"></span>:</label>
+                                            <select name="role" style="font-size: 20px">
+                                                <option th:value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+                                                <option th:value="USER" th:selected="${user.role == 'USER'}">USER</option>
+                                            </select>
+                                        </div>   
+                                        <div class="button-group">
+                                            <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+                                            <button type="button" class="btn btn-cancel edit">Hủy</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal confirmModal">
+                                <div class="modal-content">
+                                    <form class="userEditForm" th:action="@{/admin/customer}" th:method="delete">
+                                        <input type="hidden" name="customerId" th:value="${user.customerId}">
+                                        <label>Bạn có chắc chắn muốn xóa người dùng này?</label>
+                                        <div class="button-group">
+                                            <button type="submit" class="btn btn-save">Xác nhận</button>
+                                            <button type="button" class="btn btn-cancel confirm">Hủy</button>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+        <script layout:fragment="scripting" th:src="@{/js/adminJS/tableJS.js}"></script>
+    </body>
+</html>

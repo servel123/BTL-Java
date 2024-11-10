@@ -9,30 +9,123 @@
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #f2f2f2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    cursor: pointer;
+}
+.general-table td.expanded{
+    max-width: none;
+    border: 2px solid #000;
 }
 .general-table th {
     background-color: #EBEBEB;
     font-weight: 600;
 }
-  
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  color: #fff;
+}
+
+.badge-success {
+  background-color: #28a745;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+}
+
 .btn {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-}
-.btn-view {
-    background-color: #007bff;
     color: #fff;
 }
-  
+.btn:hover{
+    box-shadow: inset 0 0 0 10em rgba(0, 0, 0, 0.1);
+}
+.btn-add {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #007bff;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
 .btn-edit {
     background-color: #ffc107;
     color: #333;
 }
-  
 .btn-delete {
     background-color: #dc3545;
-    color: #fff;
+}
+.btn-save, .btn-cancel{
+    background-color: #008ECC;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 12px 24px;
+}
+.btn-cancel{
+    background-color: red;
+}
+/*General Modal*/
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 45%;
+    font-size: 20px;
+}
+.modal-content form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.modal-content form h3{
+    font-size: 25px;
+    margin-bottom: 50px;
+}
+/*User Modal*/
+.modal-content form .form-group,
+.modal-content form .button-group{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+.modal-content form .form-group{
+    margin-bottom: 30px;
+}
+.modal-content form .form-group label{
+    font-weight: bold
+}
+.modal-content form .form-group input{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #858585;
+    border-radius: 4px;
+    font-size: 18px;
 }

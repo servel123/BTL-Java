@@ -31,19 +31,19 @@
                 <ul class="sidebar-list">
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-table"></i>
-                        <a th:href="@{/admin/dashboard}">Dashboard</a>
+                        <a th:href="@{/admin/dashboard(year=${session.year})}">Dashboard</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-boxes-stacked"></i>
-                        <a th:href="@{/table/product}">Sản phẩm</a>
+                        <a th:href="@{/admin/product}">Sản phẩm</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-layer-group"></i> 
-                        <a th:href="@{/table/category}">Danh mục</a>
+                        <a th:href="@{/admin/category}">Danh mục</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-user"></i> 
-                        <a th:href="@{/table/customer}">Người dùng</a>
+                        <a th:href="@{/admin/customer}">Người dùng</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-file-invoice"></i> 

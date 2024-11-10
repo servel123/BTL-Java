@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Cart;
@@ -11,6 +12,9 @@ import com.project.fashion.model.Cart;
 import com.project.fashion.repository.CartReponsitory;
 import com.project.fashion.service.CartService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CartServiceImplement implements CartService {
     @Autowired
@@ -84,8 +88,11 @@ public class CartServiceImplement implements CartService {
     }
 
     @Override
+    @Transactional
     public void deleteCartByCustomerId(Long customerId) {
-        cartReponsitory.deleteByCustomer_CustomerId(customerId);
+        log.info("\n da vao delete" + customerId);
+        cartReponsitory.deleteAllByCustomer_CustomerId(customerId);
+
     }
 
 }

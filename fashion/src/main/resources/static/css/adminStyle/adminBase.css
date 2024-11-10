@@ -118,3 +118,8 @@ a{
     overflow-y: auto;
     padding: 20px;
 }
+.main-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
