@@ -33,7 +33,7 @@ public interface ProductService {
     void deleteProduct(Long productId);
 
     // update
-    Product updateProduct(Long productId, AddProductDTO pdt);
+    Product updateProduct(AddProductDTO pdt);
 
     // update stock
     void updateStockProduct(Long productId, Integer stock);

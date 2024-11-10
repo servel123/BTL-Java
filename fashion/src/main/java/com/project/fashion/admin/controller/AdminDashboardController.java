@@ -91,7 +91,6 @@ public class AdminDashboardController {
             model.addAttribute("errRevenueByMonth", "Error Revenue By Month");
             log.info("\n doanh thu moi thang:  + revenueByMonth.toString()" + e.getMessage());
         }
-
         // Loi nhuan theo nam
         try {
             Long profit = dashboardService.totalProfit(year);
@@ -99,7 +98,6 @@ public class AdminDashboardController {
         } catch (Exception e) {
             model.addAttribute("errorprofit", "Khong lay duoc loi nhuan");
         }
-
         return "adminLayout/dashboard";
     }
 }

@@ -114,10 +114,10 @@ public class ProductServiceImplement implements ProductService {
 
     // update
     @Override
-    public Product updateProduct(Long productId, AddProductDTO product) {
-        Product pdt = getProductById(productId);
+    public Product updateProduct(AddProductDTO product) {
+        Product pdt = getProductById(product.getId());
         if (pdt == null) {
-            throw new ResourceNotFoundException("Customer not found with ID: " + productId);
+            throw new ResourceNotFoundException("Customer not found with ID: " + product.getId());
         }
         try {
             if (product.getCategory() != null) {

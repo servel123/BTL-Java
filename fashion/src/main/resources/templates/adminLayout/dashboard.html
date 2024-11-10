@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{adminLayout/adminBase}">
+    <head>
+        <title>Dashboard</title>
+        <link rel="stylesheet" th:href="@{/css/adminStyle/dashboard.css}">
+    </head>
 
-<head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" th:href="@{/css/adminStyle/dashboard.css}">
-</head>
-
-<body>
-    <main layout:fragment="main-content" class="main-container">
-        <div class="main-title">
-            <h2>DASHBOARD</h2>
-        </div>
-        <div class="main-cards">
-            <div class="card">
-                <div class="card-inner">
-                    <h3>Tổng doanh thu:</h3>
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
+    <body>
+        <main layout:fragment="main-content">
+            <div class="main-title">
+                <h2>DASHBOARD</h2>
+            </div>
+            <div class="main-cards">
+                <div class="card">
+                    <div class="card-inner">
+                        <h3>Tổng doanh thu:</h3>
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+                    <h1 th:text="${revenue != null ? revenue : '0'}" class="revenuenprofit"></h1>
                 </div>
-                <h1 th:text="${revenue != null ? revenue : '0'}" id="revenue"></h1>
+                <div class="card">
+                    <div class="card-inner">
+                        <h3>Lợi nhuận:</h3>
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <h1 th:text="${profit != null ? profit : '0'}" class="revenuenprofit"></h1>
+                </div>
             </div>
-        </div>
-        <div class="charts">
+            <div class="charts">
+                <div class="charts-card">
+                    <div id="area-chart"></div>
+                </div>
+                <div class="charts-card">
+                    <div id="column-chart"></div>
+                </div>
+            </div>
             <div class="charts-card">
-                <div id="area-chart"></div>
+                <div id="double-line-chart"></div>
             </div>
-            <div class="charts-card">
-                <div id="column-chart"></div>
-            </div>
-        </div>
-        <div class="charts-card">
-            <div id="double-line-chart"></div>
-        </div>
-    </main>
-    <script layout:fragment="alter-lib"
-        src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.0.0/apexcharts.min.js"></script>
-    <script layout:fragment="scripting" th:src="@{/js/adminJS/dashboard.js}"></script>
-</body>
-
+        </main>
+        <script layout:fragment="alter-lib"
+            src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.0.0/apexcharts.min.js"></script>
+        <script layout:fragment="scripting" th:src="@{/js/adminJS/dashboard.js}"></script>
+    </body>
 </html>

@@ -22,36 +22,36 @@
             </header>
             <aside id="sidebar" class="sidebar-display">
                 <div class="sidebar-title">
-                    <div class="sidebar-brand">
+                    <a th:href="@{/}" class="sidebar-brand">
                         <img src="https://cdn.pixabay.com/photo/2022/09/27/19/46/ai-generated-7483596_960_720.jpg" alt="logo" />
                         <span>Fashion</span>
-                    </div>
+                    </a>
                     <i class="fa-solid fa-xmark ic" onclick="closeSidebar()"></i>
                 </div>
                 <ul class="sidebar-list">
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-table"></i>
-                        <span>Dashboard</span>
+                        <a th:href="@{/admin/dashboard(year=${session.year})}">Dashboard</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-boxes-stacked"></i>
-                        <span>Sản phẩm</span>
+                        <a th:href="@{/admin/product}">Sản phẩm</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-layer-group"></i> 
-                        <span>Danh mục</span>
+                        <a th:href="@{/admin/category}">Danh mục</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-user"></i> 
-                        <span>Người dùng</span>
+                        <a th:href="@{/admin/customer}">Người dùng</a>
                     </li>
                     <li class="sidebar-list-item">
                         <i class="fa-solid fa-file-invoice"></i> 
-                        <span>Đơn hàng</span>
+                        <a th:href="@{/admin/bills}">Đơn hàng</a>
                     </li>
                 </ul>
             </aside>
-            <main layout:fragment="main-content"></main>
+            <main layout:fragment="main-content" class="main-container"></main>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>

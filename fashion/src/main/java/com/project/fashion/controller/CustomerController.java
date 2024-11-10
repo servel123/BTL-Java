@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -47,7 +47,6 @@ public class CustomerController {
             List<OrderLine> orderLines = orderLineServiceImplement.getOrderLinesOfCustomer(cus.getCustomerId());
             model.addAttribute("bills", orderLines);
 
-            model.addAttribute("cusModify", new CusModifyInfo());
         } catch (Exception e) {
             model.addAttribute("errorBill", e.getMessage());
         }
@@ -57,7 +56,7 @@ public class CustomerController {
     // update information of customer
     @PatchMapping
     public String updateCustomer(
-            @Valid @ModelAttribute("customer") CusModifyInfo cusRequestDTO,
+            @Valid CusModifyInfo cusRequestDTO,
             RedirectAttributes redirectAttributes) {
         try {
             CustomerDetailResponse cus = authen.authen();

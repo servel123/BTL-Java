@@ -175,6 +175,8 @@ $(document).ready(function () {
   chart2.render();
   let chart3 = new ApexCharts($("#double-line-chart")[0], options3);
   chart3.render();
-  let tmp = parseFloat($("#revenue").html());
-  $("#revenue").html(changeCurr(tmp));
+  $(".revenuenprofit").each(function(){
+      let tmp = parseFloat($(this).html());
+      $(this).html(changeCurr(tmp));
+  });
 });

@@ -4,15 +4,18 @@
  */
 package com.project.fashion.dto.request;
 
+import java.io.Serializable;
+
 import lombok.*;
 
 /**
  *
  * @author Vu
  */
+@AllArgsConstructor
 @Getter
 @Setter
-public class AddCategoryDTO {
+public class AddCategoryDTO implements Serializable {
     private Long id;
     private String name;
     private String fashion;

@@ -4,6 +4,8 @@
  */
 package com.project.fashion.dto.request;
 
+import java.io.Serializable;
+
 import com.project.fashion.model.Category;
 import lombok.*;
 
@@ -13,7 +15,8 @@ import lombok.*;
  */
 @Getter
 @Setter
-public class AddProductDTO {
+public class AddProductDTO implements Serializable {
+    private Long id;
     private String desciption, image, name;
     private Category category;
     private int stock;

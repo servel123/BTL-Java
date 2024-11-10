@@ -23,7 +23,7 @@ public class AdminBillsController {
         try {
             List<OrderLine> bills = orderLineServiceImplement.getOrderLinesOfEveryOne();
             model.addAttribute("bills", bills);
-            return "adminLayout/bills";
+            return "adminLayout/adminBills";
         } catch (Exception e) {
             model.addAttribute("message", "get bills failed");
             int year = LocalDate.now().getYear();

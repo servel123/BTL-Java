@@ -1,11 +1,13 @@
 package com.project.fashion.dto.request;
 
+import java.io.Serializable;
+
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
 @Setter
-public class AddOrderLineDTO {
+public class AddOrderLineDTO implements Serializable {
     private Long orderLineId;
     @NotBlank(message = "not blank")
     private Long paymentId;

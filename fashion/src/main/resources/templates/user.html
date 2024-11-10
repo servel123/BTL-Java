@@ -53,25 +53,28 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Ngày</th>
                                 <th>Mã giao dịch</th>
-                                <th>Phương thức</th>
-                                <th>Tổng cộng</th>
-                                <th>Trạng thái</th>
+                                <th>Ngày</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái thanh toán</th>
                             </tr>
                         </thead>
                         <tbody th:if="!${bills}">
                             <tr>
-                                <td colspan="4" class='empty-transact'>Chưa có giao dịch nào được thực hiện</td>
+                                <td colspan="5" class='empty-transact'>Chưa có giao dịch nào được thực hiện</td>
                             </tr>
                         </tbody>
                         <tbody>
                             <tr th:each="bill : ${bills}">
-                                <td th:text="${bill.createdAt}"></td>
                                 <td th:text="${bill.tranCode}"></td>
+                                <td th:text="${bill.createdAt}"></td>
                                 <td th:text="${bill.payment.paymentMethod}"></td>
-                                <td th:text="${bill.totalMoney()}"></td>
-                                <td th:text="${bill.status}"></td>
+                                <td th:text="${bill.totalMoney()}" class="total"></td>
+                                <td>
+                                    <span th:if="${bill.status == 'NOT_YET_PAID'}">Chưa thanh toán</span>
+                                    <span th:if="${bill.status == 'PAID'}">Đã thanh toán</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -79,6 +82,7 @@
             </div>
         </div>
     </main>
+    <script layout:fragment="using_script" th:src="@{/js/product.js}"></script>
 </body>
 
 </html>
