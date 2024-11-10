@@ -40,7 +40,7 @@
                             <button class="btn btn-delete">Xóa</button>
                             <div class="modal editModal">
                                 <div class="modal-content">
-                                    <form th:action="@{/admin/category/{categoryId}(categoryId=${category.categoryId})}" th:method="patch">
+                                    <form th:action="@{/admin/category/{categoryId}(categoryId=${category.categoryId})}" th:method="patch" th:object="${fixCategory}">
                                         <h3>Sửa đổi thông tin của danh mục</h3>
                                         <div class="form-group">
                                             <label for="name">Tên danh mục:</label>
