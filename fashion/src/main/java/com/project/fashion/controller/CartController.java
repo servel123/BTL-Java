@@ -131,6 +131,7 @@ public class CartController {
             log.info("\n1");
             List<Cart> carts = customer.getCarts();
             // lưu sản phầm vào orderitem
+            log.info("\n1.1");
             orderItemServiceImplement.addOrderItemByOrderLine(order.getOrderLineId(), carts);
             log.info("\n2");
             // cập nhập số lượng còn

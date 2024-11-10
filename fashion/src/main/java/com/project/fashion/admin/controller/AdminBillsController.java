@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.project.fashion.model.OrderLine;
 import com.project.fashion.service.implement.OrderLineServiceImplement;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -22,10 +23,11 @@ public class AdminBillsController {
         try {
             List<OrderLine> bills = orderLineServiceImplement.getOrderLinesOfEveryOne();
             model.addAttribute("bills", bills);
-            return "bills";
+            return "adminLayout/bills";
         } catch (Exception e) {
             model.addAttribute("message", "get bills failed");
-            return "redirect:/admin/dashboard";
+            int year = LocalDate.now().getYear();
+            return "redirect:/admin/dashboard?year=" + year;
         }
     }
 }

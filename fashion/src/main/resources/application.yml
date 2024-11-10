@@ -50,4 +50,8 @@ server:
   servlet:
     session:
       timeout: 30m
-      
+---
+hibernate:
+  transaction:
+    jta:
+      platform: org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform 
