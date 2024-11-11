@@ -92,6 +92,19 @@ public class AdminTableController {
         return "fixproduct";
     }
 
+    @PostMapping("/product/new")
+    public String adminAddProduct(@Valid AddProductDTO product, RedirectAttributes redirect) {
+        try {
+            productServiceImplement.addProduct(product);
+            redirect.addAttribute("product_message", " Thêm sản phẩm thành công!");
+
+        } catch (Exception e) {
+            redirect.addAttribute("product_message", " Thêm sản phẩm không thành công!");
+        }
+        return "redirect:/admin/product";
+
+    }
+
     @PatchMapping("/product")
     public String adminUpdateProduct(
             @Valid AddProductDTO product, Model model) {
