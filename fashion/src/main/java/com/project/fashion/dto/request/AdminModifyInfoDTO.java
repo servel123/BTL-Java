@@ -1,5 +1,7 @@
 package com.project.fashion.dto.request;
 
+import java.io.Serializable;
+
 import com.project.fashion.util.PhoneNumber;
 
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminModifyInfoDTO {
+public class AdminModifyInfoDTO implements Serializable {
+    @NotBlank
+    private Long id;
     @NotBlank
     private String firstName;
     @NotBlank

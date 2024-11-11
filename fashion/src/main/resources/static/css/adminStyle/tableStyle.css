@@ -12,8 +12,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: 150px;
     cursor: pointer;
+}
+.general-table td img{
+    max-width: 150px;
 }
 .general-table td.expanded{
     max-width: none;
@@ -92,7 +95,7 @@
 }
 .modal-content {
     background-color: #fff;
-    margin: 15% auto;
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 45%;
@@ -116,11 +119,19 @@
     gap: 20px;
     width: 100%;
 }
+.modal-content form .double-form-group{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+}
 .modal-content form .form-group{
+    justify-content: normal;
     margin-bottom: 30px;
 }
 .modal-content form .form-group label{
-    font-weight: bold
+    font-weight: bold;
+    white-space: nowrap;
 }
 .modal-content form .form-group input{
     width: 100%;

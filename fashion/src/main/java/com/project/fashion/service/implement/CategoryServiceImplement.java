@@ -70,6 +70,8 @@ public class CategoryServiceImplement implements CategoryService {
         Category cate = categoryReponsitory.findById(category.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not category"));
         cate.setName(category.getName());
+        cate.setFashion(category.getFashion());
+        categoryReponsitory.save(cate);
         return cate;
     }
 
