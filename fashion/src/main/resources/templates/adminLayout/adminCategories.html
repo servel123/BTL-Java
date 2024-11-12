@@ -17,6 +17,25 @@
         <div class="main-title add">
             <h2>Danh sách các danh mục</h2>
             <button class="btn btn-add"><i class="fa-solid fa-plus"></i>Thêm danh mục</button>
+            <div class="modal addModal">
+                <div class="modal-content">
+                    <form th:action="@{/admin/category/new}" th:method="post">
+                        <h3>Thêm danh mục</h3>
+                        <div class="form-group">
+                            <label for="name">Tên danh mục:</label>
+                            <input type="text" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="fashion">Phân loại:</label>
+                            <input type="text" name="fashion">
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-save">Thêm</button>
+                            <button type="button" class="btn btn-cancel edit">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <table class="general-table">
             <thead>
@@ -25,7 +44,7 @@
                     <th>Tên</th>
                     <th>Phân loại</th>
                     <th>Ngày tạo</th>
-                    <th>Ngày cập nhật gần nhất</th>
+                    <th>Ngày cập nhật</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -44,10 +63,7 @@
                                 <form th:action="@{/admin/category(categoryId=${category.categoryId})}"
                                     th:method="patch">
                                     <h3>Sửa đổi thông tin của danh mục</h3>
-                                    <div class="form-group">
-                                        <label for="id">Index:</label>
-                                        <input type="text" name="id" th:value="${category.categoryId}" readonly>
-                                    </div>
+                                    <input type="hidden" name="id" th:value="${category.categoryId}">
                                     <div class="form-group">
                                         <label for="name">Tên danh mục:</label>
                                         <input type="text" name="name" th:value="${category.name}">

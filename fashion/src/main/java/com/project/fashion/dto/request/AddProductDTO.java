@@ -17,10 +17,8 @@ import lombok.*;
 @Setter
 public class AddProductDTO implements Serializable {
     private Long id;
-    private String desciption, image, name;
+    private String image, name, desciption;
+    private Long originalprice, price;
     private Category category;
     private int stock;
-    private Long price;
-    private Long originalprice;
-
 }

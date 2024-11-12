@@ -6,17 +6,21 @@ $(document).ready(function(){
         let tmp = parseFloat($(this).html());
         $(this).html(currency(tmp));
     });
+//    Edit button
     $('.btn-edit').on('click', function(){
        $(this).closest('td').find('.editModal').show();
     });
-    $('.edit').on('click', function(){
-       $(this).closest('.editModal').hide();
+//    Cancel button
+    $('.btn-cancel').on('click', function(){
+       $(this).closest('.modal').hide();
     });
+//    Delete button
     $('.btn-delete').on('click', function(){
        $(this).closest('td').find('.confirmModal').show();
     });
-    $('.confirm').on('click', function(){
-       $(this).closest('.confirmModal').hide(); 
+//    Add button
+    $('.btn-add').on('click', function(){
+        $(this).closest('.main-title').find('.addModal').show();
     });
     $('.general-table td:not(:has(button))').click(function() {
        if($(this).hasClass('expanded')){

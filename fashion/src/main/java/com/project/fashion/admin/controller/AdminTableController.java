@@ -41,6 +41,7 @@ public class AdminTableController {
     @GetMapping("/customer")
     public String adminTableCustomer(Model model) {
         try {
+            
             List<Customer> users = customerServiceImplement.getAllCustomer();
             model.addAttribute("users", users);
         } catch (Exception e) {
@@ -73,12 +74,14 @@ public class AdminTableController {
     @GetMapping("/product")
     public String adminTableProduct(Model model) {
         try {
+            List<Category> categories = categoryServiceImplement.getAllCategories();
             List<Product> products = productServiceImplement.getAllProducts();
             model.addAttribute("products", products);
+            model.addAttribute("categories", categories);
         } catch (Exception e) {
             model.addAttribute("errProduct", "error get product");
         }
-        return "tableProduct";
+        return "adminLayout/adminProducts";
     }
 
     @GetMapping("/product/{productId}")
@@ -107,23 +110,25 @@ public class AdminTableController {
 
     @PatchMapping("/product")
     public String adminUpdateProduct(
-            @Valid AddProductDTO product, Model model) {
+            @Valid AddProductDTO product, RedirectAttributes redirectAttributes) {
         try {
             productServiceImplement.updateProduct(product);
+            redirectAttributes.addFlashAttribute("message", "Sửa sản phẩm thành công");
         } catch (Exception e) {
-            model.addAttribute("errProduct", "error get product");
+            redirectAttributes.addFlashAttribute("message", "Đã có lỗi xảy ra");
         }
-        return "tableProduct";
+        return "redirect:/admin/product";
     }
 
     @DeleteMapping("/product/{productId}")
-    public String adminDeleteProduct(@Valid @PathVariable Long productId, Model model) {
+    public String adminDeleteProduct(@Valid @PathVariable Long productId, RedirectAttributes redirectAttributes) {
         try {
             productServiceImplement.deleteProduct(productId);
+            redirectAttributes.addFlashAttribute("message", "Xóa sản phẩm thành công");
         } catch (Exception e) {
-            model.addAttribute("errProduct", "error get product");
+            redirectAttributes.addFlashAttribute("message", "Đã có lỗi xảy ra");
         }
-        return "tableProduct";
+        return "redirect:/admin/product";
     }
 
     // CATEGORY
@@ -142,20 +147,19 @@ public class AdminTableController {
     public String adminAddCategor(@Valid AddCategoryDTO category, RedirectAttributes redirect) {
         try {
             categoryServiceImplement.addCategory(category);
-            redirect.addAttribute("Add category successfully!");
+            redirect.addFlashAttribute("message", "Thêm sản phẩm thành công!");
         } catch (Exception e) {
-            redirect.addAttribute("Add category failed!");
+            redirect.addFlashAttribute("message", "Không thể thêm sản phẩm! Đã xảy ra lỗi");
         }
         return "redirect:/admin/category";
     }
 
     @PatchMapping("/category")
-    public String adminUpdateCategory(@Valid AddCategoryDTO category, Model model, RedirectAttributes redirect) {
+    public String adminUpdateCategory(@Valid AddCategoryDTO category, RedirectAttributes redirect) {
         try {
             categoryServiceImplement.updateCategory(category);
             redirect.addFlashAttribute("message", "Sửa danh mục thành công");
         } catch (Exception e) {
-            model.addAttribute("errCategory", "error get category");
             redirect.addFlashAttribute("message", "Đã có lỗi xảy ra");
         }
         return "redirect:/admin/category";
