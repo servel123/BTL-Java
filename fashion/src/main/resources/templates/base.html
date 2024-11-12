@@ -25,10 +25,11 @@
                         alt="logo" />
                     <span>Fashion</span>
                 </a>
-                <div class="search">
+                <form class="search" method="get" action="/search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Nhập để tìm kiếm">
-                </div>
+                    <input type="text" name="search" placeholder="Nhập để tìm kiếm">
+                    <button type="submit" class="ai-style-change-1">Search</button>
+                </form>
                 <div class="displayUI">
                     <div th:if="${!#authorization.expression('isAnonymous()')}" class="authUI">
                         <div class="user-cart">
@@ -71,72 +72,15 @@
         <div class="filter_options">
             <div class="content">
                 <!--For filter-->
-                <ul id="filter_nav">
+                <ul id="filter_nav" th:if="$fashions" th:each="fashion : ${fashions}">
                     <li>
-                        <a href="javascript:void(0)" class="displayed">
-                            Pant
+                        <a href="javascript:void(0)" class="displayed" th:text="${fashion.name}">
                             <i class="fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="dropdown_menu">
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 1</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 2</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 3</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)" class="displayed">
-                            Coat
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </a>
-                        <ul class="dropdown_menu">
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Gucci</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Victoria Secret</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Balenciaga</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)" class="displayed">
-                            Tanktop
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </a>
-                        <ul class="dropdown_menu">
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">item 1</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">item 2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)" class="displayed">
-                            Others
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </a>
-                        <ul class="dropdown_menu">
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 1</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 2</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 3</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="dropdown_content">Item 4</a>
+                            <li th:each="category : ${fashion.categories}">
+                                <a class="dropdown_content" th:href="@{/(category=${category.categoryId})}"
+                                    th:text="${category.name}"></a>
                             </li>
                         </ul>
                     </li>

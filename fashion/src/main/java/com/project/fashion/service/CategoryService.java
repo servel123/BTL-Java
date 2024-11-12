@@ -7,6 +7,7 @@ package com.project.fashion.service;
 import java.util.List;
 
 import com.project.fashion.dto.request.AddCategoryDTO;
+import com.project.fashion.dto.response.CategoryResDTO;
 import com.project.fashion.model.Category;
 
 /**
@@ -18,11 +19,14 @@ public interface CategoryService {
     Category addCategory(AddCategoryDTO category);
 
     // GET
+
     Category getCategory(Long categoryId);
 
     List<Category> getCategories();
 
     List<Category> getCategory(Long[] categoryId);
+
+    List<CategoryResDTO> showCategory();
 
     // UPDATE
     Category updateCategory(AddCategoryDTO categoryDTO);

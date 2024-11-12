@@ -5,10 +5,13 @@
 package com.project.fashion.service.implement;
 
 import com.project.fashion.dto.request.AddCategoryDTO;
+import com.project.fashion.dto.response.CategoryResDTO;
 import com.project.fashion.exception.ResourceNotFoundException;
 import com.project.fashion.model.Category;
 import com.project.fashion.repository.CategoryReponsitory;
 import com.project.fashion.service.CategoryService;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
  * @author Vu
  */
 @Service
+@Slf4j
 public class CategoryServiceImplement implements CategoryService {
 
     @Autowired
@@ -79,5 +83,27 @@ public class CategoryServiceImplement implements CategoryService {
     @Override
     public void deleteCategory(Long categoryId) {
         categoryReponsitory.deleteById(categoryId);
+    }
+
+    @Override
+    public List<CategoryResDTO> showCategory() {
+        try {
+            List<String> fashionList = categoryReponsitory.findFashion();
+            for (String s : fashionList) {
+                log.info("\n\n" + s);
+            }
+            List<CategoryResDTO> cateListRes = new ArrayList<CategoryResDTO>();
+            for (String fashion : fashionList) {
+                CategoryResDTO cate = new CategoryResDTO();
+                List<Category> categories = categoryReponsitory.findAllByFashion(fashion);
+                cate.setName(fashion);
+                cate.setCategories(categories);
+                cateListRes.add(cate);
+            }
+            return cateListRes;
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Không có danh muc nao!");
+        }
+
     }
 }

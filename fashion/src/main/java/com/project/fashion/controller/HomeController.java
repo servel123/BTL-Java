@@ -1,5 +1,6 @@
 package com.project.fashion.controller;
 
+import com.project.fashion.dto.response.CategoryResDTO;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 import com.project.fashion.dto.response.FilterResponse;
 import com.project.fashion.model.Category;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -46,19 +49,20 @@ public class HomeController {
             Integer countOfProducts = cartServiceImplement.getCountProductsInCustomerCart(user.getCustomerId());
             session.setAttribute("countProductsInCart", countOfProducts);
             session.setAttribute("username", user.getUsername());
-            log.info("\n\n\n" + session.getAttribute("username") + "\n\n\n");
             model.addAttribute("user", user);
         } catch (Exception e) {
             model.addAttribute("user", null);
         }
-
+        int currentYear = LocalDate.now().getYear();
+        session.setAttribute("year", currentYear);
         try {
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
             List<Category> categories = categoryServiceImplement.getCategories();
             model.addAttribute("categories", categories);
-            int currentYear = LocalDate.now().getYear();
-            session.setAttribute("year", currentYear);
+            model.addAttribute("fashions", fashions);
+
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage", "Loaded failed!!!");
         }
 
         return "home";
@@ -92,16 +96,18 @@ public class HomeController {
     }
 
     @GetMapping("/search")
-    public String homeSearch(Model model, @RequestParam("key") String keyword) {
+    public String homeSearch(RedirectAttributes redirect, @RequestParam("search") String keyword, Model model) {
         try {
 
             List<Product> products = productServiceImplement.findByKeyWord(keyword);
-
-            FilterResponse filter = new FilterResponse("Kết qur tìm kiếm", products);
-
-            model.addAttribute("categories", filter);
+            if (products.isEmpty()) {
+                model.addAttribute("message_search", "Kết quả tìm kiếm không tồn tại!");
+            } else {
+                FilterResponse filter = new FilterResponse("Tìm kiếm", products);
+                model.addAttribute("categories", filter);
+            }
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            redirect.addAttribute("errorMessage", e.getMessage());
         }
         return "home";
     }

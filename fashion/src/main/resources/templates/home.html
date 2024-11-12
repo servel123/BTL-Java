@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{base}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{base}">
 
 <head>
     <title>Trang chủ</title>
@@ -18,6 +17,7 @@
                     <button id="hero_next"><i class="fa-solid fa-angle-right fa-2xl"></i></button>
                 </div>
             </div>
+            <div th:if="${message_search}" th:text="${message_search}"></div>
             <div class="display_main_content" th:each="category : ${categories}">
                 <div class="direction">
                     <h2>Các sản phẩm <span th:text="${category.name}"></span> nổi bật</h2>
