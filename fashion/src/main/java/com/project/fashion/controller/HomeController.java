@@ -60,7 +60,6 @@ public class HomeController {
             List<Category> categories = categoryServiceImplement.getCategories();
             model.addAttribute("categories", categories);
             model.addAttribute("fashions", fashions);
-
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Loaded failed!!!");
         }

@@ -16,6 +16,7 @@ import java.util.*;
 import com.project.fashion.dto.request.AddOrderLineDTO;
 import com.project.fashion.dto.request.AddPaymentDTO;
 import com.project.fashion.dto.request.ListCartCreateBillDTO;
+import com.project.fashion.dto.response.CategoryResDTO;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 
 import com.project.fashion.model.Cart;
@@ -25,6 +26,7 @@ import com.project.fashion.model.OrderLine;
 import com.project.fashion.model.Payment;
 
 import com.project.fashion.service.implement.CartServiceImplement;
+import com.project.fashion.service.implement.CategoryServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.OrderItemServiceImplement;
 import com.project.fashion.service.implement.OrderLineServiceImplement;
@@ -43,6 +45,8 @@ public class CartController {
 
     @Autowired
     private CartServiceImplement cartServiceImplement;
+    @Autowired
+    private CategoryServiceImplement categoryServiceImplement;
     @Autowired
     private CustomerServiceImplement customerServiceImplement;
     @Autowired
@@ -76,6 +80,8 @@ public class CartController {
             model.addAttribute("price", price);
             log.info("\n\n\n" + session.getAttribute("username") + "\n\n\n");
             model.addAttribute("createBill", new ListCartCreateBillDTO());
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
+            model.addAttribute("fashions", fashions);
         } catch (Exception e) {
             model.addAttribute("message", "Not Product");
         }
@@ -142,6 +148,10 @@ public class CartController {
             // Integer countOfProducts =
             // cartServiceImplement.getCountProductsInCustomerCart(customer.getCustomerId());
             // session.setAttribute("countProductsInCart", countOfProducts);
+            for (Cart cart : carts) {
+                log.info("\n\n\n" + cart.getCartId() + "\n\n");
+                cartServiceImplement.removeProductFromCart(cart.getCartId());
+            }
         } catch (Exception e) {
             log.info("\n ERROR: " + e.getMessage());
             return "redirect:/user/cart";

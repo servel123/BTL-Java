@@ -5,6 +5,7 @@
 package com.project.fashion.service;
 
 import com.project.fashion.dto.request.AddProductDTO;
+import com.project.fashion.dto.request.UpdateProductDTO;
 import com.project.fashion.model.Category;
 import com.project.fashion.model.Customer;
 import com.project.fashion.model.Product;
@@ -33,7 +34,7 @@ public interface ProductService {
     void deleteProduct(Long productId);
 
     // update
-    Product updateProduct(AddProductDTO pdt);
+    Product updateProduct(UpdateProductDTO pdt);
 
     // update stock
     void updateStockProduct(Long productId, Integer stock);

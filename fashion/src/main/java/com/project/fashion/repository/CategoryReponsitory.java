@@ -14,4 +14,6 @@ public interface CategoryReponsitory extends JpaRepository<Category, Long> {
     List<String> findFashion();
 
     List<Category> findAllByFashion(String fashion);
+
+    Category findByName(String name);
 }

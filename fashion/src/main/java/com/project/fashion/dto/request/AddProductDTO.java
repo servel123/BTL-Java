@@ -6,7 +6,8 @@ package com.project.fashion.dto.request;
 
 import java.io.Serializable;
 
-import com.project.fashion.model.Category;
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.*;
 
 /**
@@ -16,9 +17,9 @@ import lombok.*;
 @Getter
 @Setter
 public class AddProductDTO implements Serializable {
-    private Long id;
-    private String image, name, desciption;
+    private MultipartFile image;
+    private String name, desciption;
     private Long originalprice, price;
-    private Category category;
+    private String category;
     private int stock;
 }

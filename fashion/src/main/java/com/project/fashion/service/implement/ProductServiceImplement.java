@@ -1,10 +1,13 @@
 package com.project.fashion.service.implement;
 
 import com.project.fashion.dto.request.AddProductDTO;
+import com.project.fashion.dto.request.UpdateProductDTO;
 
+import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.fashion.exception.ErrorDataException;
 import com.project.fashion.exception.ResourceNotFoundException;
@@ -15,16 +18,23 @@ import com.project.fashion.model.Product;
 import com.project.fashion.repository.ProductRepository;
 import com.project.fashion.service.ProductService;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.util.*;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductServiceImplement implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryServiceImplement categoryServiceImplement;
 
     protected Product getProductById(Long productId) {
         return productRepository.findById(productId)
@@ -94,37 +104,97 @@ public class ProductServiceImplement implements ProductService {
     // add product
     @Override
     public Product addProduct(AddProductDTO product) {
+        String path = "";
+        if (product.getImage() != null) {
+            try {
+                MultipartFile image = product.getImage();
+                String filename = image.getOriginalFilename();
+                if (filename == null) {
+                    throw new NullPointerException("File Name Null");
+                }
+                int dotIndex = filename.lastIndexOf(".");
+                log.info("\n\n\n" + image.getOriginalFilename() + "\n\n\n");
+                if (dotIndex > 0 && dotIndex < filename.length() - 1) {
+                    String ext = filename.substring(dotIndex + 1);
+                    String name = filename.substring(0, dotIndex);
+                    log.info("\n\n\n2\n\n\n");
+                    if (ext.equals("png") || ext.equals("jpg")) {
+                        String category = product.getCategory();
+                        name = name + LocalDate.now().toString().toLowerCase();
+                        path = "/images/" + category + "/" + name + "." + ext;
+                        String savePath = "E:\\code\\java\\BTL-Java\\fashion\\src\\main\\resources\\static"
+                                + path;
+                        log.info("\n\n\n3\n\n\n");
+                        File file = new File(savePath);
+                        image.transferTo(file);
+                    }
+                } else {
+                    throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
+                }
+            } catch (NullPointerException e) {
+                log.info("\n\n" + e.getMessage() + "\n\n");
+            } catch (Exception e) {
+                log.info("\n\n" + e + "\n\n");
+            }
+        }
         Product pdt = Product.builder()
-                .category(product.getCategory())
+                .category(categoryServiceImplement.getCategoryByName(product.getCategory()))
                 .description(product.getDesciption())
-                .image(product.getImage())
+                .image(path)
                 .name(product.getName())
                 .stock(product.getStock())
                 .originalprice(product.getOriginalprice())
+                .price(product.getPrice())
                 .build();
         productRepository.save(pdt);
         return pdt;
     }
 
-    // delete
-    @Override
-    public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
-    }
-
     // update
     @Override
-    public Product updateProduct(AddProductDTO product) {
+    public Product updateProduct(UpdateProductDTO product) {
         Product pdt = getProductById(product.getId());
         if (pdt == null) {
             throw new ResourceNotFoundException("Customer not found with ID: " + product.getId());
         }
+        if (product.getImage() != null) {
+            try {
+                MultipartFile image = product.getImage();
+                String filename = image.getOriginalFilename();
+                if (filename == null) {
+                    throw new NullPointerException("File Name Null");
+                }
+                int dotIndex = filename.lastIndexOf(".");
+                if (dotIndex > 0 && dotIndex < filename.length() - 1) {
+                    String ext = filename.substring(dotIndex + 1);
+                    String name = filename.substring(0, dotIndex);
+                    if (ext.equals("png") || ext.equals("jpg")) {
+                        String category = product.getCategory();
+                        name = name + LocalDate.now().toString().toLowerCase();
+                        String path = "/images/" + category + "/" + name + "." + ext;
+
+                        String savePath = "E:\\code\\java\\BTL-Java\\fashion\\src\\main\\resources\\static" + path;
+                        File deleteImage = new File(pdt.getImage());
+                        if (deleteImage.exists()) {
+                            if (deleteImage.delete()) {
+                                File file = new File(savePath);
+                                image.transferTo(file);
+                                pdt.setImage(path);
+                            } else {
+                                throw new RuntimeException();
+                            }
+                        }
+                    }
+                } else {
+                    throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
+                }
+            } catch (Exception e) {
+
+            }
+        }
         try {
             if (product.getCategory() != null) {
-                pdt.setCategory(product.getCategory());
-            }
-            if (product.getImage() != null) {
-                pdt.setImage(product.getImage());
+                pdt.setCategory(categoryServiceImplement.getCategoryByName(product.getCategory()));
             }
             if (product.getPrice() != null) {
                 pdt.setPrice(product.getPrice());
@@ -144,6 +214,12 @@ public class ProductServiceImplement implements ProductService {
             throw e;
         }
 
+    }
+
+    // delete
+    @Override
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
     }
 
     @Override

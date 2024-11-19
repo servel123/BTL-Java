@@ -72,14 +72,14 @@
         <div class="filter_options">
             <div class="content">
                 <!--For filter-->
-                <ul id="filter_nav" th:if="$fashions" th:each="fashion : ${fashions}">
-                    <li>
+                <ul id="filter_nav" th:if="${fashions}">
+                    <li th:each="fashion : ${fashions}">
                         <a href="javascript:void(0)" class="displayed" th:text="${fashion.name}">
                             <i class="fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="dropdown_menu">
                             <li th:each="category : ${fashion.categories}">
-                                <a class="dropdown_content" th:href="@{/(category=${category.categoryId})}"
+                                <a class="dropdown_content" th:href="${category.categoryId}"
                                     th:text="${category.name}"></a>
                             </li>
                         </ul>

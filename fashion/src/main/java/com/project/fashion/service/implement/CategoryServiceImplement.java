@@ -30,6 +30,11 @@ public class CategoryServiceImplement implements CategoryService {
     @Autowired
     private CategoryReponsitory categoryReponsitory;
 
+    public List<Category> getAllCategories() {
+        List<Category> cate = categoryReponsitory.findAll();
+        return cate;
+    }
+
     @Override
     public Category getCategory(Long categoryId) {
         return categoryReponsitory.findById(categoryId)
@@ -37,9 +42,14 @@ public class CategoryServiceImplement implements CategoryService {
 
     }
 
-    public List<Category> getAllCategories() {
-        List<Category> cate = categoryReponsitory.findAll();
-        return cate;
+    @Override
+    public Category getCategoryByName(String name) {
+        Category category = categoryReponsitory.findByName(name);
+        if (category != null) {
+            return category;
+        } else {
+            throw new ResourceNotFoundException("Not Name");
+        }
     }
 
     @Override

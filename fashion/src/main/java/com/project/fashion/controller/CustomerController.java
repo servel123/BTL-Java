@@ -11,14 +11,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.project.fashion.dto.request.CusModifyInfo;
+import com.project.fashion.dto.response.CategoryResDTO;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 import com.project.fashion.model.OrderLine;
+import com.project.fashion.service.implement.CategoryServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.OrderLineServiceImplement;
 
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Locale.Category;
 
 @Controller
 @RequestMapping("/user")
@@ -28,6 +31,9 @@ public class CustomerController {
     private CustomerServiceImplement customerServiceImplement;
     @Autowired
     private OrderLineServiceImplement orderLineServiceImplement;
+
+    @Autowired
+    private CategoryServiceImplement categoryServiceImplement;
 
     @Autowired
     private Authen authen;
@@ -46,7 +52,8 @@ public class CustomerController {
             CustomerDetailResponse cus = authen.authen();
             List<OrderLine> orderLines = orderLineServiceImplement.getOrderLinesOfCustomer(cus.getCustomerId());
             model.addAttribute("bills", orderLines);
-
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
+            model.addAttribute("fashions", fashions);
         } catch (Exception e) {
             model.addAttribute("errorBill", e.getMessage());
         }

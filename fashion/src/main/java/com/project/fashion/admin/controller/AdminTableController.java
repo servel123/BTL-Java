@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.project.fashion.dto.request.AddCategoryDTO;
 import com.project.fashion.dto.request.AddProductDTO;
 import com.project.fashion.dto.request.AdminModifyInfoDTO;
+import com.project.fashion.dto.request.UpdateProductDTO;
 import com.project.fashion.model.*;
 import com.project.fashion.service.implement.CategoryServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
@@ -41,7 +42,7 @@ public class AdminTableController {
     @GetMapping("/customer")
     public String adminTableCustomer(Model model) {
         try {
-            
+
             List<Customer> users = customerServiceImplement.getAllCustomer();
             model.addAttribute("users", users);
         } catch (Exception e) {
@@ -110,7 +111,7 @@ public class AdminTableController {
 
     @PatchMapping("/product")
     public String adminUpdateProduct(
-            @Valid AddProductDTO product, RedirectAttributes redirectAttributes) {
+            @Valid UpdateProductDTO product, RedirectAttributes redirectAttributes) {
         try {
             productServiceImplement.updateProduct(product);
             redirectAttributes.addFlashAttribute("message", "Sửa sản phẩm thành công");
