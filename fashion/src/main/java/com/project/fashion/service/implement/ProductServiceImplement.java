@@ -1,5 +1,6 @@
 package com.project.fashion.service.implement;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import com.project.fashion.dto.request.AddProductDTO;
 import com.project.fashion.dto.request.UpdateProductDTO;
 
@@ -31,16 +32,21 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImplement implements ProductService {
 
     @Autowired
+    private Dotenv dotenv;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private CategoryServiceImplement categoryServiceImplement;
 
-    protected Product getProductById(Long productId) {
+    @Override
+    public Product getProductById(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product Not Exists"));
     }
 
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -122,11 +128,11 @@ public class ProductServiceImplement implements ProductService {
                         String category = product.getCategory();
                         name = name + LocalDate.now().toString().toLowerCase();
                         path = "/images/" + category + "/" + name + "." + ext;
-                        String savePath = "E:\\code\\java\\BTL-Java\\fashion\\src\\main\\resources\\static"
-                                + path;
+                        String savePath = dotenv.get("SAVE_URL") + path;
                         log.info("\n\n\n3\n\n\n");
                         File file = new File(savePath);
                         image.transferTo(file);
+                        log.info("\n\n\n4\n\n\n");
                     }
                 } else {
                     throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
@@ -139,7 +145,7 @@ public class ProductServiceImplement implements ProductService {
         }
         Product pdt = Product.builder()
                 .category(categoryServiceImplement.getCategoryByName(product.getCategory()))
-                .description(product.getDesciption())
+                .description(product.getDescription())
                 .image(path)
                 .name(product.getName())
                 .stock(product.getStock())
@@ -154,9 +160,11 @@ public class ProductServiceImplement implements ProductService {
     @Override
     public Product updateProduct(UpdateProductDTO product) {
         Product pdt = getProductById(product.getId());
+        log.info("\n\n\n" + product.getCategory() + "\n\n\n");
         if (pdt == null) {
             throw new ResourceNotFoundException("Customer not found with ID: " + product.getId());
         }
+
         if (product.getImage() != null) {
             try {
                 MultipartFile image = product.getImage();
@@ -165,25 +173,21 @@ public class ProductServiceImplement implements ProductService {
                     throw new NullPointerException("File Name Null");
                 }
                 int dotIndex = filename.lastIndexOf(".");
+                log.info("\n\n\n" + image.getOriginalFilename() + "\n\n\n");
                 if (dotIndex > 0 && dotIndex < filename.length() - 1) {
                     String ext = filename.substring(dotIndex + 1);
                     String name = filename.substring(0, dotIndex);
+                    log.info("\n\n\n2\n\n\n");
                     if (ext.equals("png") || ext.equals("jpg")) {
                         String category = product.getCategory();
                         name = name + LocalDate.now().toString().toLowerCase();
                         String path = "/images/" + category + "/" + name + "." + ext;
-
-                        String savePath = "E:\\code\\java\\BTL-Java\\fashion\\src\\main\\resources\\static" + path;
-                        File deleteImage = new File(pdt.getImage());
-                        if (deleteImage.exists()) {
-                            if (deleteImage.delete()) {
-                                File file = new File(savePath);
-                                image.transferTo(file);
-                                pdt.setImage(path);
-                            } else {
-                                throw new RuntimeException();
-                            }
-                        }
+                        String savePath = dotenv.get("SAVE_URL") + path;
+                        log.info("\n\n\n3\n\n\n");
+                        File file = new File(savePath);
+                        image.transferTo(file);
+                        pdt.setImage(path);
+                        log.info("\n\n\n4\n\n\n");
                     }
                 } else {
                     throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
@@ -192,12 +196,16 @@ public class ProductServiceImplement implements ProductService {
 
             }
         }
+
         try {
             if (product.getCategory() != null) {
                 pdt.setCategory(categoryServiceImplement.getCategoryByName(product.getCategory()));
             }
             if (product.getPrice() != null) {
                 pdt.setPrice(product.getPrice());
+            }
+            if (product.getDescription() != null) {
+                pdt.setDescription(product.getDescription());
             }
             if (product.getOriginalprice() != null) {
                 pdt.setPrice(product.getOriginalprice());

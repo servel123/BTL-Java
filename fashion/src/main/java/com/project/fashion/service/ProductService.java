@@ -16,10 +16,15 @@ import java.util.*;
  * @author Vu
  */
 public interface ProductService {
+
     // Add product
     Product addProduct(AddProductDTO product);
 
     // GET
+    List<Product> getAllProducts();
+
+    Product getProductById(Long productId);
+
     List<Product> getProductShowHome(Category category);
 
     List<List<Product>> getProductShowHome(List<Category> category);

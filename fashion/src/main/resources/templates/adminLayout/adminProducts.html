@@ -93,12 +93,13 @@
                         <button class="btn btn-delete">Xóa</button>
                         <div class="modal editModal">
                             <div class="modal-content">
-                                <form th:action="@{/admin/product}" th:method="patch">
+                                <form th:action="@{/admin/product/update}" th:method="patch"
+                                    enctype="multipart/form-data">
                                     <h3>Sửa đổi thông tin của sản phẩm</h3>
                                     <input type="hidden" name="id" th:value="${product.productId}">
                                     <div class="form-group">
                                         <label for="image">Ảnh:</label>
-                                        <input type="text" name="image" th:value="${product.image}">
+                                        <input type="file" name="image">
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Tên sản phẩm:</label>
@@ -122,10 +123,11 @@
                                         <div class="form-group">
                                             <label for="category">Phân loại:</label>
                                             <select name="category" style="font-size: 18px;">
-                                                <option th:each="category : ${categories}" th:value="${category}"
+                                                <option th:each="category : ${categories}" th:value="${category.name}"
                                                     th:selected="${category.name == product.category.name}"
                                                     th:text="${category.name}"></option>
                                             </select>
+
                                         </div>
                                         <div class="form-group">
                                             <label for="stock">Số lượng:</label>

@@ -25,7 +25,9 @@ import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin")
 public class AdminTableController {
@@ -109,14 +111,15 @@ public class AdminTableController {
 
     }
 
-    @PatchMapping("/product")
+    @PatchMapping("/product/update")
     public String adminUpdateProduct(
             @Valid UpdateProductDTO product, RedirectAttributes redirectAttributes) {
         try {
             productServiceImplement.updateProduct(product);
             redirectAttributes.addFlashAttribute("message", "Sửa sản phẩm thành công");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Đã có lỗi xảy ra");
+            log.info(e.toString());
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/admin/product";
     }

@@ -1,25 +1,15 @@
-// package com.project.fashion.config;
 
-// import io.github.cdimascio.dotenv.Dotenv;
+package com.project.fashion.config;
 
-// import org.springframework.stereotype.Component;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-// @Component
+@Configuration
+public class EnvConfig {
 
-// public class EnvConfig {
-
-// private Dotenv dotenv;
-
-// public EnvConfig() {
-// dotenv = Dotenv.configure().load();
-// }
-
-// public String getListCategory() {
-// return dotenv.get("LIST_CATEGORY");
-// }
-
-// public String getShowQuantity() {
-// return dotenv.get("SHOW_QUANTITY");
-// }
-
-// }
+    @Bean
+    public Dotenv dotenv() {
+        return Dotenv.load(); // Khởi tạo và trả về đối tượng Dotenv
+    }
+}
