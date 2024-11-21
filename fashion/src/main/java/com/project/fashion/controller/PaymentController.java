@@ -144,6 +144,7 @@ public class PaymentController {
         paymentResDTO.setMessage(HttpStatus.OK.getReasonPhrase());
         paymentResDTO.setUrl(paymentUrl);
 
+        log.info("\n\n\n" + paymentUrl + "\n\n\n");
         return "redirect:" + paymentUrl;
     }
 

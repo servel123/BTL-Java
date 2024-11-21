@@ -82,6 +82,7 @@ public class CartController {
             model.addAttribute("createBill", new ListCartCreateBillDTO());
             List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
             model.addAttribute("fashions", fashions);
+
         } catch (Exception e) {
             model.addAttribute("message", "Not Product");
         }

@@ -1,6 +1,5 @@
 package com.project.fashion.service.implement;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import com.project.fashion.dto.request.AddProductDTO;
 import com.project.fashion.dto.request.UpdateProductDTO;
 
@@ -18,6 +17,7 @@ import com.project.fashion.model.Customer;
 import com.project.fashion.model.Product;
 import com.project.fashion.repository.ProductRepository;
 import com.project.fashion.service.ProductService;
+import com.project.fashion.util.Path;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -30,9 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 public class ProductServiceImplement implements ProductService {
-
-    @Autowired
-    private Dotenv dotenv;
 
     @Autowired
     private ProductRepository productRepository;
@@ -128,7 +125,7 @@ public class ProductServiceImplement implements ProductService {
                         String category = product.getCategory();
                         name = name + LocalDate.now().toString().toLowerCase();
                         path = "/images/" + category + "/" + name + "." + ext;
-                        String savePath = dotenv.get("SAVE_URL") + path;
+                        String savePath = Path.path + path;
                         log.info("\n\n\n3\n\n\n");
                         File file = new File(savePath);
                         image.transferTo(file);
@@ -182,8 +179,8 @@ public class ProductServiceImplement implements ProductService {
                         String category = product.getCategory();
                         name = name + LocalDate.now().toString().toLowerCase();
                         String path = "/images/" + category + "/" + name + "." + ext;
-                        String savePath = dotenv.get("SAVE_URL") + path;
-                        String pathFileOld = dotenv.get("SAVE_URL") + pdt.getImage();
+                        String savePath = Path.path + path;
+                        String pathFileOld = Path.path + pdt.getImage();
                         log.info("\n\n\n3\n\n\n");
                         File file = new File(savePath);
                         image.transferTo(file);
@@ -237,7 +234,7 @@ public class ProductServiceImplement implements ProductService {
 
             Product product = getProductById(productId);
             productRepository.deleteById(productId);
-            String pathFileOld = dotenv.get("SAVE_URL") + product.getImage();
+            String pathFileOld = Path.path + product.getImage();
             File fileOld = new File(pathFileOld);
             if (fileOld.exists() && fileOld.delete()) {
                 log.info("\n\n\n5\n\n\n");

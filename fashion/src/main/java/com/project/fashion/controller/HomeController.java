@@ -43,6 +43,7 @@ public class HomeController {
     private Authen authen;
 
     @GetMapping
+
     public String home(Model model, HttpSession session) {
         try {
             CustomerDetailResponse user = authen.authen();
@@ -63,7 +64,6 @@ public class HomeController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Loaded failed!!!");
         }
-
         return "home";
     }
 

@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.project.fashion.dto.response.CategoryResDTO;
 import com.project.fashion.dto.response.CustomerDetailResponse;
 
 import com.project.fashion.model.Product;
 import com.project.fashion.service.implement.CartServiceImplement;
+import com.project.fashion.service.implement.CategoryServiceImplement;
 import com.project.fashion.service.implement.CustomerServiceImplement;
 import com.project.fashion.service.implement.ProductServiceImplement;
 
@@ -29,6 +31,9 @@ public class ProductController {
     private CartServiceImplement cartServiceImplement;
 
     @Autowired
+    private CategoryServiceImplement categoryServiceImplement;
+
+    @Autowired
     CustomerServiceImplement customerServiceImplement;
 
     @Autowired
@@ -43,6 +48,8 @@ public class ProductController {
             List<Product> relatedProducts = productServiceImplement.getAllProductByCategory(product.getCategory());
             model.addAttribute("product", product);
             model.addAttribute("relatedProducts", relatedProducts);
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
+            model.addAttribute("fashions", fashions);
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -69,6 +76,6 @@ public class ProductController {
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
-        return "product";
+        return "redirect:/product?productId=" + productId;
     }
 }

@@ -5,6 +5,8 @@
 package com.project.fashion.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -18,7 +20,9 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author Vu
  */
+@Slf4j
 public class PaymentConfig {
+
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_ReturnUrl = "http://localhost:8080/payment/result";
     public static String vnp_TmnCode = "H2QLRZ0F";
