@@ -183,11 +183,17 @@ public class ProductServiceImplement implements ProductService {
                         name = name + LocalDate.now().toString().toLowerCase();
                         String path = "/images/" + category + "/" + name + "." + ext;
                         String savePath = dotenv.get("SAVE_URL") + path;
+                        String pathFileOld = dotenv.get("SAVE_URL") + pdt.getImage();
                         log.info("\n\n\n3\n\n\n");
                         File file = new File(savePath);
                         image.transferTo(file);
                         pdt.setImage(path);
                         log.info("\n\n\n4\n\n\n");
+                        File fileOld = new File(pathFileOld);
+                        if (fileOld.exists() && fileOld.delete()) {
+                            log.info("\n\n\n5\n\n\n");
+                        }
+                        log.info("\n\n\n6\n\n\n");
                     }
                 } else {
                     throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
@@ -227,7 +233,20 @@ public class ProductServiceImplement implements ProductService {
     // delete
     @Override
     public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+        try {
+
+            Product product = getProductById(productId);
+            productRepository.deleteById(productId);
+            String pathFileOld = dotenv.get("SAVE_URL") + product.getImage();
+            File fileOld = new File(pathFileOld);
+            if (fileOld.exists() && fileOld.delete()) {
+                log.info("\n\n\n5\n\n\n");
+            }
+            log.info("\n\n\n6\n\n\n");
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 
     @Override

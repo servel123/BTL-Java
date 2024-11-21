@@ -10,6 +10,8 @@ public class EnvConfig {
 
     @Bean
     public Dotenv dotenv() {
-        return Dotenv.load(); // Khởi tạo và trả về đối tượng Dotenv
+        return Dotenv.configure()
+                .directory("fashion/")
+                .load();
     }
 }
