@@ -33,7 +33,7 @@
                 <div class="displayUI">
                     <div th:if="${!#authorization.expression('isAnonymous()')}" class="authUI">
                         <div class="user-cart">
-                            <a th:href="@{/user/cart}"><i class='bx bx-cart-alt bx-md'></i></a>
+                            <a th:href="@{/cart}"><i class='bx bx-cart-alt bx-md'></i></a>
                             <div th:if="${session.countProductsInCart > 0}" class="quantity-of-cart">
                                 <div th:text="${session.countProductsInCart}"></div>
                             </div>

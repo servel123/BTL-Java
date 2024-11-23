@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{home}">
-    <head>
-        <title>Trang lọc</title>
-        <link rel="stylesheet" th:href="@{/css/qui.css}">
-    </head>
-    <body>
-        <div class="btnUI" layout:fragment="change-content">
-            <div class="price-filter-button">Lọc giá <i class="fa-solid fa-chevron-down"></i></div>
-            <div class="price-filter">
-                <form id="price-filter-form" method="GET" >
-                    <div class="slider-container" id="slider">
-                        <div class="slider-range" id="slider-range"></div>
-                        <div class="thumb" id="thumb-min"></div>
-                        <div class="thumb" id="thumb-max"></div>
-                    </div>
-                    <div class="price-values">
-                        <span id="min-price-display"></span>
-                        <span id="max-price-display"></span>
-                    </div>
-                    <input type="hidden" name="low" id="min-price" value="0">
-                    <input type="hidden" name="high" id="max-price" value="750000">
-                    <div class="filter-submit">
-                        <button type="submit">Lọc</button>
-                    </div>
-                </form>
-            </div>
+    layout:decorate="~{home}">
+
+<head>
+    <title>Trang lọc</title>
+    <link rel="stylesheet" th:href="@{/css/qui.css}">
+</head>
+
+<body>
+    <div class="btnUI" layout:fragment="change-content">
+        <div class="price-filter-button">Lọc giá <i class="fa-solid fa-chevron-down"></i></div>
+        <div class="price-filter">
+            <form id="price-filter-form" th:action="@{/filter}" method="GET">
+                <div class="slider-container" id="slider">
+                    <div class="slider-range" id="slider-range"></div>
+                    <div class="thumb" id="thumb-min"></div>
+                    <div class="thumb" id="thumb-max"></div>
+                </div>
+                <div class="price-values">
+                    <span id="min-price-display"></span>
+                    <span id="max-price-display"></span>
+                </div>
+                <input type="hidden" name="categoryId" th:text="${categoryId}">
+                <input type="hidden" name="low" id="min-price" value="0">
+                <input type="hidden" name="high" id="max-price" value="750000">
+                <div class="filter-submit">
+                    <button type="submit">Lọc</button>
+                </div>
+            </form>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

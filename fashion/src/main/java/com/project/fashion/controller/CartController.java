@@ -40,7 +40,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
-@RequestMapping("/user/cart")
+@RequestMapping("/cart")
 public class CartController {
 
     @Autowired
@@ -105,7 +105,7 @@ public class CartController {
             return "bill";
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
-            return "redirect:/user/cart";
+            return "redirect:/cart";
         }
     }
 
@@ -155,7 +155,7 @@ public class CartController {
             }
         } catch (Exception e) {
             log.info("\n ERROR: " + e.getMessage());
-            return "redirect:/user/cart";
+            return "redirect:/cart";
         }
 
         return "redirect:/user";
@@ -176,7 +176,7 @@ public class CartController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Đã xảy ra lỗi trong khi đang thực hiện");
         }
-        return "redirect:/user/cart";
+        return "redirect:/cart";
     }
 
     // partial update
@@ -190,6 +190,6 @@ public class CartController {
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
-        return "redirect:/user/cart";
+        return "redirect:/cart";
     }
 }

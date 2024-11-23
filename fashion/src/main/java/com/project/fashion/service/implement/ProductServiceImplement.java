@@ -130,9 +130,9 @@ public class ProductServiceImplement implements ProductService {
                         File file = new File(savePath);
                         image.transferTo(file);
                         log.info("\n\n\n4\n\n\n");
+                    } else {
+                        throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
                     }
-                } else {
-                    throw new InvalidFileNameException(filename, "Tep khong dung dinh dang");
                 }
             } catch (NullPointerException e) {
                 log.info("\n\n" + e.getMessage() + "\n\n");

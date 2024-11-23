@@ -61,9 +61,10 @@ public class HomeController {
             List<Category> categories = categoryServiceImplement.getCategories();
             model.addAttribute("categories", categories);
             model.addAttribute("fashions", fashions);
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Loaded failed!!!");
-        } 
+        }
         return "home";
     }
 
@@ -72,21 +73,27 @@ public class HomeController {
         try {
             Category category = categoryServiceImplement.getCategory(categoryId);
             model.addAttribute("categories", category);
+            model.addAttribute("categoryId", categoryId);
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
+            model.addAttribute("fashions", fashions);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
         return "qui";
     }
 
-    @GetMapping("/filter/{categoryId}")
-    public String homeCategoryByPrice(Model model, @PathVariable Long categoryId, @RequestParam("low") Long low,
+    @GetMapping("/filter")
+    public String homeCategoryByPrice(Model model, @RequestParam("categoryId") Long categoryId,
+            @RequestParam("low") Long low,
             @RequestParam("high") Long high) {
         try {
             List<Product> products = productServiceImplement.getProductByCategoryAndByPrice(low, high, categoryId);
             Category category = categoryServiceImplement.getCategory(categoryId);
-
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
+            model.addAttribute("fashions", fashions);
             FilterResponse filter = new FilterResponse(category.getName(), products);
             model.addAttribute("cate", category);
+
             model.addAttribute("categories", filter);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -101,14 +108,17 @@ public class HomeController {
             List<Product> products = productServiceImplement.findByKeyWord(keyword);
             if (products.isEmpty()) {
                 redirect.addFlashAttribute("message_search", "Kết quả tìm kiếm không tồn tại!");
+
             } else {
                 FilterResponse filter = new FilterResponse("Tìm kiếm", products);
                 model.addAttribute("categories", filter);
             }
+            List<CategoryResDTO> fashions = categoryServiceImplement.showCategory();
+            model.addAttribute("fashions", fashions);
         } catch (Exception e) {
             redirect.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "qui";
+        return "home";
     }
 
 }

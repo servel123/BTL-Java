@@ -14,14 +14,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((csrf) -> csrf.disable())
+
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/vnpay/result"))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/home/**", "/search/**", "/", "/filter/**")
                         .permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/payment/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin((form) -> form
                         .loginPage("/login")

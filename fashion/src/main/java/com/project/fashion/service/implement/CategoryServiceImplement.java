@@ -65,7 +65,7 @@ public class CategoryServiceImplement implements CategoryService {
 
     @Override
     public List<Category> getCategories() {
-        return categoryReponsitory.findTop2ByOrderByCategoryIdAsc();
+        return categoryReponsitory.findTop3ByOrderByCategoryIdAsc();
     }
 
     @Override
