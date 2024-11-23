@@ -9,6 +9,8 @@
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #f2f2f2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

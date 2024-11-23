@@ -62,7 +62,7 @@ body::-webkit-scrollbar {
 
 .navigate .content .fixed-nav {
     display: grid;
-    grid-template-columns: 1.5fr 5fr 2.5fr;
+    grid-template-columns: 1.4fr 5fr 2.6fr;
     padding: 25px 0 0;
     width: 100%;
 }
@@ -85,7 +85,7 @@ body::-webkit-scrollbar {
     font-weight: 700;
 }
 
-.navigate .content .fixed-nav .search {
+.navigate .content .fixed-nav .searchbar {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -95,7 +95,7 @@ body::-webkit-scrollbar {
     border-radius: 10px;
 }
 
-.navigate .content .fixed-nav .search input {
+.navigate .content .fixed-nav .searchbar input {
     width: 100%;
     border: none;
     background-color: transparent;
@@ -103,6 +103,17 @@ body::-webkit-scrollbar {
     color: #000;
 }
 
+.navigate .content .fixed-nav .searchbar .search-btn{
+    white-space: nowrap;
+    padding: 7px 5px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px
+}
+.navigate .content .fixed-nav .searchbar .search-btn:hover{
+    box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);
+}
 .navigate .content .fixed-nav .displayUI {
     margin-left: 20px;
 }
@@ -239,6 +250,7 @@ body::-webkit-scrollbar {
     padding: 15px;
     color: #000;
     background-color: var(--secondary-color);
+    
 }
 
 #filter_nav li .displayed {
@@ -264,8 +276,12 @@ body::-webkit-scrollbar {
 #filter_nav>li .dropdown_menu a:hover {
     background-color: var(--primary-color);
     color: #fff;
+    
 }
-
+#filter_nav>li:hover>a i{
+    transition: all 0.5s ease;
+    transform: rotate(180deg);
+}
 /*========================Footer=========================*/
 footer {
     background: var(--primary-color);
@@ -366,30 +382,4 @@ footer .rights {
     line-height: 1.86;
     text-align: center;
     color: #807d74;
-}
-
-.ai-style-change-1 {
-    padding: 8px 16px;
-    /* Adjust padding for better spacing */
-    border: none;
-    /* Remove the default outset border */
-    background-color: #007bff;
-    /* Use a blue background color */
-    color: white;
-    /* Use white text color for contrast */
-    font-family: inherit;
-    /* Inherit font family from parent */
-    font-size: 1rem;
-    /* Use a standard font size */
-    cursor: pointer;
-    /* Add a pointer cursor on hover */
-    border-radius: 4px;
-    /* Add rounded corners */
-    transition: background-color 0.3s ease;
-    /* Add a smooth transition for hover effect */
-}
-
-.ai-style-change-1:hover {
-    background-color: #0056b3;
-    /* Darken the background color on hover */
 }

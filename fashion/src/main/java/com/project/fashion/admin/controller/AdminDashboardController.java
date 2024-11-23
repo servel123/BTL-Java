@@ -36,24 +36,29 @@ public class AdminDashboardController {
         try {
             List<Object[]> billByMonth = dashboardService.getOrderLineCountByMonth(year);
 
-            // ObjectMapper ob = new ObjectMapper();
-            // String json = "";
-            // try {
-            // json = ob.writeValueAsString(billByMonth);
-            // model.addAttribute("billByMonth", json);
-            // } catch (Exception e) {
+             ObjectMapper ob = new ObjectMapper();
+             String json1 = "";
+             try {
+             json1 = ob.writeValueAsString(billByMonth);
+             model.addAttribute("billByMonth", json1);
+             } catch (Exception e) {
             model.addAttribute("billByMonth", billByMonth);
-            // }
+             }
         } catch (Exception e) {
             model.addAttribute("errBillByMonth", "Error Bill By Month");
             log.info("\n so luong don:  + billByMonth.toString()" + e.getMessage());
         }
         // tông số sản phẩm theo từng danh mục
         try {
-
             List<Object[]> totalProductByCategory = dashboardService.getAmountByCategory();
+            ObjectMapper ob = new ObjectMapper();
+            String json2 = "";
+            try {
+            json2 = ob.writeValueAsString(totalProductByCategory);
+            model.addAttribute("totalProductByCategory", json2);
+            } catch (Exception e) {
             model.addAttribute("totalProductByCategory", totalProductByCategory);
-
+            }            
             log.info("\n so luong sp: ");
             // for (Object[] ob : totalProductByCategory) {
             // log.info("\n\n\n" + ob[0].toString() + "-----" + ob[1].toString());
@@ -71,6 +76,14 @@ public class AdminDashboardController {
             for (Object[] ob : totalProductSoldByCategory) {
                 log.info("\n" + ob[0].toString() + "-----" + ob[1].toString());
             }
+            ObjectMapper ob = new ObjectMapper();
+            String json3 = "";
+            try {
+            json3 = ob.writeValueAsString(totalProductSoldByCategory);
+            model.addAttribute("totalProductSoldByCategory", json3);
+            } catch (Exception e) {
+            model.addAttribute("totalProductSoldByCategory", totalProductSoldByCategory);
+            }  
         } catch (Exception e) {
             model.addAttribute("errTotalProductSold", "Error Total Product Sold");
             log.info("\n so luong da ban:  + totalProductSold.toString()" + e.getMessage());

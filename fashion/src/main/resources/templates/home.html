@@ -11,18 +11,11 @@
 
     <main layout:fragment="main_content">
         <div class="content">
-            <div class="hero_part">
-                <img src="" id="hero_img">
-                <div class="hero_arrows">
-                    <button id="hero_prev"><i class="fa-solid fa-angle-left fa-2xl"></i></button>
-                    <button id="hero_next"><i class="fa-solid fa-angle-right fa-2xl"></i></button>
-                </div>
-            </div>
             <div th:if="${message_search}" th:text="${message_search}"></div>
             <div class="display_main_content" th:each="category : ${categories}">
-                <div class="direction">
+                <div class="direction" >
                     <h2>Các sản phẩm <span th:text="${category.name}"></span> nổi bật</h2>
-                    <div class="btn_move">
+                    <div class="btnUI" layout:fragment="change-content">
                         <i class="fa-solid fa-arrow-left pop_left"></i>
                         <i class="fa-solid fa-arrow-right pop_right"></i>
                     </div>
@@ -40,7 +33,7 @@
                             <span>Thêm vào giỏ hàng</span>
                         </div>
                     </a>
-                </div>
+                </div>  
                 <div th:if="!${category}" th:text="errorMessage"></div>
             </div>
         </div>

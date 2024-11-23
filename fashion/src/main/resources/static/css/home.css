@@ -76,7 +76,7 @@ main .content .display_main_content .direction h2:before {
     width: 100%;
     height: 3px;
     background-color: var(--primary-color);
-    top: 180%;
+    bottom: -120%;
 
 }
 
@@ -84,17 +84,18 @@ main .content .display_main_content .direction h2 span {
     color: var(--primary-color)
 }
 
-main .content .display_main_content .direction .btn_move {
+main .content .display_main_content .direction .btnUI {
     display: flex;
     gap: 20px;
+    padding: 10px 20px;
 }
 
-main .content .display_main_content .direction .btn_move i {
+main .content .display_main_content .direction .btnUI i {
     transition: all 0.3s ease;
     color: #000;
 }
 
-main .content .display_main_content .direction .btn_move i:hover {
+main .content .display_main_content .direction .btnUI i:hover {
     color: var(--primary-color)
 }
 

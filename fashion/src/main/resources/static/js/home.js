@@ -1,52 +1,4 @@
-let imageSources = [
-    "https://th.bing.com/th/id/OIP.B5G9g_Dg_xhJXo_SlewYRwHaE8?rs=1&pid=ImgDetMain",
-    "https://th.bing.com/th/id/OIP.iPttK98DzGabuztT-ALZsAHaE6?rs=1&pid=ImgDetMain",
-    "https://th.bing.com/th/id/OIP.OPW4Bdh9Gzyomt-g8IbSEAHaE8?rs=1&pid=ImgDetMain",
-    "https://th.bing.com/th/id/R.adaab26fbf2a21e7f77fbd974af188c1?rik=lCpZk8Qxt%2fPr5A&pid=ImgRaw&r=0"
-];
-let currentIndex = 0;
-let autoChangeEna = true;
-let autoChangeTime, enableAutoChangeTimeOut;
-let img = $('#hero_img');
-function autoChangeLoop(){
-    img.fadeOut(1500, function() {
-        img.attr('src', imageSources[currentIndex]);
-        img.fadeIn(1500, function() {
-            currentIndex++;
-            if(currentIndex === imageSources.length){
-                currentIndex = 0;
-            }
-            autoChangeTime = setTimeout(autoChangeLoop, 2500);
-        });
-    });
-}
-function enableAutoChange() {
-    autoChangeEna = true;
-    clearTimeout(enableAutoChangeTimeOut);
-    autoChangeLoop();
-}
-function disableAutoChange() {
-    autoChangeEna = false;
-    clearTimeout(autoChangeTime);
-    img.attr('src', imageSources[currentIndex]);
-    enableAutoChangeTimeOut = setTimeout(enableAutoChange, 10000);
-}
 $(document).ready(function () {
-    img.attr('src', imageSources[currentIndex]);
-    currentIndex++;
-    if (autoChangeEna) enableAutoChange();
-
-    $('#hero_prev').click(function () {
-        if (currentIndex === 0) currentIndex = imageSources.length - 1;
-        else currentIndex -= 1;
-        disableAutoChange();
-    });
-    $('#hero_next').click(function () {
-        if (currentIndex === imageSources.length - 1) currentIndex = 0;
-        else currentIndex += 1;
-        disableAutoChange();
-
-    });
     $('.price_of_product').each(function () {
         let getPrice = parseFloat($(this).html());
         $(this).html(getPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
@@ -60,5 +12,66 @@ $(document).ready(function () {
         const displayPart = $(this).closest('.display_main_content').find('.displayPart');
         displayPart.scrollLeft(displayPart.scrollLeft() + 500);
     });
+//    qui JS 
+    const slider = $('#slider');
+    const thumbMin = $('#thumb-min');
+    const thumbMax = $('#thumb-max');
+    const sliderRange = $('#slider-range');
+    const minPriceDisplay = $('#min-price-display');
+    const maxPriceDisplay = $('#max-price-display');
+    const minPriceInput = $('#min-price');
+    const maxPriceInput = $('#max-price');
+ //   Giá trị default
+    const minPrice = 0;
+    const maxPrice = 1000000;
+    let currentMin = 0;
+    let currentMax = 1000000;
+    function updateThumbs(){
+        const sliderWidth = slider.width();
+        const minPercent = ((currentMin - minPrice) / (maxPrice - minPrice)) * 100;
+        const maxPercent = ((currentMax - minPrice) / (maxPrice - minPrice)) * 100;
+        thumbMin.css('left', `${minPercent}%`);
+        thumbMax.css('left', `${maxPercent}%`);
+        sliderRange.css('left', `${minPercent}%`);
+        sliderRange.css('width', `${maxPercent - minPercent}%`);
+        minPriceDisplay.html(currentMin.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+        maxPriceDisplay.html(currentMax.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+ //       Cập nhật giá trị input ẩn
+        minPriceInput.val(currentMin);
+        maxPriceInput.val(currentMax);
+    }
+    function moveThumb(evt, thumb, isMin){
+        const sliderRect = slider[0].getBoundingClientRect();
+        const sliderWidth = sliderRect.width;
+        const offsetX = Math.min(Math.max(0, evt.clientX - sliderRect.left), sliderWidth);
+        const price = Math.round(minPrice + ((offsetX / sliderWidth) * (maxPrice - minPrice)));
+        if(isMin){
+            if(price < currentMax){
+                currentMin = Math.max(minPrice, price);
+            } 
+        } else{
+            if(price > currentMin){
+                currentMax = Math.min(maxPrice, price);
+            }
+        }
+         updateThumbs();
+     }
+     thumbMin.on('mousedown', function(){
+         $(document).on('mousemove', function(evt){
+             moveThumb(evt, thumbMin, true);
+         });
+         $(document).on('mouseup', function(){
+             $(document).off('mousemove');
+         });
+     });
+     thumbMax.on('mousedown', function(){
+         $(document).on('mousemove', function(evt){
+             moveThumb(evt, thumbMax, false);
+         });
+         $(document).on('mouseup', function(){
+             $(document).off('mousemove');
+         });
+     });
+     updateThumbs();
 });
 

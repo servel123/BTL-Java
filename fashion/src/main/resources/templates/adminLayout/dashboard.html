@@ -39,8 +39,13 @@
                 <div id="double-line-chart"></div>
             </div>
         </main>
-        <script layout:fragment="alter-lib"
-            src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.0.0/apexcharts.min.js"></script>
+        <script layout:fragment="alter-lib" src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.0.0/apexcharts.min.js"></script>
+        <script layout:fragment="data-script">
+                window.billByMonth = JSON.parse('[[${billByMonth}]]');
+                window.totalProductByCategory = JSON.parse('[[${totalProductByCategory}]]'.replace(/&quot;/g, '"'));
+                window.totalProductSoldByCategory = JSON.parse('[[${totalProductSoldByCategory}]]'.replace(/&quot;/g, '"'));
+                window.revenueByMonth = JSON.parse('[[${revenueByMonth}]]');
+        </script>
         <script layout:fragment="scripting" th:src="@{/js/adminJS/dashboard.js}"></script>
     </body>
 </html>

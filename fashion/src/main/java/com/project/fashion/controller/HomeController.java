@@ -63,7 +63,7 @@ public class HomeController {
             model.addAttribute("fashions", fashions);
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Loaded failed!!!");
-        }
+        } 
         return "home";
     }
 
@@ -75,23 +75,23 @@ public class HomeController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        return "home";
+        return "qui";
     }
 
     @GetMapping("/filter/{categoryId}")
     public String homeCategoryByPrice(Model model, @PathVariable Long categoryId, @RequestParam("low") Long low,
-            @RequestParam("hight") Long hight) {
+            @RequestParam("high") Long high) {
         try {
-            List<Product> products = productServiceImplement.getProductByCategoryAndByPrice(low, hight, categoryId);
+            List<Product> products = productServiceImplement.getProductByCategoryAndByPrice(low, high, categoryId);
             Category category = categoryServiceImplement.getCategory(categoryId);
 
             FilterResponse filter = new FilterResponse(category.getName(), products);
-
+            model.addAttribute("cate", category);
             model.addAttribute("categories", filter);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        return "home";
+        return "qui";
     }
 
     @GetMapping("/search")
@@ -100,15 +100,15 @@ public class HomeController {
 
             List<Product> products = productServiceImplement.findByKeyWord(keyword);
             if (products.isEmpty()) {
-                model.addAttribute("message_search", "Kết quả tìm kiếm không tồn tại!");
+                redirect.addFlashAttribute("message_search", "Kết quả tìm kiếm không tồn tại!");
             } else {
                 FilterResponse filter = new FilterResponse("Tìm kiếm", products);
                 model.addAttribute("categories", filter);
             }
         } catch (Exception e) {
-            redirect.addAttribute("errorMessage", e.getMessage());
+            redirect.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "home";
+        return "qui";
     }
 
 }

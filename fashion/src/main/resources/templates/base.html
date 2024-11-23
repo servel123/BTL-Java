@@ -25,10 +25,10 @@
                         alt="logo" />
                     <span>Fashion</span>
                 </a>
-                <form class="search" method="get" action="/search">
+                <form class="searchbar" method="get" th:action="@{/search}">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" name="search" placeholder="Nhập để tìm kiếm">
-                    <button type="submit" class="ai-style-change-1">Search</button>
+                    <button type="submit" class="search-btn">Tìm kiếm</button>
                 </form>
                 <div class="displayUI">
                     <div th:if="${!#authorization.expression('isAnonymous()')}" class="authUI">
@@ -74,8 +74,8 @@
                 <!--For filter-->
                 <ul id="filter_nav" th:if="${fashions}">
                     <li th:each="fashion : ${fashions}">
-                        <a href="javascript:void(0)" class="displayed" th:text="${fashion.name}">
-                            <i class="fa-solid fa-chevron-down"></i>
+                        <a href="javascript:void(0)" class="displayed">
+                            <span th:text="${fashion.name}"></span> <i class="fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="dropdown_menu">
                             <li th:each="category : ${fashion.categories}">
@@ -111,7 +111,6 @@
                         <div class="line"></div>
                         <div class="text">
                             <p class="access-link">About Us</p>
-                            <p class="access-link">Features</p>
                             <p class="access-link">Features</p>
                             <p class="access-link">Latest News</p>
                         </div>
